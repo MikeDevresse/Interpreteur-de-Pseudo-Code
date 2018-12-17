@@ -1,5 +1,8 @@
 package main;
 
+import pseudoCode.Algorithme;
+import pseudoCode.Variable;
+
 public class Affichage {
 	private String[] code;
 	
@@ -7,13 +10,13 @@ public class Affichage {
 		this.code = code;
 	}
 	
-	public void afficher(String donnees, String console) {
+	public void afficher(Variable[] vars, String traceExec) {
 		String affichage = "";
 		
 		int cpt=0;
-		int cptTExec=0;
+		int cptTVar=0;
 		
-		String[] lignesExec = donnees.split("\n");
+
 		
 		affichage += String.format("-----------%31s-----------\n", " ");
 		affichage += String.format("| CODE    |%31s| DONNEES |\n", " ");
@@ -23,11 +26,11 @@ public class Affichage {
 			str = str.replace("\t", "  ");
 			cpt++;
 			affichage += String.format("|%2d %-38s|", cpt, str);
-			if(cptTExec < lignesExec.length)
-				affichage += String.format("%-37s|", lignesExec[cptTExec]);
+			if(cptTVar < vars.length)
+				affichage += String.format("%-37s|", vars[cptTVar]);
 			else
 				affichage += String.format("%-37s|", " ");
-			cptTExec++;
+			cptTVar++;
 			affichage += "\n";
 		}
 		
@@ -36,7 +39,7 @@ public class Affichage {
 		affichage += "| CONSOLE |\n";
 		affichage += "---------------------------------------------------------------------------------\n";
 		
-		for(String str : console.split("\n")) {
+		for(String str : traceExec.split("\n")) {
 			affichage += String.format("|%80s|", str);
 		}
 		
