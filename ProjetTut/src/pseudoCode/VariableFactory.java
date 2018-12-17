@@ -18,11 +18,7 @@ public class VariableFactory {
 		expression = expression.replace("d'", "de ");
 
 		String varName = expression.split(":")[0];
-		String varType = expression.split(":")[1];
-		
-		System.out.println(varName);
-		System.out.println(varType);
-		
+		String varType = expression.split(":")[1];		
 		
 		varType = varType.toLowerCase();
 
