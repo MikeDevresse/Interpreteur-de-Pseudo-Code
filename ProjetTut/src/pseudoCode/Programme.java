@@ -1,5 +1,8 @@
 package pseudoCode;
 
+import main.Condition;
+import main.Fonction;
+
 public class Programme
 {
 	
@@ -100,10 +103,19 @@ public class Programme
 			
 			if ( current.matches( ".*\\(.*\\)" ) )
 			{
-				//Appeler fonction
+				Fonction.evaluer( current.split( "\\(|\\)" )[0], current.split( "\\(|\\)" )[1] );
 			}
 			
-			
+			if ( current.matches("si .* alors"))
+			{
+				String condition = current.split( "si | alors" )[1];
+				if ( !Condition.evaluer(condition))
+				{
+					do {
+						
+					} while ( !fichier[ligneCourrante++].trim().equals( "fsi" ) );
+				}
+			}
 			
 			
 			
