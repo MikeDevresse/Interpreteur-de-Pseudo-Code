@@ -2,39 +2,37 @@ ALGORITHME NomAlgo
 constante:
 
 variable :
-x, y : entier
+	x, y : entier
 
 DEBUT
-x <-- 5 
-y<--7
-
-ecrire ( "etape 0" )
-
-si x = 5 alors
-
-ecrire ( "etape 1" )
-
-si y = 2 alors
-ecrire ( "etape 2" )
-fsi
-
-ecrire ( "etape 3" )
-
-si y = 2 alors
-ecrire ("etape 4")
-sinon
-ecrire ("etape 5")
-fsi
-
-fsi
-
-si y = 7 alors
-ecrire ("etape 6")
-sinon
-ecrire ("etape 7")
-fsi
-
-
-ecrire ( "etape 8" )
+	x <-- 5 
+	y <--7
+	
+	ecrire ( "etape 0" )
+	
+	si x = 5 alors
+		ecrire ( "etape 1" )
+	
+		si y = 2 alors
+			ecrire ( "etape 2" )
+		fsi
+		
+		ecrire ( "etape 3" )
+		
+		si y = 2 alors
+			ecrire ("etape 4")
+		sinon
+			ecrire ("etape 5")
+		fsi
+	fsi
+	
+	si y = 7 alors
+		ecrire ("etape 6")
+	sinon
+		ecrire ("etape 7")
+	fsi
+	
+	
+	ecrire ( "etape 8" )
 
 FIN
