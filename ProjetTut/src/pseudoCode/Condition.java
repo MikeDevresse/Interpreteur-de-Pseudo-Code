@@ -10,7 +10,7 @@ public class Condition
 	{
 		condition = condition.replaceAll( "=", "==" );
 		condition = condition.replaceAll( "et", "&&" );
-		Interpreter interpreter = new Interpreter();
+		Interpreter interpreter = Programme.getInterpreter();
 		try
 		{
 			System.out.println( condition );

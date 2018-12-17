@@ -55,7 +55,7 @@ public class Algorithme
 	
 	public void setValeur ( String nomVar, String valeur )
 	{
-		Interpreter interpreter = new Interpreter();
+		Interpreter interpreter = Programme.getInterpreter();
 		
 		
 		try
