@@ -10,6 +10,7 @@ public class Variable<T> {
 	public Variable(String name, String type, boolean constante) {
 		this.name = name;
 		this.type = type;
+		this.constante = constante;
 	}
 
 	public T getValue() {
