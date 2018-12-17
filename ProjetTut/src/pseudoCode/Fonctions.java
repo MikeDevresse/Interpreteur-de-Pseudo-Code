@@ -14,17 +14,17 @@ import bsh.Interpreter;
  */
 public class Fonctions {
 
-	public static void evaluer(String nomFonction, String contenu) {
+	public static void evaluer(String nomFonction, String contenu, Programme p) {
 
 		nomFonction = nomFonction.trim();
 		switch (nomFonction) {
 		case "ecrire":
 		case "écrire":
-			Fonctions.ecrire(contenu);
+			Fonctions.ecrire(contenu,p);
 			break;
 
 		case "lire":
-			Fonctions.lire(contenu);
+			Fonctions.lire(contenu,p);
 			break;
 
 		}
@@ -33,7 +33,7 @@ public class Fonctions {
 	/*
 	 * TODO attendre le CUI pour la saisie des valeurs
 	 */
-	private static void lire(String vars) {
+	private static void lire(String vars,Programme p) {
 		vars = vars.replace(" ", "");
 
 		for (String var : vars.split(",")) {
@@ -46,11 +46,11 @@ public class Fonctions {
 	 * 
 	 * @param args parties de l'expression
 	 */
-	private static void ecrire(String contenu) {
+	private static void ecrire(String contenu, Programme p) {
 		Interpreter interpreter = Programme.getInterpreter();
 		try {
 			contenu = contenu.replace("©", "+");
-			System.out.println(interpreter.eval(contenu));
+			p.traceExec += interpreter.eval(contenu) + "\n";
 		} catch (EvalError e) {
 			e.printStackTrace();
 		}

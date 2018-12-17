@@ -57,12 +57,7 @@ public class Algorithme
 	{
 		Interpreter interpreter = Programme.getInterpreter();
 
-		valeur = valeur.replaceAll( "×", "*" );
-		valeur = valeur.replaceAll( "mod","%");
-		valeur = valeur.replaceAll( "([0-9]+)/([0-9]+)","/(double)" );
-		valeur = valeur.replaceAll( "div","/(int)" );
-		valeur = valeur.replaceAll( "([0-9]+)\\^([0-9]+)", "Math.pow($1,$2)" );
-		valeur = valeur.replaceAll( "\\\\/¯([0-9]+)", "Math.sqrt($1)" );
+		valeur = Variable.traduire( valeur );
 		
 		try
 		{
@@ -74,7 +69,6 @@ public class Algorithme
 			e.printStackTrace();
 		}
 	}
-	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

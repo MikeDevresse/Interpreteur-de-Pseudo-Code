@@ -6,6 +6,8 @@ import bsh.Interpreter;
 public class Programme
 {
 
+	protected String traceExec;
+	
 	/** fichier. */
 	private String[]		   fichier;
 
@@ -109,7 +111,7 @@ public class Programme
 
 			if ( current.matches( ".*\\(.*\\)" ) )
 			{
-				Fonctions.evaluer( current.split( "\\(|\\)" )[0], current.split( "\\(|\\)" )[1] );
+				Fonctions.evaluer( current.split( "\\(|\\)" )[0], Variable.traduire( current.split( "\\(|\\)" )[1] ), this );
 			}
 			
 			if ( current.matches( ".*si.*alors.*" ) )
@@ -146,6 +148,12 @@ public class Programme
 		}
 
 	}
+	
+	public String getTraceExec ()
+	{
+		return this.traceExec;
+	}
+	
 
 	/*
 	 * (non-Javadoc)
@@ -169,8 +177,6 @@ public class Programme
 		condition = condition.replaceAll( "(.*)xou(.*)", "($1||$2) && !($1 && $2)" );
 		condition = condition.replaceAll( "ou", "||" );
 		condition = condition.replaceAll( "non", "!" );
-	
-		System.out.println( condition );
 		
 		Interpreter interpreter = Programme.getInterpreter();
 		try
