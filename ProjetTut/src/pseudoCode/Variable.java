@@ -55,6 +55,7 @@ public class Variable<T> {
 	public void setValeur(T valeur) {
 		this.valeur = valeur;
 	}
+	
 
 	/**
 	 * Défini le nom de la variable

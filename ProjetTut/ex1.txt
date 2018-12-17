@@ -5,8 +5,8 @@ variable :
 x, y : entier
 
 DEBUT
-x <-- 5
-y <-- 7
+x <-- 5 + 2
+y<--7+x
 
 ecrire ( "etape 0" )
 

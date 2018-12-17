@@ -2,6 +2,9 @@ package pseudoCode;
 
 import java.util.ArrayList;
 
+import bsh.EvalError;
+import bsh.Interpreter;
+
 public class Algorithme
 {
 	
@@ -48,6 +51,26 @@ public class Algorithme
 			}
 		}
 		return null;
+	}
+	
+	public void setValeur ( String nomVar, String valeur )
+	{
+		Interpreter interpreter = new Interpreter();
+		
+		
+		try
+		{
+			for ( Variable v : this.ensVariables )
+			{
+				interpreter.eval( v.getNom() + " = " + v.getValeur() );
+			}
+
+			this.getVariable( nomVar ).setValeur( interpreter.eval(valeur) );
+		}
+		catch ( EvalError e )
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	/* (non-Javadoc)

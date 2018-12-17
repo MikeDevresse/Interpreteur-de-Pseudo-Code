@@ -95,8 +95,7 @@ public class Programme
 			if ( current.split( "<--" ).length == 2 )
 			{
 				String[] parties = current.split( "<--" );
-				Variable v = algo.getVariable( parties[0].trim() );
-				v.setValeur( parties[1].trim() );
+				algo.setValeur( parties[0].trim(), parties[1] );
 			}
 			
 			if ( current.matches( ".*\\(.*\\)" ) )
