@@ -6,5 +6,6 @@ variable:
 	tmp : entier
 	
 DEBUT
-	ecrire("ok")
+	lire(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z)
+	ecrire(a+b+c+d+e+f+g+h+i+j+k+l+m+n+o+p+q+r+s+t+u+v+w+y+z)
 FIN 
