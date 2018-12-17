@@ -2,7 +2,6 @@ package main;
 import ihmCui.Affichage;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Programme;
-import pseudoCode.Variable;
 
 /*
  * Retour en arriere :
@@ -13,7 +12,7 @@ public class Controleur
 {
 	
 	/** nom du fichier */
-	private final String input = "tests/Test2.algo";
+	private final String input = "tests/Test3.algo";
 	
 	/** objet programme */
 	private Programme prog;
