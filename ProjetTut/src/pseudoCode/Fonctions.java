@@ -3,20 +3,28 @@ package pseudoCode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import bsh.EvalError;
+import bsh.Interpreter;
+
 // TODO: Auto-generated Javadoc
 /**
  * Class Fonctions.
  */
 public class Fonctions {
 
-	public static void evaluer ( String nomFonction, String contenue)
+	public static void evaluer ( String nomFonction, String contenue) throws EvalError
 	{
 		nomFonction = nomFonction.trim();
+		Interpreter interpreteur = Programme.getInterpreter();
 		switch ( nomFonction )
 		{
 			case "ecrire" :
-				System.out.println( contenue.split( "\"" )[1] );
+				System.out.println( interpreteur.eval( contenue ) );
 				break;
+			case "écrire" :
+				System.out.println( interpreteur.eval( contenue ) );
+				break;
+				
 		}
 	}
 	

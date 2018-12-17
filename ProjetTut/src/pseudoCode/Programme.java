@@ -109,13 +109,19 @@ public class Programme
 
 			if ( current.matches( ".*\\(.*\\)" ) )
 			{
-				Fonctions.evaluer( current.split( "\\(|\\)" )[0], current.split( "\\(|\\)" )[1] );
+				try
+				{
+					Fonctions.evaluer( current.split( "\\(|\\)" )[0], current.split( "\\(|\\)" )[1] );
+				}
+				catch ( EvalError e )
+				{
+					e.printStackTrace();
+				}
 			}
-
-			if ( current.matches( "si .* alors" ) )
+			
+			if ( current.matches( ".*si.*alors.*" ) )
 			{
 				String condition = current.split( "si | alors" )[1];
-
 				if ( !condition( condition ) )
 				{
 					do
@@ -170,6 +176,8 @@ public class Programme
 		condition = condition.replaceAll( "ou", "||" );
 		condition = condition.replaceAll( "xou", "^" );
 		condition = condition.replaceAll( "non", "!" );
+	
+		
 		Interpreter interpreter = Programme.getInterpreter();
 		try
 		{

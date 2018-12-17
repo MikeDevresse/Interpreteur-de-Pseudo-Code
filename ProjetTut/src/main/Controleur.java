@@ -6,7 +6,7 @@ public class Controleur
 {
 	
 	/** nom du fichier */
-	private final String input = "ex1.txt";
+	private final String input = "tests/testConditionsV2.algo";
 	
 	/** objet programme */
 	private Programme prog;

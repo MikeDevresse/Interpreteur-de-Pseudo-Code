@@ -9,16 +9,16 @@ DEBUT
 	si age <= 30 et age >= 10 alors 
 		si age < 15 alors
 			écrire("cas1")
-		si age > 15
+		si age > 15 alors
 			écrire("cas2")
 		fsi
 	sinon
-		si age = 65
+		si age = 65 alors
 			écrire("cas3")
 		fsi
 	fsi
 	
-	si age /= 10
+	si age /= 10 alors
 		écrire("cas 4")
 	sinon
 		écrire("cas 5")
