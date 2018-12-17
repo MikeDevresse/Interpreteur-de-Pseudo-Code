@@ -74,7 +74,7 @@ public class Programme
 			{
 				String[] parties = current.split( "<--" );
 				Variable v = algo.getVariable( parties[0].trim() );
-				v.setValue( parties[1].trim() );
+				v.setValeur( parties[1].trim() );
 			}
 			
 			if ( current.matches( ".*\\(.*\\)" ) )
