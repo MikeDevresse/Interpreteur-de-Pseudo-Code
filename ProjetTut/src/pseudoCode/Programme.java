@@ -1,42 +1,45 @@
 package pseudoCode;
 
+import bsh.EvalError;
 import bsh.Interpreter;
 
-public class Programme {
+public class Programme
+{
 
 	/** fichier. */
-	private String[] fichier;
+	private String[]		   fichier;
 
 	/** algo. */
-	private Algorithme algo;
+	private Algorithme		   algo;
 
 	/** def. */
-	private String def;
+	private String			   def;
 
 	/** debut. */
-	private boolean debut = false;
+	private boolean			   debut		  = false;
 
 	/** fin. */
-	private boolean fin = false;
+	private boolean			   fin			  = false;
 
 	/** ligne courrante. */
-	private int ligneCourrante = 0;
-	
+	private int				   ligneCourrante = 0;
+
 	private static Interpreter interpreter;
-	
-	
-	
 
 	/**
 	 * Instanciation de programme.
 	 *
-	 * @param fichier the fichier
-	 * @throws AlgorithmeException the algorithme exception
+	 * @param fichier
+	 *            the fichier
+	 * @throws AlgorithmeException
+	 *             the algorithme exception
 	 */
-	public Programme(String[] fichier) throws AlgorithmeException {
+	public Programme ( String[] fichier ) throws AlgorithmeException
+	{
 		Programme.interpreter = new Interpreter();
 		this.fichier = fichier;
-		while (!fin) {
+		while ( !fin )
+		{
 			LigneSuivante();
 		}
 	}
@@ -44,78 +47,137 @@ public class Programme {
 	/**
 	 * Ligne suivante.
 	 *
-	 * @throws AlgorithmeException algorithme exception
+	 * @throws AlgorithmeException
+	 *             algorithme exception
 	 */
-	public void LigneSuivante() throws AlgorithmeException {
-		if (ligneCourrante == fichier.length - 1) {
+	public void LigneSuivante () throws AlgorithmeException
+	{
+		if ( ligneCourrante == fichier.length - 1 )
+		{
 			this.fin = true;
 			return;
 		}
 		String current = fichier[ligneCourrante++];
-		String[] mots = current.split(" ");
+		String[] mots = current.split( " " );
 
-		boolean ignore = current.trim().equals("");
+		boolean ignore = current.trim().equals( "" );
 
-		if (!debut && !ignore) {
-			if (algo == null) {
-				if (!mots[0].equals("ALGORITHME")) {
-					throw new AlgorithmeException("Mauvaise structure du fichier");
-				} else {
-					algo = new Algorithme(mots[1]);
+		if ( !debut && !ignore )
+		{
+			if ( algo == null )
+			{
+				if ( !mots[0].equals( "ALGORITHME" ) )
+				{
+					throw new AlgorithmeException( "Mauvaise structure du fichier" );
+				}
+				else
+				{
+					algo = new Algorithme( mots[1] );
 				}
 			}
 
-			else if (mots[0].replaceAll(":", "").equals("constante")) {
+			else if ( mots[0].replaceAll( ":", "" ).equals( "constante" ) )
+			{
 				this.def = "constante";
-			} else if (mots[0].replaceAll(":", "").equals("variable")) {
+			}
+			else if ( mots[0].replaceAll( ":", "" ).equals( "variable" ) )
+			{
 				this.def = "variable";
-			} else if (mots[0].equals("DEBUT")) {
+			}
+			else if ( mots[0].equals( "DEBUT" ) )
+			{
 				this.debut = true;
-			} else {
-				if (this.def == null || this.def == "") {
-					return;
+			}
+			else
+			{
+				if ( this.def == null || this.def == "" ) { return; }
+				boolean estConstante = def.equals( "constante" );
+				String type = current.split( ":" )[1].trim();
+				for ( String s : current.split( ":" )[0].split( "," ) )
+				{
+					algo.AjouterVariable( VariableFactory.createVariable( s.trim() + ":" + type, estConstante ) );
 				}
-				boolean estConstante = def.equals("constante");
-				String type = current.split(":")[1].trim();
-				for (String s : current.split(":")[0].split(",")) {
-					algo.AjouterVariable(VariableFactory.createVariable(s.trim() + ":" + type, estConstante));
+			}
+		}
+		else if ( debut && !ignore )
+		{
+			if ( current.split( "<--" ).length == 2 )
+			{
+				String[] parties = current.split( "<--" );
+				algo.setValeur( parties[0].trim(), parties[1] );
+			}
+
+			if ( current.matches( ".*\\(.*\\)" ) )
+			{
+				Fonctions.evaluer( current.split( "\\(|\\)" )[0], current.split( "\\(|\\)" )[1] );
+			}
+
+			if ( current.matches( "si .* alors" ) )
+			{
+				String condition = current.split( "si | alors" )[1];
+
+				if ( !condition( condition ) )
+				{
+					do
+					{
+						ligneCourrante++;
+					} while ( !fichier[ligneCourrante].trim().equals( "fsi" ) &&
+							  !fichier[ligneCourrante].trim().equals( "sinon" ));
 				}
-			}
-		} else if (debut && !ignore) {
-			if (current.split("<--").length == 2) {
-				String[] parties = current.split("<--");
-				algo.setValeur(parties[0].trim(), parties[1]);
+				else
+				{
+					do
+					{
+						LigneSuivante();
+					} while ( !fichier[ligneCourrante].trim().equals( "fsi" ) &&
+							  !fichier[ligneCourrante].trim().equals( "sinon" ));
+					
+					if ( fichier[ligneCourrante].trim().equals( "sinon" ))
+					{
+						do
+						{
+							ligneCourrante++;
+						} while ( !fichier[ligneCourrante].trim().equals( "fsi" ));
+					}
+				}
+
 			}
 
-			if (current.matches(".*\\(.*\\)")) {
-				Fonctions.evaluer(current.split("\\(|\\)")[0], current.split("\\(|\\)")[1]);
-			}
-
-			if (current.matches("si .* alors")) {
-				String condition = current.split("si | alors")[1];
-				/*
-				 * if ( !Condition.evaluer(condition)) { do {
-				 * 
-				 * } while ( !fichier[ligneCourrante++].trim().equals( "fsi" ) ); }
-				 */
-			}
-
-			if (mots[0].equals("FIN"))
-				this.fin = true;
+			if ( mots[0].equals( "FIN" ) ) this.fin = true;
 		}
 
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString() {
+	public String toString ()
+	{
 		return algo.toString();
 	}
-	
-	public static Interpreter getInterpreter() {
+
+	public static Interpreter getInterpreter ()
+	{
 		return Programme.interpreter;
 	}
+
+	public static boolean condition ( String condition )
+	{
+		condition = condition.replaceAll( "=", "==" );
+		condition = condition.replaceAll( "et", "&&" );
+		Interpreter interpreter = Programme.getInterpreter();
+		try
+		{
+			return ( (boolean) interpreter.eval( condition ) );
+		}
+		catch ( EvalError e )
+		{
+			e.printStackTrace();
+		}
+
+		return false;
+
+	}
+
 }

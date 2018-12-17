@@ -60,12 +60,8 @@ public class Algorithme
 		
 		try
 		{
-			for ( Variable v : this.ensVariables )
-			{
-				interpreter.eval( v.getNom() + " = " + v.getValeur() );
-			}
-
 			this.getVariable( nomVar ).setValeur( interpreter.eval(valeur) );
+			interpreter.eval( nomVar + " = " + this.getVariable( nomVar ).getValeur() );
 		}
 		catch ( EvalError e )
 		{
