@@ -2,27 +2,26 @@ ALGORITHME TestConditionsV2
 constante:
 
 variable :
-	a, b 	: entier
+	a, b	: entier
 	
 DEBUT
-	age <-- 10
-	si age <= 30 et age >= 10 alors 
-		si age < 15 alors
-			écrire("cas1")
-		si age > 15
-			écrire("cas2")
-		fsi
+	a <-- 10
+
+	si a >= 10 et <= 20 alors 
+		ecrire("vrai")
 	sinon
-		si age = 65
-			écrire("cas3")
-		fsi
-	fsi
-	
-	si age /= 10
-		écrire("cas 4")
+		écrire("faux")
+		
+	si a = 10 ou a = 15 alors
+		écrire("vrai")
 	sinon
-		écrire("cas 5")
-	fsi
+		écrire("faux")
+		
+	b <-- 15
+	si a = 10 xou b = 15 alors
+		ecrire("Les deux valeurs sont différentes")
+	sinon
+		ecrire("Les deux valeurs sont égales")
 	
 FIN
 		
