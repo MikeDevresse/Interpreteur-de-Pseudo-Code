@@ -6,7 +6,7 @@ public class Controleur
 {
 	
 	/** nom du fichier */
-	private final String input = "ex1.txt";
+	private final String input = "tests/testOperation.algo";
 	
 	/** objet programme */
 	private Programme prog;
@@ -29,7 +29,7 @@ public class Controleur
 			e.printStackTrace();
 		}
 		
-		System.out.println( prog );
+		
 	}
 	
 	/**

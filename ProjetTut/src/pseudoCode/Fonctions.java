@@ -3,27 +3,68 @@ package pseudoCode;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import bsh.EvalError;
+import bsh.Interpreter;
+
 // TODO: Auto-generated Javadoc
 /**
- * Class Fonctions.
+ * Ensemble des fonctions primitives du pseudo-code.
+ * 
+ * @version 1.0, 17/12/2018
  */
 public class Fonctions {
 
-	public static void evaluer ( String nomFonction, String contenue)
-	{
+	/**
+	 * Interprète les fonctions
+	 * @param nomFonction nom de la fonction
+	 * @param contenu paramètre envoyés
+	 */
+	public static void evaluer(String nomFonction, String contenu, Programme p) {
+
 		nomFonction = nomFonction.trim();
-		switch ( nomFonction )
-		{
-			case "ecrire" :
-				System.out.println( contenue.split( "\"" )[1] );
-				break;
+		switch (nomFonction) {
+		case "ecrire":
+		case "écrire":
+			Fonctions.ecrire(contenu,p);
+			break;
+
+		case "lire":
+			Fonctions.lire(contenu,p);
+			break;
+
 		}
 	}
-	
+
+	/*
+	 * TODO attendre le CUI pour la saisie des valeurs
+	 */
+	private static void lire(String vars,Programme p) {
+		vars = vars.replace(" ", "");
+
+		for (String var : vars.split(",")) {
+			System.out.println("lecture de " + var);
+		}
+	}
+
 	/**
-	 * En chaine.
+	 * écrit et concatène une expression
+	 * 
+	 * @param args parties de l'expression
+	 */
+	private static void ecrire(String contenu, Programme p) {
+		Interpreter interpreter = Programme.getInterpreter();
+		try {
+			contenu = contenu.replace("©", "+");
+			p.traceExec += interpreter.eval(contenu) + "\n";
+		} catch (EvalError e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Transforme un double en chaîne de caractère.
 	 *
-	 * @param d d
+	 * @param d double
 	 * @return string
 	 */
 	public static String enChaine(double d) {
@@ -31,7 +72,7 @@ public class Fonctions {
 	}
 
 	/**
-	 * En chaine.
+	 * Transforme un entier en chaîne de caractère.
 	 *
 	 * @param d d
 	 * @return string
@@ -41,7 +82,7 @@ public class Fonctions {
 	}
 
 	/**
-	 * En entier.
+	 * Transforme une chaîne de caractère en entier
 	 *
 	 * @param s s
 	 * @return int
@@ -118,10 +159,10 @@ public class Fonctions {
 	public static String aujourdhui() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDateTime now = LocalDateTime.now();
-		
+
 		return dtf.format(now);
 	}
-	
+
 	/**
 	 * Jour.
 	 *
@@ -131,7 +172,7 @@ public class Fonctions {
 	public static int jour(String date) {
 		return Integer.parseInt(date.split("/")[0]);
 	}
-	
+
 	/**
 	 * Mois.
 	 *
@@ -141,7 +182,7 @@ public class Fonctions {
 	public static int mois(String date) {
 		return Integer.parseInt(date.split("/")[1]);
 	}
-	
+
 	/**
 	 * Annee.
 	 *
@@ -151,7 +192,7 @@ public class Fonctions {
 	public static int annee(String date) {
 		return Integer.parseInt(date.split("/")[2]);
 	}
-	
+
 	/**
 	 * Est reel.
 	 *
@@ -162,11 +203,11 @@ public class Fonctions {
 		try {
 			Double.parseDouble(s);
 			return true;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Est entier.
 	 *
@@ -174,18 +215,18 @@ public class Fonctions {
 	 * @return true, if successful
 	 */
 	public static boolean estEntier(String s) {
-		
+
 		if (Fonctions.estReel(s))
 			return false;
-		
+
 		try {
 			Integer.parseInt(s);
 			return true;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Hasard.
 	 *
@@ -193,6 +234,6 @@ public class Fonctions {
 	 * @return int
 	 */
 	public static int hasard(int a) {
-		return (int)(Math.random() * a);
+		return (int) (Math.random() * a);
 	}
 }

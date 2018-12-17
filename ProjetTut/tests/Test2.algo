@@ -1,0 +1,23 @@
+ALGORITHME Test1
+constante:
+
+variable:
+	a : entier
+	b : entier
+	tmp : entier
+	
+DEBUT
+	a <-- 1
+	b <-- 10
+
+	écrire(a)
+	écrire(b)
+	
+	tmp <-- a
+	a <-- b
+	b <-- tmp
+	
+	écrire("bonjour" © a)
+	écrire(b)
+	
+FIN 

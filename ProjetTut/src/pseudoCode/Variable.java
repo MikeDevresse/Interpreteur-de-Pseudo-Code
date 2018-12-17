@@ -1,5 +1,11 @@
 package pseudoCode;
 
+/**
+ * Représente une variable dans l'algorithme
+ *
+ * @param <T> type de la variable
+ */
+
 public class Variable<T> {
 
 	private String nom;
@@ -64,6 +70,24 @@ public class Variable<T> {
 	 */
 	public void setNom(String nom) {
 		this.nom = nom;
+	}
+	
+	public static String traduire ( String expression )
+	{
+		String[] parts = expression.split( "\"" );
+		for ( int i=0 ; i<parts.length ; i = i+2 )
+		{
+    		parts[i] = parts[i].replaceAll( "×", "*" );
+    		parts[i] = parts[i].replaceAll( "mod","%");
+    		parts[i] = parts[i].replaceAll( "([0-9]+[ ]*)/([ ]*[0-9]+)","$1/(double)$2" );
+    		parts[i] = parts[i].replaceAll( "div","/(int)" );
+    		parts[i] = parts[i].replaceAll( "([0-9]+)\\^([0-9]+)", "Math.pow($1,$2)" );
+    		parts[i] = parts[i].replaceAll( "\\\\/¯([0-9]+)", "Math.sqrt($1)" );
+		}
+		String sRet = "";
+		for ( String s : parts)
+			sRet += s;
+		return sRet;
 	}
 
 	@Override

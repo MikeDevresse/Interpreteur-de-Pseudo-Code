@@ -56,7 +56,8 @@ public class Algorithme
 	public void setValeur ( String nomVar, String valeur )
 	{
 		Interpreter interpreter = Programme.getInterpreter();
-		
+
+		valeur = Variable.traduire( valeur );
 		
 		try
 		{
@@ -68,7 +69,6 @@ public class Algorithme
 			e.printStackTrace();
 		}
 	}
-	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

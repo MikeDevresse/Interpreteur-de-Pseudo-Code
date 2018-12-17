@@ -2,3 +2,4 @@ Trace vars :
 	age => 10
 Trace exec :
 	cas1
+	cas5
