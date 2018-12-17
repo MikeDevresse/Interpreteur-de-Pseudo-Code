@@ -53,7 +53,7 @@ public class Fonctions {
 	private static void ecrire(String contenu, Algorithme a) {
 		Interpreter interpreter = a.getInterpreteur();
 		try {
-			contenu = contenu.replace("©", "+");
+			
 			a.getProgramme().traceExec += interpreter.eval(contenu) + "\n" ;
 		} catch (EvalError e) {
 			e.printStackTrace();
