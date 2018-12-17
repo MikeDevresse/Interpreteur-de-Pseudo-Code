@@ -10,7 +10,8 @@ public class TestVariable {
 //		
 //		System.out.println(v);
 		
-		Variable v = VariableFactory.createVariable("n : entier", true);
+		Variable v = VariableFactory.createVariable("n : chaîne de caractère", true);
+		System.out.println(v);
 		
 		
 		

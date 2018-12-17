@@ -1,5 +1,7 @@
 package pseudoCode;
 
+import main.StringFormateur;
+
 public class VariableFactory {
 
 	/**
@@ -11,8 +13,7 @@ public class VariableFactory {
 	public static Variable<?> createVariable(String expression, boolean constante) {
 
 		// nettoyage de l'expression
-		expression = expression.replace(" :", ":");
-		expression = expression.replace(": ", ":");
+		expression = StringFormateur.enleverEspace(expression);
 		expression = expression.replace("d'", "de ");
 
 		String varName = expression.split(":")[0];
@@ -21,7 +22,7 @@ public class VariableFactory {
 		
 
 		// tableau de variables
-		String tabDelimiter = "tableau de ";
+		String tabDelimiter = StringFormateur.enleverEspace("tableau de ");
 		if (varType.indexOf(tabDelimiter) != -1) {
 			String tabType = varType.substring(varType.indexOf(tabDelimiter) + tabDelimiter.length());
 
@@ -50,7 +51,7 @@ public class VariableFactory {
 			return new Variable<Integer>(varName, varType, constante);
 		case "booléen":
 			return new Variable<Boolean>(varName, varType, constante);
-		case "chaîne de caractère":
+		case "chaînedecaractère":
 			return new Variable<String>(varName, varType, constante);
 		case "réel":
 			return new Variable<Double>(varName, varType, constante);
