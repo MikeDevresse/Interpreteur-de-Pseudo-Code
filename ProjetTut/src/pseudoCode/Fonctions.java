@@ -6,12 +6,12 @@ import java.time.format.DateTimeFormatter;
 import bsh.EvalError;
 import bsh.Interpreter;
 
-// TODO: Auto-generated Javadoc
 /**
  * Ensemble des fonctions primitives du pseudo-code.
  * 
  * @version 1.0, 17/12/2018
  */
+
 public class Fonctions {
 
 	/**
@@ -73,7 +73,7 @@ public class Fonctions {
 	/**
 	 * Transforme un entier en chaîne de caractère.
 	 *
-	 * @param d d
+	 * @param d entier
 	 * @return string
 	 */
 	public static String enChaine(int d) {
@@ -83,7 +83,7 @@ public class Fonctions {
 	/**
 	 * Transforme une chaîne de caractère en entier
 	 *
-	 * @param s s
+	 * @param s chaîne de caractère
 	 * @return int
 	 */
 	public static int enEntier(String s) {
@@ -91,9 +91,9 @@ public class Fonctions {
 	}
 
 	/**
-	 * En reel.
+	 * Transforme une chaîne de caractère en réel.
 	 *
-	 * @param s s
+	 * @param s chaîne de caractère
 	 * @return double
 	 */
 	public static double enReel(String s) {
@@ -101,9 +101,9 @@ public class Fonctions {
 	}
 
 	/**
-	 * Car.
+	 * Transforme un entier en caractère
 	 *
-	 * @param codeCar code car
+	 * @param codeCar code ASCII caractère
 	 * @return char
 	 */
 	public static char car(int codeCar) {
@@ -111,29 +111,29 @@ public class Fonctions {
 	}
 
 	/**
-	 * Ord.
+	 * Retourne le code ASCII d'un caractère.
 	 *
-	 * @param c c
-	 * @return int
+	 * @param c caractère
+	 * @return int code ASCII
 	 */
 	public static int ord(char c) {
 		return (int) c;
 	}
 
 	/**
-	 * Plancher.
+	 * Arrondi à l'entier inférieur.
 	 *
-	 * @param d d
-	 * @return double
+	 * @param d réel
+	 * @return double arrondi
 	 */
 	public static double plancher(double d) {
 		return Math.floor(d);
 	}
 
 	/**
-	 * Plafond.
+	 * Arrondi à l'entier supérieur.
 	 *
-	 * @param d d
+	 * @param d réel
 	 * @return double
 	 */
 	public static double plafond(double d) {
@@ -143,7 +143,7 @@ public class Fonctions {
 	/**
 	 * Arrondi.
 	 *
-	 * @param d d
+	 * @param d réel
 	 * @return double
 	 */
 	public static double arrondi(double d) {
@@ -151,9 +151,9 @@ public class Fonctions {
 	}
 
 	/**
-	 * Aujourdhui.
+	 * Retourne la date actuelle sous forme dd/mm/yyyy.
 	 *
-	 * @return string
+	 * @return string date
 	 */
 	public static String aujourdhui() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -163,40 +163,40 @@ public class Fonctions {
 	}
 
 	/**
-	 * Jour.
+	 * Retourne le numéro du jour de la date en paramètre.
 	 *
 	 * @param date date
-	 * @return int
+	 * @return int numéro du jour
 	 */
 	public static int jour(String date) {
 		return Integer.parseInt(date.split("/")[0]);
 	}
 
 	/**
-	 * Mois.
+	 * Retourne le mois de la date en paramètre.
 	 *
 	 * @param date date
-	 * @return int
+	 * @return int anéne
 	 */
 	public static int mois(String date) {
 		return Integer.parseInt(date.split("/")[1]);
 	}
 
 	/**
-	 * Annee.
+	 * Retourne l'année de la date en paramètre.
 	 *
 	 * @param date date
-	 * @return int
+	 * @return int année
 	 */
 	public static int annee(String date) {
 		return Integer.parseInt(date.split("/")[2]);
 	}
 
 	/**
-	 * Est reel.
+	 * Retourne si une chaîne de caractère est un reel.
 	 *
-	 * @param s s
-	 * @return true, if successful
+	 * @param s chaîne de caractère
+	 * @return vrai si réel
 	 */
 	public static boolean estReel(String s) {
 		try {
@@ -208,10 +208,10 @@ public class Fonctions {
 	}
 
 	/**
-	 * Est entier.
+	 * Retourne si une chaîne de caractère est un entier.
 	 *
-	 * @param s s
-	 * @return true, if successful
+	 * @param s chaîne de caractère
+	 * @return vrai si entier
 	 */
 	public static boolean estEntier(String s) {
 
@@ -227,10 +227,10 @@ public class Fonctions {
 	}
 
 	/**
-	 * Hasard.
+	 * Retourne un nombre au hasard entre 0 et a.
 	 *
-	 * @param a a
-	 * @return int
+	 * @param a borne maximale exclue
+	 * @return int nombre aléatoire
 	 */
 	public static int hasard(int a) {
 		return (int) (Math.random() * a);
