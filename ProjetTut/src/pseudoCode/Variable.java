@@ -35,7 +35,15 @@ public class Variable<T> {
 
 	@Override
 	public String toString() {
-		return "Variable [name=" + this.name + ", type = " + this.type + ", constante = " + this.constante + "]";
+		String s = "";
+		s += "Variable [name=" + this.name + ", type = " + this.type + ", constante = " + this.constante;
+		
+		if (this.value != null)
+			s += ", valeur = " + this.value;
+		
+		s += " ]";
+		
+		return s;
 	}
 
 }
