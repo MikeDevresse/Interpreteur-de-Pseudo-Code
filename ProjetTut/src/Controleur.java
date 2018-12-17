@@ -1,8 +1,15 @@
 
 public class Controleur
 {
+	private final String input = "";
+	
+	private Controleur ()
+	{
+		
+	}
+	
 	public static void main ( String[] a )
 	{
-		System.out.println( "Start" );
+		new Controleur ();
 	}
 }
