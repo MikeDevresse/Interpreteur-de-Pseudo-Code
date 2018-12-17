@@ -2,7 +2,13 @@ package pseudoCode;
 
 public class VariableFactory {
 
+	/**
+	 * Parse une expression et crée la variable associée
+	 * @param expression pseudo-code
+	 * @return variable
+	 */
 	public static Variable createVariable(String expression) {
+		//nettoyage de l'expression
 		expression = expression.replace(" <", "<");
 		expression = expression.replace("- ", "-");
 		expression = expression.replace("d'", "de ");
