@@ -1,6 +1,8 @@
 package main;
+import ihmCui.Affichage;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Programme;
+import pseudoCode.Variable;
 
 /*
  * Retour en arriere :
@@ -8,10 +10,9 @@ import pseudoCode.Programme;
  */
 
 public class Controleur
-{
-	
+{	
 	/** nom du fichier */
-	private final String input = "tests/testOperation.algo";
+	private final String input = "tests/Test1.algo";
 	
 	/** objet programme */
 	private Programme prog;
@@ -34,7 +35,8 @@ public class Controleur
 			e.printStackTrace();
 		}
 		
-		
+		Affichage a = new Affichage(lecture.getTexteParLigne());
+		a.afficher( prog.getMain().getVariables(), prog.getTraceExec() );
 	}
 	
 	/**

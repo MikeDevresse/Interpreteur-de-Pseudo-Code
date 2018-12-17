@@ -30,14 +30,16 @@ public class Algorithme
 	/** ligne courrante. */
 	private int				   ligneCourrante = 0;
 	
+	private Programme prog;
 	
 	/**
 	 * Instanciation de algorithme.
 	 *
 	 * @param nom nom
 	 */
-	public Algorithme ( String nom, String[] fichier )
+	public Algorithme ( String nom, String[] fichier, Programme p )
 	{
+		this.prog = p;
 		this.interpreteur = new Interpreter();
 		this.nom = nom;
 		ensVariables = new ArrayList<Variable>();
@@ -160,6 +162,11 @@ public class Algorithme
 		return null;
 	}
 	
+	public Variable[] getVariables ()
+	{
+		return this.ensVariables.toArray( new Variable[this.ensVariables.size()] );
+	}
+	
 	public void setValeur ( String nomVar, String valeur )
 	{
 		Interpreter interpreter = this.getInterpreteur();
@@ -211,6 +218,11 @@ public class Algorithme
 
 		return false;
 
+	}
+	
+	public Programme getProgramme ()
+	{
+		return this.prog;
 	}
 
 	public boolean estTerminer ()

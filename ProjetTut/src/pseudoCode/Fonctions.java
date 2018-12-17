@@ -55,7 +55,7 @@ public class Fonctions {
 		Interpreter interpreter = a.getInterpreteur();
 		try {
 			contenu = contenu.replace("©", "+");
-			System.out.println( interpreter.eval(contenu) + "" );
+			a.getProgramme().traceExec += interpreter.eval(contenu) + "\n" ;
 		} catch (EvalError e) {
 			e.printStackTrace();
 		}

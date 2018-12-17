@@ -36,6 +36,8 @@ public class Programme
 	 */
 	public Programme ( String[] fichier ) throws AlgorithmeException
 	{
+		this.traceExec = "";
+		
 		Programme.interpreter = new Interpreter();
 		this.fichier = fichier;
 		
@@ -51,7 +53,7 @@ public class Programme
 			{
 				if ( lignes != null )
 				{
-					Algorithme a = new Algorithme(nom,lignes.toArray( new String[lignes.size()] ));
+					Algorithme a = new Algorithme(nom,lignes.toArray( new String[lignes.size()] ),this);
 					algos.add( a );
 					if ( main )
 					{
@@ -88,6 +90,10 @@ public class Programme
 		}
 	}
 
+	public Algorithme getMain ()
+	{
+		return this.main;
+	}
 	
 	public String getTraceExec ()
 	{
