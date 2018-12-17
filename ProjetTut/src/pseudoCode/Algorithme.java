@@ -74,13 +74,12 @@ public class Algorithme
     		}
     		else
     		{
+    			//définition des variables
     			if ( this.def == null || this.def == "" ) { return; }
     			boolean estConstante = def.equals( "constante" );
     			String type = current.split( ":" )[1].trim();
     			for ( String s : current.split( ":" )[0].split( "," ) )
-    			{
     				ajouterVariable( VariableFactory.createVariable( s.trim(), type, estConstante ) );
-    			}
     		}
     	}
     	else if ( debut && !ignore )
@@ -231,6 +230,5 @@ public class Algorithme
 	{
 		return this.fin;
 	}
-
 
 }
