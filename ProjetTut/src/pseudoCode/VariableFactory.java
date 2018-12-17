@@ -1,7 +1,5 @@
 package pseudoCode;
 
-import main.StringFormateur;
-
 public class VariableFactory {
 
 	/**
@@ -10,7 +8,7 @@ public class VariableFactory {
 	 * @param expression pseudo-code
 	 * @return variable
 	 */
-	public static Variable createVariable(String expression, boolean constante) {
+	public static Variable<?> createVariable(String expression, boolean constante) {
 
 		// nettoyage de l'expression
 		expression = expression.replace(" :", ":");
@@ -19,8 +17,8 @@ public class VariableFactory {
 
 		String varName = expression.split(":")[0];
 		String varType = expression.split(":")[1];		
-		
 		varType = varType.toLowerCase();
+		
 
 		// tableau de variables
 		String tabDelimiter = "tableau de ";

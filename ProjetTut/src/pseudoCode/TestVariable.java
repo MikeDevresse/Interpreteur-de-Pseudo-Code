@@ -10,7 +10,7 @@ public class TestVariable {
 //		
 //		System.out.println(v);
 		
-		VariableFactory.createVariable("n : entier", true);
+		Variable v = VariableFactory.createVariable("n : entier", true);
 		
 		
 		
