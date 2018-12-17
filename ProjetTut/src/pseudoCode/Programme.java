@@ -165,7 +165,7 @@ public class Programme
 	public static boolean condition ( String condition )
 	{
 		condition = condition.replaceAll( "/=", "!=" );
-		condition = condition.replaceAll( "[a-zA-Z0-9]+=[a-zA-Z0-9]+", "==" );
+		condition = condition.replaceAll( "([a-zA-Z0-9]+[ ]*)=([ ]*[a-zA-Z0-9]+)", "$1==$2" );
 		condition = condition.replaceAll( "et", "&&" );
 		condition = condition.replaceAll( "ou", "||" );
 		condition = condition.replaceAll( "xou", "^" );

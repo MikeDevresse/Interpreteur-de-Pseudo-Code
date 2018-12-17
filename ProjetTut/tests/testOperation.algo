@@ -11,4 +11,5 @@ DEBUT
 	écrire(5 div 2)
 	écrire(10 mod 5)
 	écrire(10^2)
+	écrire(\/¯4)
 FIN
