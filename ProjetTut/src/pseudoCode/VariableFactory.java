@@ -11,7 +11,7 @@ public class VariableFactory {
 	 * @param constante vrai si constante
 	 * @return variable
 	 */
-	public static Variable<?> createVariable(String expression, boolean constante) {
+	public static Variable<?> creerVariable(String expression, boolean constante) {
 
 		// nettoyage de l'expression
 		expression = StringFormateur.enleverEspace(expression);
@@ -22,9 +22,9 @@ public class VariableFactory {
 		varType = varType.toLowerCase();
 
 		// tableau de variables
-		String tabDelimiter = StringFormateur.enleverEspace("tableau de ");
-		if (varType.indexOf(tabDelimiter) != -1) {
-			String tabType = varType.substring(varType.indexOf(tabDelimiter) + tabDelimiter.length());
+		String tabDelimiteur = StringFormateur.enleverEspace("tableau de ");
+		if (varType.indexOf(tabDelimiteur) != -1) {
+			String tabType = varType.substring(varType.indexOf(tabDelimiteur) + tabDelimiteur.length());
 
 			switch (tabType) {
 

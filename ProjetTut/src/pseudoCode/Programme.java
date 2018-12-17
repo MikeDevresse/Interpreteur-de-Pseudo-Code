@@ -67,7 +67,7 @@ public class Programme
 				for ( String s : current.split( ":" )[0].split( "," ) )
 				{
 					String nomVar = StringFormateur.enleverEspace( s );
-					algo.AjouterVariable( VariableFactory.createVariable( nomVar + ":" + type, estConstante ) );
+					algo.AjouterVariable( VariableFactory.creerVariable( nomVar + ":" + type, estConstante ) );
 				}
 			}
 		}
