@@ -1,10 +1,12 @@
-Algorithme Test1
-variables:
+ALGORITHME Test1
+constante:
+
+variable:
 	a : entier
 	b : entier
 	tmp : entier
 	
-Debut
+DEBUT
 	a <-- 1
 	b <-- 10
 
@@ -17,4 +19,5 @@ Debut
 	
 	écrire(a)
 	écrire(b)
+	
 FIN 

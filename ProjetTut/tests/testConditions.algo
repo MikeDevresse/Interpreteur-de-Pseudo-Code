@@ -1,6 +1,9 @@
-Algorithme TestConditions
-Variables :
+ALGORITHME TestConditions
+constante:
+
+variable :
 	age : entier
+	
 DEBUT
 	age <-- 10
 	si age < 30 alors 
@@ -16,5 +19,6 @@ DEBUT
 			écrire("cas4")
 		fsi
 	fsi
+	
 FIN
 		
