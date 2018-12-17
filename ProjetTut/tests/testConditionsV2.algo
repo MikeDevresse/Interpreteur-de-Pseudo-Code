@@ -1,8 +1,8 @@
-ALGORITHME TestConditions
+ALGORITHME TestConditionsV2
 constante:
 
 variable :
-	age 	: entier
+	a, b 	: entier
 	
 DEBUT
 	age <-- 10

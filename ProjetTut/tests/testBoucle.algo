@@ -1,7 +1,7 @@
 ALGORITHME TestBoucle
 constante:
 variable:
-	i : entier
+	i 	: entier
 	
 DEBUT
 	i <-- 0
