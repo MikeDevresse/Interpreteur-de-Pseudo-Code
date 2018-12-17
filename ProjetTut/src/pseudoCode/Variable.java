@@ -1,5 +1,11 @@
 package pseudoCode;
 
+/**
+ * Représente une variable dans l'algorithme
+ *
+ * @param <T> type de la variable
+ */
+
 public class Variable<T> {
 
 	private String nom;
