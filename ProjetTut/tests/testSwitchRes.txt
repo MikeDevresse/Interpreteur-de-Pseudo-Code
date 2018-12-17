@@ -1,0 +1,4 @@
+Trace vars :
+	var => "jamil le bô"
+Trace exec :
+	OUIIIIII !!!!
