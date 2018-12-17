@@ -18,17 +18,9 @@ public class Fonctions {
 
 		nomFonction = nomFonction.trim();
 		switch (nomFonction) {
+		case "ecrire":
 		case "écrire":
-			Interpreter interpreter = Programme.getInterpreter();
-				try
-				{
-					System.out.println( interpreter.eval( contenu ) );
-				}
-				catch ( EvalError e )
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			Fonctions.ecrire(contenu);
 			break;
 
 		case "lire":
@@ -54,23 +46,14 @@ public class Fonctions {
 	 * 
 	 * @param args parties de l'expression
 	 */
-	private static void ecrire(String[] args) {
-		String s = "";
-
-		for (String arg : args) {
-
-			arg = arg.trim();
-			if (!arg.matches("^\".*\"$"))
-				arg = "4";
-			else
-				arg = arg.replaceAll("^\"|\"", "");
-
-			s += arg;
+	private static void ecrire(String contenu) {
+		Interpreter interpreter = Programme.getInterpreter();
+		try {
+			contenu = contenu.replace("©", "+");
+			System.out.println(interpreter.eval(contenu));
+		} catch (EvalError e) {
+			e.printStackTrace();
 		}
-
-		System.out.println(s);
-
-		// System.out.println(s);
 	}
 
 	/**
