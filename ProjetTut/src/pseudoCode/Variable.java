@@ -71,6 +71,11 @@ public class Variable<T> {
 		this.nom = nom;
 	}
 
+	/**
+	 * Traduit une expression pseudo-code en Java
+	 * @param expression chaîne de caractère pseudo code
+	 * @return chaîne de caractère java
+	 */
 	public static String traduire(String expression) {
 		String[] parts = expression.split("\"");
 		for (int i = 0; i < parts.length; i++) {
