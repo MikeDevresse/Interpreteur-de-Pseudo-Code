@@ -1,4 +1,4 @@
-package main;
+package ihmCui;
 
 import pseudoCode.Algorithme;
 import pseudoCode.Variable;

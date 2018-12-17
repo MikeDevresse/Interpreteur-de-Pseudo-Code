@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import bsh.EvalError;
 import bsh.Interpreter;
-import main.Affichage;
+import ihmCui.Affichage;
 
 public class Programme
 {
