@@ -1,5 +1,7 @@
 package pseudoCode;
 
+import main.StringFormateur;
+
 public class VariableFactory {
 
 	/**
@@ -11,24 +13,15 @@ public class VariableFactory {
 	public static Variable createVariable(String expression, boolean constante) {
 
 		// nettoyage de l'expression
+		expression = expression.replace(" :", ":");
+		expression = expression.replace(": ", ":");
 		expression = expression.replace("d'", "de ");
 
 		String varName = expression.split(":")[0];
 		String varType = expression.split(":")[1];
 		
-
-		// constante
-		if (varName.matches("[A-Z0-9_]*")) {
-			
-			//entier
-			try {
-				int value = Integer.parseInt(varType);
-				Variable<Integer> v = new Variable<>(varName, "entier");
-				v.setValue(value);
-			} catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
+		System.out.println(varName);
+		System.out.println(varType);
 		
 		
 		varType = varType.toLowerCase();
@@ -41,15 +34,15 @@ public class VariableFactory {
 			switch (tabType) {
 
 			case "entier":
-				return new Variable<Integer[]>(varName, varType);
+				return new Variable<Integer[]>(varName, varType, constante);
 			case "booléen":
-				return new Variable<Boolean[]>(varName, varType);
+				return new Variable<Boolean[]>(varName, varType, constante);
 			case "chaîne de caractère":
-				return new Variable<String[]>(varName, varType);
+				return new Variable<String[]>(varName, varType, constante);
 			case "réel":
-				return new Variable<Double[]>(varName, varType);
+				return new Variable<Double[]>(varName, varType, constante);
 			case "caractère":
-				return new Variable<Character[]>(varName, varType);
+				return new Variable<Character[]>(varName, varType, constante);
 
 			default:
 				return null;
@@ -60,15 +53,15 @@ public class VariableFactory {
 		switch (varType) {
 
 		case "entier":
-			return new Variable<Integer>(varName, varType);
+			return new Variable<Integer>(varName, varType, constante);
 		case "booléen":
-			return new Variable<Boolean>(varName, varType);
+			return new Variable<Boolean>(varName, varType, constante);
 		case "chaîne de caractère":
-			return new Variable<String>(varName, varType);
+			return new Variable<String>(varName, varType, constante);
 		case "réel":
-			return new Variable<Double>(varName, varType);
+			return new Variable<Double>(varName, varType, constante);
 		case "caractère":
-			return new Variable<Character>(varName, varType);
+			return new Variable<Character>(varName, varType, constante);
 
 		default:
 			return null;

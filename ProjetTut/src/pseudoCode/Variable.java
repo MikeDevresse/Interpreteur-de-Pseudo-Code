@@ -5,8 +5,9 @@ public class Variable<T> {
 	private String name;
 	private String type;
 	private T value;
+	private boolean constante;
 
-	public Variable(String name, String type) {
+	public Variable(String name, String type, boolean constante) {
 		this.name = name;
 		this.type = type;
 	}
@@ -17,6 +18,10 @@ public class Variable<T> {
 
 	public String getName() {
 		return name;
+	}
+	
+	public boolean isConstante() {
+		return this.constante;
 	}
 
 	public void setValue(T content) {
@@ -29,7 +34,7 @@ public class Variable<T> {
 
 	@Override
 	public String toString() {
-		return "Variable [name=" + this.name + ", type = " + this.type + "]";
+		return "Variable [name=" + this.name + ", type = " + this.type + ", constante = " + this.constante + "]";
 	}
 
 }
