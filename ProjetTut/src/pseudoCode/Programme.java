@@ -4,14 +4,31 @@ import main.StringFormateur;
 
 public class Programme
 {
+	
+	/** fichier. */
 	private String[]   fichier;
+	
+	/** algo. */
 	private Algorithme algo;
 
+	/** def. */
 	private String	   def;
+	
+	/** debut. */
 	private boolean	   debut		  = false;
+	
+	/** fin. */
 	private boolean	   fin			  = false;
+	
+	/** ligne courrante. */
 	private int		   ligneCourrante = 0;
 
+	/**
+	 * Instanciation de programme.
+	 *
+	 * @param fichier the fichier
+	 * @throws AlgorithmeException the algorithme exception
+	 */
 	public Programme ( String[] fichier ) throws AlgorithmeException
 	{
 		this.fichier = fichier;
@@ -21,6 +38,11 @@ public class Programme
 		}
 	}
 
+	/**
+	 * Ligne suivante.
+	 *
+	 * @throws AlgorithmeException algorithme exception
+	 */
 	public void LigneSuivante () throws AlgorithmeException
 	{
 		if ( ligneCourrante == fichier.length - 1 )
@@ -92,6 +114,9 @@ public class Programme
 
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString ()
 	{
 		return algo.toString();

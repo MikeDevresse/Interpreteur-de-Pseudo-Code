@@ -5,8 +5,8 @@ import main.StringFormateur;
 public class VariableFactory {
 
 	/**
-	 * Parse une expression et crée la variable associée
-	 * 
+	 * Parse une expression et crée la variable associée.
+	 *
 	 * @param expression pseudo-code
 	 * @param constante vrai si constante
 	 * @return variable
