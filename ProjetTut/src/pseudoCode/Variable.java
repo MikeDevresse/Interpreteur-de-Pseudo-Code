@@ -1,24 +1,33 @@
 package pseudoCode;
 
-public class Variable
-{
-	private String contenu;
-	private String type;
+public class Variable<T> {
 
-	public Variable ( String type, String contenu )
-	{
-		this.type = type;
-		this.contenu = contenu;
+	private String name;
+	private T content;
+
+	public Variable(String name) {
+		this.name = name;
 	}
 
-	public Variable ( String type )
-	{
-		this( type, "" );
+	public T getContent() {
+		return content;
 	}
 
-	public void setContent ( String contenu )
-	{
-		this.contenu = contenu;
+	public String getName() {
+		return name;
+	}
+
+	public void setContent(T content) {
+		this.content = content;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "Variable [content=" + content + ", name=" + name + "]";
 	}
 
 }
