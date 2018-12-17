@@ -23,7 +23,7 @@ public class Programme
 
 	public void LigneSuivante () throws AlgorithmeException
 	{
-		if ( ligneCourrante == fichier.length-1)
+		if ( ligneCourrante == fichier.length - 1 )
 		{
 			this.fin = true;
 			return;
@@ -32,7 +32,7 @@ public class Programme
 		String[] mots = current.split( " " );
 
 		boolean ignore = StringFormateur.enleverEspace( current ).equals( "" );
-		
+
 		if ( !debut && !ignore )
 		{
 			if ( algo == null )
@@ -62,18 +62,37 @@ public class Programme
 			else
 			{
 				if ( this.def == null || this.def == "" ) { return; }
-				boolean estConstante = def.equals( "constante" );	
-				algo.AjouterVariable( VariableFactory.createVariable( current, estConstante ) );
+				boolean estConstante = def.equals( "constante" );
+				String type = StringFormateur.enleverEspace( current.split( ":" )[1] );
+				for ( String s : current.split( ":" )[0].split( "," ) )
+				{
+					String nomVar = StringFormateur.enleverEspace( s );
+					algo.AjouterVariable( VariableFactory.createVariable( nomVar + ":" + type, estConstante ) );
+				}
 			}
 		}
 		else if ( debut && !ignore )
 		{
+			if ( current.split( "<--" ).length == 2 )
+			{
+				String[] parties = current.split( "<--" );
+				Variable v = algo.getVariable( StringFormateur.enleverEspace( parties[0]) );
+				v.setValue( StringFormateur.enleverEspace( parties[1] ) );
+			}
+			
+			if ( current.matches( ".*\\(.*\\)" ) )
+			{
+				//Appeler fonction
+			}
+			
+			
+			
 			if ( mots[0].equals( "FIN" ) ) this.fin = true;
 		}
 
 	}
-	
-	public String toString()
+
+	public String toString ()
 	{
 		return algo.toString();
 	}

@@ -18,6 +18,18 @@ public class Algorithme
 		ensVariables.add( v );
 	}
 	
+	public Variable getVariable ( String nomVar ) 
+	{
+		for ( Variable v : ensVariables )
+		{
+			if ( v.getName().equals( nomVar ))
+			{
+				return v;
+			}
+		}
+		return null;
+	}
+	
 	public String toString ()
 	{
 		String s = "Algorithme : " + this.nom + "\n";

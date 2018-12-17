@@ -1,0 +1,19 @@
+ALGORITHME TestSwitch
+constante:
+
+variable:
+	var : chaine
+	
+DEBUT
+	var <-- "jamil le bô"
+	
+	selon var
+		cas "jamil le bo" :
+			écrire("nn il est moche")
+			var <-- "mathieu le dozo"
+		cas "jamil le bô" :
+			écrire("OUIIIIII !!!!")
+		autrecas :
+			écrire("Y a un probleme")
+	fselon
+FIN
