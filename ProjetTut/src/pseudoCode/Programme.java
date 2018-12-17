@@ -2,10 +2,10 @@ package pseudoCode;
 
 import bsh.EvalError;
 import bsh.Interpreter;
+import main.Affichage;
 
 public class Programme
 {
-
 	/** fichier. */
 	private String[]		   fichier;
 
