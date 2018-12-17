@@ -1,0 +1,7 @@
+Trace vars :
+	a => 10
+	b => 15
+Trace exec :
+	vrai
+	vrai
+	Les deux valeurs sont égales
