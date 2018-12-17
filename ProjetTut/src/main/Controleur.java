@@ -2,6 +2,11 @@ package main;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Programme;
 
+/*
+ * Retour en arriere :
+ * Tableau du projet en serialize qu'on reprend
+ */
+
 public class Controleur
 {
 	
