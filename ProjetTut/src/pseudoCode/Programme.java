@@ -34,7 +34,7 @@ public class Programme {
 	 * @throws AlgorithmeException the algorithme exception
 	 */
 	public Programme(String[] fichier) throws AlgorithmeException {
-		this.interpreter = new Interpreter();
+		Programme.interpreter = new Interpreter();
 		this.fichier = fichier;
 		while (!fin) {
 			LigneSuivante();
