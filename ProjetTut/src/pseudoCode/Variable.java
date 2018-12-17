@@ -93,12 +93,11 @@ public class Variable<T> {
 	@Override
 	public String toString() {
 		String s = "";
-		s += "Variable [nom=" + this.nom + ", type = " + this.type + ", constante = " + this.constante;
 
 		if (this.valeur != null)
-			s += ", valeur = " + this.valeur;
-
-		s += " ]";
+			s += String.format("|%12s|%12s|%24s|", this.nom, this.type, this.valeur+"");
+		else
+			s += String.format("|%12s|%12s|%24s|", this.nom, this.type, "NULL");
 
 		return s;
 	}
