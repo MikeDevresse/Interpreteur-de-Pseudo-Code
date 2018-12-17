@@ -1,0 +1,20 @@
+Algorithme Test1
+variables:
+	a : entier
+	b : entier
+	tmp : entier
+	
+Debut
+	a <-- 1
+	b <-- 10
+
+	écrire(a)
+	écrire(b)
+	
+	tmp <-- a
+	a <-- b
+	b <-- tmp
+	
+	écrire(a)
+	écrire(b)
+FIN
