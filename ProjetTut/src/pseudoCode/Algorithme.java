@@ -42,11 +42,11 @@ public class Algorithme
 		this.prog = p;
 		this.interpreteur = new Interpreter();
 		this.nom = nom;
-		ensVariables = new ArrayList<Variable>();
+		this.ensVariables = new ArrayList<Variable>();
 		this.fichier = fichier;
 	}
 	
-	public void LigneSuivante ()
+	public void ligneSuivante ()
 	{
 		if ( ligneCourrante == fichier.length )
 		{
@@ -58,10 +58,12 @@ public class Algorithme
 		boolean ignore = current.trim().equals( "" );
 		if ( !debut && !ignore )
 		{
+			//type de variables : constantes
     		if ( mots[0].replaceAll( ":", "" ).equals( "constante" ) )
     		{
     			this.def = "constante";
     		}
+    		//type de variables : variables
     		else if ( mots[0].replaceAll( ":", "" ).equals( "variable" ) )
     		{
     			this.def = "variable";
@@ -77,7 +79,7 @@ public class Algorithme
     			String type = current.split( ":" )[1].trim();
     			for ( String s : current.split( ":" )[0].split( "," ) )
     			{
-    				ajouterVariable( VariableFactory.createVariable( s.trim() + ":" + type, estConstante ) );
+    				ajouterVariable( VariableFactory.createVariable( s.trim(), type, estConstante ) );
     			}
     		}
     	}
@@ -109,7 +111,7 @@ public class Algorithme
     			{
     				do
     				{
-    					LigneSuivante();
+    					ligneSuivante();
     				} while ( !fichier[ligneCourrante].trim().equals( "fsi" ) &&
     						  !fichier[ligneCourrante].trim().equals( "sinon" ));
     				

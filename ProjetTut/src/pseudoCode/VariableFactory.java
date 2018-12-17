@@ -14,34 +14,32 @@ public class VariableFactory {
 	 * @param expression pseudo-code
 	 * @return variable
 	 */
-	public static Variable<?> createVariable(String expression, boolean constante) {
+	public static Variable<?> createVariable(String nom, String type, boolean constante) {
 
 		// nettoyage de l'expression
-		expression = expression.trim();
-		expression = expression.replace("d'", "de ");
-
-		String varName = expression.split(":")[0];
-		String varType = expression.split(":")[1];		
-		varType = varType.toLowerCase();
+		type = type.trim();
+		type = type.replace("d'", "de ");
+		
+		type = type.toLowerCase();
 		
 
 		// tableau de variables
 		String tabDelimiteur = "tableau de ".trim();
-		if (varType.indexOf(tabDelimiteur) != -1) {
-			String tabType = varType.substring(varType.indexOf(tabDelimiteur) + tabDelimiteur.length());
+		if (type.indexOf(tabDelimiteur) != -1) {
+			String tabType = type.substring(type.indexOf(tabDelimiteur) + tabDelimiteur.length());
 
 			switch (tabType) {
 
 			case "entier":
-				return new Variable<Integer[]>(varName, varType, constante);
+				return new Variable<Integer[]>(nom, type, constante);
 			case "booléen":
-				return new Variable<Boolean[]>(varName, varType, constante);
+				return new Variable<Boolean[]>(nom, type, constante);
 			case "chaîne de caractère":
-				return new Variable<String[]>(varName, varType, constante);
+				return new Variable<String[]>(nom, type, constante);
 			case "réel":
-				return new Variable<Double[]>(varName, varType, constante);
+				return new Variable<Double[]>(nom, type, constante);
 			case "caractère":
-				return new Variable<Character[]>(varName, varType, constante);
+				return new Variable<Character[]>(nom, type, constante);
 
 			default:
 				return null;
@@ -49,18 +47,18 @@ public class VariableFactory {
 		}
 
 		// variables simples
-		switch (varType) {
+		switch (type) {
 
 		case "entier":
-			return new Variable<Integer>(varName, varType, constante);
+			return new Variable<Integer>(nom, type, constante);
 		case "booléen":
-			return new Variable<Boolean>(varName, varType, constante);
+			return new Variable<Boolean>(nom, type, constante);
 		case "chaînedecaractère":
-			return new Variable<String>(varName, varType, constante);
+			return new Variable<String>(nom, type, constante);
 		case "réel":
-			return new Variable<Double>(varName, varType, constante);
+			return new Variable<Double>(nom, type, constante);
 		case "caractère":
-			return new Variable<Character>(varName, varType, constante);
+			return new Variable<Character>(nom, type, constante);
 
 		default:
 			return null;

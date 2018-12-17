@@ -86,7 +86,7 @@ public class Programme
 		
 		while ( !this.main.estTerminer() )
 		{
-			this.main.LigneSuivante();
+			this.main.ligneSuivante();
 		}
 	}
 
