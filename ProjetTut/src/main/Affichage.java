@@ -10,7 +10,7 @@ public class Affichage {
 		this.code = code;
 	}
 	
-	public void afficher(Variable[] vars, String traceExec) {
+	public void afficher(Variable[] vars, String exec) {
 		String affichage = "";
 		
 		int cpt=0;
@@ -39,7 +39,7 @@ public class Affichage {
 		affichage += "| CONSOLE |\n";
 		affichage += "---------------------------------------------------------------------------------\n";
 		
-		for(String str : traceExec.split("\n")) {
+		for(String str : exec.split("\n")) {
 			affichage += String.format("|%80s|", str);
 		}
 		
