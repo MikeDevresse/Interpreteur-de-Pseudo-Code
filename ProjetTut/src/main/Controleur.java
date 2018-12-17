@@ -20,6 +20,8 @@ public class Controleur
 		{
 			e.printStackTrace();
 		}
+		
+		System.out.println( prog );
 	}
 	
 	public static void main ( String[] a )

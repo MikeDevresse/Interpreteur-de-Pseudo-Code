@@ -17,4 +17,14 @@ public class Algorithme
 	{
 		ensVariables.add( v );
 	}
+	
+	public String toString ()
+	{
+		String s = "Algorithme : " + this.nom + "\n";
+		for ( Variable v : ensVariables )
+		{
+			s += v + "\n";
+		}
+		return s;
+	}
 }

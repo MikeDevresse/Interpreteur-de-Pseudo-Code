@@ -4,19 +4,11 @@ import java.io.FileReader;
 
 public class LectureFichier
 {
-	private BufferedReader fichier;
+	private String fichier;
 	
 	public LectureFichier ( String fichier )
 	{
-		try
-		{
-			this.fichier = new BufferedReader( new FileReader( fichier ) );
-				
-		}
-		catch ( Exception e )
-		{
-			e.printStackTrace();
-		}
+		this.fichier = fichier;
 	}
 	
 	public String[] getTexteParLigne()
@@ -30,9 +22,11 @@ public class LectureFichier
 		String s;
 		try
 		{
-    		while ( ( s = fichier.readLine() ) != null )
+			BufferedReader reader = new BufferedReader( new FileReader( fichier ) );
+		
+    		while ( ( s = reader.readLine() ) != null )
     		{
-    			sRet += s;
+    			sRet += s + "\n";
     		}
 		}
 		catch ( Exception e )

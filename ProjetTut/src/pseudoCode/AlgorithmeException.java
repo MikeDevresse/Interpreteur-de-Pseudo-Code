@@ -4,6 +4,6 @@ public class AlgorithmeException extends Exception
 {
 	public AlgorithmeException ( String message )
 	{
-		System.out.println( "Erreur dans l'algorithme : " + message );
+		super( "Erreur dans l'algorithme : " + message );
 	}
 }
