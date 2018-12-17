@@ -2,18 +2,23 @@ package pseudoCode;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ValueRange;
-import java.util.ArrayList;
 
 import bsh.EvalError;
 import bsh.Interpreter;
 
 // TODO: Auto-generated Javadoc
 /**
- * Class Fonctions.
+ * Ensemble des fonctions primitives du pseudo-code.
+ * 
+ * @version 1.0, 17/12/2018
  */
 public class Fonctions {
 
+	/**
+	 * Interprète les fonctions
+	 * @param nomFonction nom de la fonction
+	 * @param contenu paramètre envoyés
+	 */
 	public static void evaluer(String nomFonction, String contenu) {
 
 		nomFonction = nomFonction.trim();
@@ -57,9 +62,9 @@ public class Fonctions {
 	}
 
 	/**
-	 * En chaine.
+	 * Transforme un double en chaîne de caractère.
 	 *
-	 * @param d d
+	 * @param d double
 	 * @return string
 	 */
 	public static String enChaine(double d) {
@@ -67,7 +72,7 @@ public class Fonctions {
 	}
 
 	/**
-	 * En chaine.
+	 * Transforme un entier en chaîne de caractère.
 	 *
 	 * @param d d
 	 * @return string
@@ -77,7 +82,7 @@ public class Fonctions {
 	}
 
 	/**
-	 * En entier.
+	 * Transforme une chaîne de caractère en entier
 	 *
 	 * @param s s
 	 * @return int
