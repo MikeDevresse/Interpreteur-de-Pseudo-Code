@@ -12,4 +12,9 @@ public class Algorithme
 		this.nom = nom;
 		ensVariables = new ArrayList<Variable>();
 	}
+	
+	public void AjouterVariable ( Variable v )
+	{
+		ensVariables.add( v );
+	}
 }
