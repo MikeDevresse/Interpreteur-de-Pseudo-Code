@@ -10,7 +10,7 @@ public class Variable<T> {
 	/**
 	 * Crée une variable
 	 * 
-	 * @param nom      nom de la variable
+	 * @param nom       nom de la variable
 	 * @param type      type de la variable
 	 * @param constante vrai si constante
 	 */
