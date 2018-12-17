@@ -2,6 +2,8 @@ package pseudoCode;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ValueRange;
+import java.util.ArrayList;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -9,17 +11,54 @@ import java.time.format.DateTimeFormatter;
  */
 public class Fonctions {
 
-	public static void evaluer ( String nomFonction, String contenue)
-	{
+	public static void evaluer(String nomFonction, String contenu) {
 		nomFonction = nomFonction.trim();
-		switch ( nomFonction )
-		{
-			case "ecrire" :
-				System.out.println( contenue.split( "\"" )[1] );
-				break;
+		switch (nomFonction) {
+		case "ecrire":
+			Fonctions.ecrire(contenu.split("©"));
+			break;
+
+		case "lire":
+			Fonctions.lire(contenu);
+			break;
 		}
 	}
-	
+
+	/*
+	 * TODO attendre le CUI pour la saisie des valeurs
+	 */
+	private static void lire(String vars) {
+		vars = vars.replace(" ", "");
+
+		for (String var : vars.split(",")) {
+			System.out.println("lecture de " + var);
+		}
+	}
+
+	/**
+	 * écrit et concatène une expression
+	 * 
+	 * @param args parties de l'expression
+	 */
+	private static void ecrire(String[] args) {
+		String s = "";
+
+		for (String arg : args) {
+
+			arg = arg.trim();
+			if (!arg.matches("^\".*\"$"))
+				arg = "4";
+			else
+				arg = arg.replaceAll("^\"|\"", "");
+
+			s += arg;
+		}
+
+		System.out.println(s);
+
+		// System.out.println(s);
+	}
+
 	/**
 	 * En chaine.
 	 *
@@ -118,10 +157,10 @@ public class Fonctions {
 	public static String aujourdhui() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDateTime now = LocalDateTime.now();
-		
+
 		return dtf.format(now);
 	}
-	
+
 	/**
 	 * Jour.
 	 *
@@ -131,7 +170,7 @@ public class Fonctions {
 	public static int jour(String date) {
 		return Integer.parseInt(date.split("/")[0]);
 	}
-	
+
 	/**
 	 * Mois.
 	 *
@@ -141,7 +180,7 @@ public class Fonctions {
 	public static int mois(String date) {
 		return Integer.parseInt(date.split("/")[1]);
 	}
-	
+
 	/**
 	 * Annee.
 	 *
@@ -151,7 +190,7 @@ public class Fonctions {
 	public static int annee(String date) {
 		return Integer.parseInt(date.split("/")[2]);
 	}
-	
+
 	/**
 	 * Est reel.
 	 *
@@ -162,11 +201,11 @@ public class Fonctions {
 		try {
 			Double.parseDouble(s);
 			return true;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Est entier.
 	 *
@@ -174,18 +213,18 @@ public class Fonctions {
 	 * @return true, if successful
 	 */
 	public static boolean estEntier(String s) {
-		
+
 		if (Fonctions.estReel(s))
 			return false;
-		
+
 		try {
 			Integer.parseInt(s);
 			return true;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Hasard.
 	 *
@@ -193,6 +232,6 @@ public class Fonctions {
 	 * @return int
 	 */
 	public static int hasard(int a) {
-		return (int)(Math.random() * a);
+		return (int) (Math.random() * a);
 	}
 }
