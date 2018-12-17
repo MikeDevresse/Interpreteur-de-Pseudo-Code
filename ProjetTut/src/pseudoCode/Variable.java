@@ -3,10 +3,12 @@ package pseudoCode;
 public class Variable<T> {
 
 	private String name;
+	private String type;
 	private T content;
 
-	public Variable(String name) {
+	public Variable(String name, String type) {
 		this.name = name;
+		this.type = type;
 	}
 
 	public T getContent() {
@@ -27,7 +29,7 @@ public class Variable<T> {
 
 	@Override
 	public String toString() {
-		return "Variable [content=" + content + ", name=" + name + "]";
+		return "Variable [name=" + this.name + ", type = " + this.type + "]";
 	}
 
 }
