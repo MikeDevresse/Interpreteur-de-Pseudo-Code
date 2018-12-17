@@ -1,4 +1,4 @@
-ALGORTIHME NomAlgo
+ALGORITHME NomAlgo
 constante:
 
 variable :
