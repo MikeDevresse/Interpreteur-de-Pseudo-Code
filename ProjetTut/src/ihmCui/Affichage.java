@@ -26,8 +26,10 @@ public class Affichage {
 			str = str.replace("\t", "  ");
 			cpt++;
 			affichage += String.format("|%2d %-38s|", cpt, str);
-			if(cptTVar < vars.length)
-				affichage += String.format("%-37s|", vars[cptTVar]);
+			if(cptTVar == 0) 
+				affichage += "    NOM     |    TYPE   |   VALEUR   |";
+			else if(cptTVar <= vars.length)
+				affichage += String.format("%-37s|", vars[cptTVar-1]);
 			else
 				affichage += String.format("%-37s|", " ");
 			cptTVar++;
@@ -40,8 +42,9 @@ public class Affichage {
 		affichage += "---------------------------------------------------------------------------------\n";
 		
 		for(String str : exec.split("\n")) {
-			affichage += String.format("|%-80s|\n", str);
+			affichage += String.format("|%-79s|\n", str);
 		}
+		affichage += "---------------------------------------------------------------------------------\n";
 		
 		System.out.println(affichage);
 	}
