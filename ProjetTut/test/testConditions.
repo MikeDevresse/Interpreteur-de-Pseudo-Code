@@ -1,0 +1,20 @@
+Algorithme TestConditions
+Variables :
+	age : entier
+DEBUT
+	age <-- 10
+	si age < 30 alors 
+		si age < 18 alors
+			écrire("cas1")
+		sinon
+			écrire("cas2")
+		fsi
+	sinon
+		si age > 65
+			écrire("cas3")
+		sinon
+			écrire("cas4")
+		fsi
+	fsi
+FIN
+		
