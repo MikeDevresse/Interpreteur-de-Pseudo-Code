@@ -22,7 +22,7 @@ public class Algorithme
 	{
 		for ( Variable v : ensVariables )
 		{
-			if ( v.getName().equals( nomVar ))
+			if ( v.getNom().equals( nomVar ))
 			{
 				return v;
 			}

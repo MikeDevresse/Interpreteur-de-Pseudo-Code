@@ -1,7 +1,5 @@
 package pseudoCode;
 
-import main.StringFormateur;
-
 public class Programme
 {
 	private String[]   fichier;
@@ -31,7 +29,7 @@ public class Programme
 		String current = fichier[ligneCourrante++];
 		String[] mots = current.split( " " );
 
-		boolean ignore = StringFormateur.enleverEspace( current ).equals( "" );
+		boolean ignore = current.trim().equals( "" );
 
 		if ( !debut && !ignore )
 		{
@@ -63,11 +61,10 @@ public class Programme
 			{
 				if ( this.def == null || this.def == "" ) { return; }
 				boolean estConstante = def.equals( "constante" );
-				String type = StringFormateur.enleverEspace( current.split( ":" )[1] );
+				String type = current.split( ":" )[1].trim();
 				for ( String s : current.split( ":" )[0].split( "," ) )
 				{
-					String nomVar = StringFormateur.enleverEspace( s );
-					algo.AjouterVariable( VariableFactory.creerVariable( nomVar + ":" + type, estConstante ) );
+					algo.AjouterVariable( VariableFactory.createVariable( s.trim() + ":" + type, estConstante ) );
 				}
 			}
 		}
@@ -76,14 +73,16 @@ public class Programme
 			if ( current.split( "<--" ).length == 2 )
 			{
 				String[] parties = current.split( "<--" );
-				Variable v = algo.getVariable( StringFormateur.enleverEspace( parties[0]) );
-				v.setValue( StringFormateur.enleverEspace( parties[1] ) );
+				Variable v = algo.getVariable( parties[0].trim() );
+				v.setValeur( parties[1].trim() );
 			}
 			
 			if ( current.matches( ".*\\(.*\\)" ) )
 			{
 				//Appeler fonction
 			}
+			
+			
 			
 			
 			
