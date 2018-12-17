@@ -1,3 +1,4 @@
+package main;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Programme;
 
