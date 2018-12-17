@@ -95,9 +95,9 @@ public class Variable<T> {
 		String s = "";
 
 		if (this.valeur != null)
-			s += String.format("|%-12s|%-12s|%-24s|", this.nom, this.type, this.valeur+"");
+			s += String.format("%12s|%11s|%12s", this.nom, this.type, this.valeur+"");
 		else
-			s += String.format("|%-12s|%-12s|%-24s|", this.nom, this.type, "NULL");
+			s += String.format("%12s|%11s|%12s", this.nom, this.type, "NULL");
 
 		return s;
 	}

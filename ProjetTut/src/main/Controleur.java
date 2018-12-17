@@ -1,6 +1,13 @@
 package main;
+import ihmCui.Affichage;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Programme;
+import pseudoCode.Variable;
+
+/*
+ * Retour en arriere :
+ * Tableau du projet en serialize qu'on reprend
+ */
 
 public class Controleur
 {
@@ -29,6 +36,9 @@ public class Controleur
 			e.printStackTrace();
 		}
 		
+
+		Affichage a = new Affichage(lecture.getTexteParLigne());
+		a.afficher( prog.getMain().getVariables(), prog.getTraceExec() );
 	}
 	
 	/**

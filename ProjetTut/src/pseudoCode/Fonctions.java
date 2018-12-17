@@ -19,17 +19,17 @@ public class Fonctions {
 	 * @param nomFonction nom de la fonction
 	 * @param contenu paramètre envoyés
 	 */
-	public static void evaluer(String nomFonction, String contenu, Programme p) {
+	public static void evaluer(String nomFonction, String contenu, Algorithme a) {
 
 		nomFonction = nomFonction.trim();
 		switch (nomFonction) {
 		case "ecrire":
 		case "écrire":
-			Fonctions.ecrire(contenu,p);
+			Fonctions.ecrire(contenu,a);
 			break;
 
 		case "lire":
-			Fonctions.lire(contenu,p);
+			Fonctions.lire(contenu,a);
 			break;
 
 		}
@@ -38,7 +38,7 @@ public class Fonctions {
 	/*
 	 * TODO attendre le CUI pour la saisie des valeurs
 	 */
-	private static void lire(String vars,Programme p) {
+	private static void lire(String vars,Algorithme a) {
 		vars = vars.replace(" ", "");
 
 		for (String var : vars.split(",")) {
@@ -51,11 +51,11 @@ public class Fonctions {
 	 * 
 	 * @param args parties de l'expression
 	 */
-	private static void ecrire(String contenu, Programme p) {
-		Interpreter interpreter = Programme.getInterpreter();
+	private static void ecrire(String contenu, Algorithme a) {
+		Interpreter interpreter = a.getInterpreteur();
 		try {
 			contenu = contenu.replace("©", "+");
-			p.traceExec += interpreter.eval(contenu) + "\n";
+			a.getProgramme().traceExec += interpreter.eval(contenu) + "\n" ;
 		} catch (EvalError e) {
 			e.printStackTrace();
 		}

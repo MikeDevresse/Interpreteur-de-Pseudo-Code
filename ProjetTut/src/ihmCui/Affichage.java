@@ -1,4 +1,4 @@
-package main;
+package ihmCui;
 
 import pseudoCode.Algorithme;
 import pseudoCode.Variable;
@@ -40,7 +40,7 @@ public class Affichage {
 		affichage += "---------------------------------------------------------------------------------\n";
 		
 		for(String str : exec.split("\n")) {
-			affichage += String.format("|%80s|", str);
+			affichage += String.format("|%-80s|\n", str);
 		}
 		
 		System.out.println(affichage);
