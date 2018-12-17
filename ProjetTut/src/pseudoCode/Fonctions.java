@@ -31,7 +31,6 @@ public class Fonctions {
 		case "lire":
 			Fonctions.lire(contenu,a);
 			break;
-
 		}
 	}
 
