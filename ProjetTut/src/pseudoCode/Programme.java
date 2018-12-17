@@ -109,14 +109,7 @@ public class Programme
 
 			if ( current.matches( ".*\\(.*\\)" ) )
 			{
-				try
-				{
-					Fonctions.evaluer( current.split( "\\(|\\)" )[0], current.split( "\\(|\\)" )[1] );
-				}
-				catch ( EvalError e )
-				{
-					e.printStackTrace();
-				}
+				Fonctions.evaluer( current.split( "\\(|\\)" )[0], current.split( "\\(|\\)" )[1] );
 			}
 			
 			if ( current.matches( ".*si.*alors.*" ) )
@@ -173,10 +166,11 @@ public class Programme
 		condition = condition.replaceAll( "/=", "!=" );
 		condition = condition.replaceAll( "([a-zA-Z0-9]+[ ]*)=([ ]*[a-zA-Z0-9]+)", "$1==$2" );
 		condition = condition.replaceAll( "et", "&&" );
+		condition = condition.replaceAll( "(.*)xou(.*)", "($1||$2) && !($1 && $2)" );
 		condition = condition.replaceAll( "ou", "||" );
-		condition = condition.replaceAll( "xou", "^" );
 		condition = condition.replaceAll( "non", "!" );
 	
+		System.out.println( condition );
 		
 		Interpreter interpreter = Programme.getInterpreter();
 		try

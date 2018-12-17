@@ -18,8 +18,17 @@ public class Fonctions {
 
 		nomFonction = nomFonction.trim();
 		switch (nomFonction) {
-		case "ecrire":
-			Fonctions.ecrire(contenu.split("©"));
+		case "écrire":
+			Interpreter interpreter = Programme.getInterpreter();
+				try
+				{
+					System.out.println( interpreter.eval( contenu ) );
+				}
+				catch ( EvalError e )
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			break;
 
 		case "lire":

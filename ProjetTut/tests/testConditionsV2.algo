@@ -7,21 +7,24 @@ variable :
 DEBUT
 	a <-- 10
 
-	si a >= 10 et <= 20 alors 
+	si a >= 10 et a <= 20 alors 
 		ecrire("vrai")
 	sinon
 		écrire("faux")
+	fsi	
 		
 	si a = 10 ou a = 15 alors
 		écrire("vrai")
 	sinon
 		écrire("faux")
+	fsi	
 		
 	b <-- 15
 	si a = 10 xou b = 15 alors
 		ecrire("Les deux valeurs sont différentes")
 	sinon
 		ecrire("Les deux valeurs sont égales")
+	fsi
 	
 FIN
 		
