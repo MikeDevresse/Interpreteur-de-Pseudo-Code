@@ -1,14 +1,7 @@
-/*
- * 
- */
 package main;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Programme;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class Controleur.
- */
 public class Controleur
 {
 	
