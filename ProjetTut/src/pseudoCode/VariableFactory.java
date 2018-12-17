@@ -1,5 +1,11 @@
 package pseudoCode;
 
+/**
+ * Factory permettant de créer des variables
+ * @version 1.0, 17/12/2018
+ *
+ */
+
 public class VariableFactory {
 
 	/**
