@@ -4,17 +4,33 @@ public class VariableFactory {
 
 	/**
 	 * Parse une expression et crée la variable associée
+	 * 
 	 * @param expression pseudo-code
 	 * @return variable
 	 */
-	public static Variable createVariable(String expression) {
-		//nettoyage de l'expression
-		expression = expression.replace(" <", "<");
-		expression = expression.replace("- ", "-");
+	public static Variable createVariable(String expression, boolean constante) {
+
+		// nettoyage de l'expression
 		expression = expression.replace("d'", "de ");
 
-		String varName = expression.split("<--")[0];
-		String varType = expression.split("<--")[1];
+		String varName = expression.split(":")[0];
+		String varType = expression.split(":")[1];
+		
+
+		// constante
+		if (varName.matches("[A-Z0-9_]*")) {
+			
+			//entier
+			try {
+				int value = Integer.parseInt(varType);
+				Variable<Integer> v = new Variable<>(varName, "entier");
+				v.setValue(value);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
 		varType = varType.toLowerCase();
 
 		// tableau de variables

@@ -10,7 +10,9 @@ public class TestVariable {
 //		
 //		System.out.println(v);
 		
-		System.out.println(VariableFactory.createVariable("n <-- tableau d'entier"));
+		//System.out.println(VariableFactory.createVariable("n <-- tableau d'entier"));
+		
+		
 		
 	}
 
