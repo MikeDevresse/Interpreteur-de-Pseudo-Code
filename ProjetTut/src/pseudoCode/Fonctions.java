@@ -5,6 +5,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ValueRange;
 import java.util.ArrayList;
 
+import bsh.EvalError;
+import bsh.Interpreter;
+
 // TODO: Auto-generated Javadoc
 /**
  * Class Fonctions.
@@ -12,6 +15,7 @@ import java.util.ArrayList;
 public class Fonctions {
 
 	public static void evaluer(String nomFonction, String contenu) {
+
 		nomFonction = nomFonction.trim();
 		switch (nomFonction) {
 		case "ecrire":
@@ -21,6 +25,7 @@ public class Fonctions {
 		case "lire":
 			Fonctions.lire(contenu);
 			break;
+
 		}
 	}
 

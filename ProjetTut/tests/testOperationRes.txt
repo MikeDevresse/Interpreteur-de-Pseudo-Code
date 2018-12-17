@@ -1,0 +1,10 @@
+Trace vars :
+
+Trace exec :
+	15
+	5
+	2.5
+	50
+	2
+	0
+	100
