@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import bsh.EvalError;
 import bsh.Interpreter;
+import main.Affichage;
 
 public class Programme
 {
-
 	protected String traceExec;
 	
 	/** fichier. */
