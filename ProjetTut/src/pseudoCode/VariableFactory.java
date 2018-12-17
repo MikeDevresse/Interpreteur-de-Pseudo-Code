@@ -20,9 +20,9 @@ public class VariableFactory {
 		
 
 		// tableau de variables
-		String tabDelimiter = "tableau de ".trim();
-		if (varType.indexOf(tabDelimiter) != -1) {
-			String tabType = varType.substring(varType.indexOf(tabDelimiter) + tabDelimiter.length());
+		String tabDelimiteur = "tableau de ".trim();
+		if (varType.indexOf(tabDelimiteur) != -1) {
+			String tabType = varType.substring(varType.indexOf(tabDelimiteur) + tabDelimiteur.length());
 
 			switch (tabType) {
 
