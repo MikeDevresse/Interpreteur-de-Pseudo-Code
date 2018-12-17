@@ -8,6 +8,7 @@ public class VariableFactory {
 	 * Parse une expression et crée la variable associée
 	 * 
 	 * @param expression pseudo-code
+	 * @param constante vrai si constante
 	 * @return variable
 	 */
 	public static Variable<?> createVariable(String expression, boolean constante) {
@@ -17,9 +18,8 @@ public class VariableFactory {
 		expression = expression.replace("d'", "de ");
 
 		String varName = expression.split(":")[0];
-		String varType = expression.split(":")[1];		
+		String varType = expression.split(":")[1];
 		varType = varType.toLowerCase();
-		
 
 		// tableau de variables
 		String tabDelimiter = StringFormateur.enleverEspace("tableau de ");

@@ -9,8 +9,9 @@ public class Variable<T> {
 
 	/**
 	 * Crée une variable
-	 * @param name nom de la variable
-	 * @param type type de la variable
+	 * 
+	 * @param name      nom de la variable
+	 * @param type      type de la variable
 	 * @param constante vrai si constante
 	 */
 	public Variable(String name, String type, boolean constante) {
@@ -21,6 +22,7 @@ public class Variable<T> {
 
 	/**
 	 * Retourne la valeur de la variable
+	 * 
 	 * @return valeur
 	 */
 	public T getValue() {
@@ -29,14 +31,16 @@ public class Variable<T> {
 
 	/**
 	 * Retourne le nom de la variable
+	 * 
 	 * @return nom
 	 */
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
 	 * Retourne si la variable est une constante
+	 * 
 	 * @return vrai si constante
 	 */
 	public boolean isConstante() {
@@ -44,7 +48,8 @@ public class Variable<T> {
 	}
 
 	/**
-	 * Défini la valeur de la constante
+	 * Défini la valeur de la variable
+	 * 
 	 * @param value valeur de la variable
 	 */
 	public void setValue(T value) {
@@ -53,6 +58,7 @@ public class Variable<T> {
 
 	/**
 	 * Défini le nom de la variable
+	 * 
 	 * @param name nom de la variable
 	 */
 	public void setName(String name) {
@@ -63,13 +69,12 @@ public class Variable<T> {
 	public String toString() {
 		String s = "";
 		s += "Variable [name=" + this.name + ", type = " + this.type + ", constante = " + this.constante;
-		
+
 		if (this.value != null)
 			s += ", valeur = " + this.value;
-		
+
 		s += " ]";
-		
+
 		return s;
 	}
-
 }
