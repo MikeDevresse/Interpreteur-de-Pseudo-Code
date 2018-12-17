@@ -9,6 +9,17 @@ import java.time.format.DateTimeFormatter;
  */
 public class Fonctions {
 
+	public static void evaluer ( String nomFonction, String contenue)
+	{
+		nomFonction = nomFonction.trim();
+		switch ( nomFonction )
+		{
+			case "ecrire" :
+				System.out.println( contenue.split( "\"" )[1] );
+				break;
+		}
+	}
+	
 	/**
 	 * En chaine.
 	 *

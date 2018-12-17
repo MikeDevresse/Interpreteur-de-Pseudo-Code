@@ -103,7 +103,7 @@ public class Programme
 			
 			if ( current.matches( ".*\\(.*\\)" ) )
 			{
-				Fonction.evaluer( current.split( "\\(|\\)" )[0], current.split( "\\(|\\)" )[1] );
+				Fonctions.evaluer( current.split( "\\(|\\)" )[0], current.split( "\\(|\\)" )[1] );
 			}
 			
 			if ( current.matches("si .* alors"))
