@@ -80,6 +80,11 @@ public class Programme
 				v.setValue( StringFormateur.enleverEspace( parties[1] ) );
 			}
 			
+			if ( current.matches( ".*\\(.*\\)" ) )
+			{
+				//Appeler fonction
+			}
+			
 			
 			
 			if ( mots[0].equals( "FIN" ) ) this.fin = true;
