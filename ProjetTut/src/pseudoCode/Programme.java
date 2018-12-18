@@ -69,10 +69,6 @@ public class Programme {
 					lignes.add(fichier[i]);
 			}
 		}
-
-		while (!this.main.estTerminer()) {
-			this.main.ligneSuivante();
-		}
 	}
 
 	public Algorithme getMain() {
