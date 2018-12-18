@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import bsh.Interpreter;
 import main.Controleur;
 
-public class Programme implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Programme {
 
 	public String traceExec;
 
