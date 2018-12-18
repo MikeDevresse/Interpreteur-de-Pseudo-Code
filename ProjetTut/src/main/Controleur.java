@@ -55,7 +55,7 @@ public class Controleur
 		this.lecture = new LectureFichier(input);
 		try
 		{
-			this.prog = new Programme(lecture.getTexteParLigne(), this);
+			this.prog = new Programme(lecture.getTexteParLigne());
 		}
 		catch ( AlgorithmeException e )
 		{
@@ -65,10 +65,14 @@ public class Controleur
 
 		Affichage a = new Affichage(lecture.getTexteParLigne());
 		
+		a.afficher( prog.getMain().getVariables(), prog.getTraceExec() );	
+		
 		while ( !prog.getMain().estTerminer() )
 		{
-			a.afficher( prog.getMain().getVariables(), prog.getTraceExec() );	
-			prog.getCurrent().ligneSuivante();
+			if ( prog.getCurrent().ligneSuivante() )
+			{
+				a.afficher( prog.getMain().getVariables(), prog.getTraceExec() );		
+			}
 		}
 		
 	}
@@ -134,6 +138,7 @@ public class Controleur
 	
 	private void retour ()
 	{
+		System.out.println( "a" );
 		try
 		{
     		FileInputStream fileIn = new FileInputStream("histo/progstep" + --this.nbSteps +".ser");

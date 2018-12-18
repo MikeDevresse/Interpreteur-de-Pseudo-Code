@@ -43,7 +43,6 @@ public class Algorithme implements Serializable {
 
 	private Programme prog;
 	
-	private Controleur ctrl;
 	
 	private boolean estVrai;
 
@@ -52,8 +51,7 @@ public class Algorithme implements Serializable {
 	 *
 	 * @param nom nom
 	 */
-	public Algorithme(String nom, int ligneDebut, String[] fichier, Programme p, Controleur ctrl) {
-		this.ctrl = ctrl;
+	public Algorithme(String nom, int ligneDebut, String[] fichier, Programme p) {
 		this.prog = p;
 		this.ligneDebut = ligneDebut;
 		this.interpreteur = new Interpreter();
@@ -65,15 +63,17 @@ public class Algorithme implements Serializable {
 	/**
 	 * Interprète la ligne suivante
 	 */
-	public void ligneSuivante() {
+	public boolean ligneSuivante() {
+		System.out.println( "l : " + ligneCourrante );
 		if (ligneCourrante == fichier.length) {
 			this.fin = true;
-			return;
+			return false;
 		}
 		
 		String current = fichier[ligneCourrante++];
-		if ( current.trim().equals("") ) return;
-		this.ctrl.attend();
+		if ( current.trim().equals("") ) return false;
+		Controleur ctrl = Controleur.getControleur();
+		ctrl.attend();
 		estVrai = true;
 		
 		String[] mots = current.split(" ");
@@ -90,12 +90,15 @@ public class Algorithme implements Serializable {
 			} else {
 				// définition des variables
 				if (this.def == null || this.def == "") {
-					return;
+					return false;
 				}
 				boolean estConstante = def.equals("constante");
-				String type = current.split(":")[1].trim();
-				for (String s : current.split(":")[0].split(","))
-					ajouterVariable(VariableFactory.createVariable(s.trim(), type, estConstante));
+				if ( current.matches( "\\w*[ ]*\\:[ ]*\\w*" ))
+				{
+    				String type = current.split(":")[1].trim();
+    				for (String s : current.split(":")[0].split(","))
+    					ajouterVariable(VariableFactory.createVariable(s.trim(), type, estConstante));
+				}
 			}
 		} else if (debut) {
 			if (current.split("<--").length == 2) {
@@ -105,7 +108,7 @@ public class Algorithme implements Serializable {
 
 			//évaluation des fonctions
 			if (current.matches(".*\\(.*\\)")) {
-				Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this, this.ctrl);
+				Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
 			}
 
 			//évaluation des conditions
@@ -149,6 +152,7 @@ public class Algorithme implements Serializable {
 			if (mots[0].equals("FIN"))
 				this.fin = true;
 		}
+		return true;
 	}
 
 	/**

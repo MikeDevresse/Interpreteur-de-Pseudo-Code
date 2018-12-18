@@ -21,7 +21,7 @@ public class Fonctions {
 	 * @param nomFonction nom de la fonction
 	 * @param contenu paramètre envoyés
 	 */
-	public static void evaluer(String nomFonction, String contenu, Algorithme a, Controleur ctrl) {
+	public static void evaluer(String nomFonction, String contenu, Algorithme a) {
 
 		nomFonction = nomFonction.trim();
 		switch (nomFonction) {
@@ -31,7 +31,7 @@ public class Fonctions {
 			break;
 
 		case "lire":
-			Fonctions.lire(contenu,a, ctrl);
+			Fonctions.lire(contenu,a);
 			break;
 		}
 	}
@@ -42,9 +42,9 @@ public class Fonctions {
 	 * @param a algorithme en cours
 	 * @param ctrl controleur
 	 */
-	private static void lire(String vars,Algorithme a, Controleur ctrl) {
+	private static void lire(String vars,Algorithme a) {
 		vars = vars.replace(" ", "");
-		
+		Controleur ctrl = Controleur.getControleur();
 		for (String var : vars.split(",")) {
 			ctrl.lireVariable(var);
 		}

@@ -21,7 +21,6 @@ public class Programme implements Serializable {
 	
 	private Algorithme current;
 
-	private Controleur ctrl;
 
 	/**
 	 * Instanciation de programme.
@@ -29,8 +28,7 @@ public class Programme implements Serializable {
 	 * @param fichier the fichier
 	 * @throws AlgorithmeException the algorithme exception
 	 */
-	public Programme(String[] fichier, Controleur ctrl) throws AlgorithmeException {
-		this.ctrl = ctrl;
+	public Programme(String[] fichier) throws AlgorithmeException {
 		this.traceExec = "";
 
 		this.fichier = fichier;
@@ -42,11 +40,11 @@ public class Programme implements Serializable {
 		int debut = 0;
 		ArrayList<String> lignes = null;
 		for (int i = 0; i < fichier.length; i++) {
-			System.out.println( fichier[i] );
+			fichier[i] = fichier[i].replaceAll( "\t", "" );
 			String[] mots = fichier[i].split(" ");
-			if (mots[0].equals("ALGORITHME") || i == fichier.length - 1) {
+			if ( mots[0].equals("ALGORITHME") || i == fichier.length - 1) {
 				if (lignes != null) {
-					Algorithme a = new Algorithme(nom, debut, lignes.toArray(new String[lignes.size()]), this, ctrl);
+					Algorithme a = new Algorithme(nom, debut, lignes.toArray(new String[lignes.size()]), this);
 					algos.add(a);
 					if (main) {
 						this.current = this.main = a;
