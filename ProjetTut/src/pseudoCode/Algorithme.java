@@ -138,8 +138,8 @@ public class Algorithme {
 					}
 				}
 
-				ligneCourrante = i;
-				interpreterCondition(condition);
+				ligneCourrante = i; //saut à la fin de la condition
+				interpreterCondition(condition); //interprétation de la condition
 			}
 
 			/*
@@ -165,11 +165,14 @@ public class Algorithme {
 					}
 				}
 
-				ligneCourrante = i;
-				interpreterBoucle(ligneCourrante, condition);
+				ligneCourrante = i; //saut à la fin de la condition
+				interpreterBoucle(ligneCourrante, condition); //interprétation de la boucle
 			}
 		}
 
+		/*
+		 * Fin de la l'algorithme
+		 */
 		if (mots[0].equals("FIN"))
 			this.fin = true;
 
@@ -188,13 +191,15 @@ public class Algorithme {
 		// Condition non valide
 		if (!Condition.condition(condition, this.getInterpreteur())) {
 			do {
-				ligneCourrante++;
+				ligneCourrante++; //saut à l'alternative ou la fin de la condition
 			} while (!fichier[ligneCourrante].trim().equals("fsi") && !fichier[ligneCourrante].trim().equals("sinon"));
 		} else { // condition valide
+			//interprétation de la condition
 			do {
 				ligneSuivante();
 			} while (!fichier[ligneCourrante].trim().equals("fsi") && !fichier[ligneCourrante].trim().equals("sinon"));
 
+			//saut jusqu'à la fin de la condition
 			if (fichier[ligneCourrante].trim().equals("sinon")) {
 				do {
 					ligneCourrante++;
@@ -213,7 +218,7 @@ public class Algorithme {
 	public void interpreterBoucle(int ligneBoucle, String condition) throws AlgorithmeException {
 
 		while (Condition.condition(condition, this.getInterpreteur())) {
-			ligneCourrante = ligneBoucle;
+			ligneCourrante = ligneBoucle; //retour en haut de la boucle
 			do {
 				ligneSuivante();
 			} while (!fichier[ligneCourrante].trim().equals("ftq"));
