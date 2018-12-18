@@ -12,12 +12,12 @@ DEBUT
 		si age > 15 alors
 			écrire("cas2")
 		fsi
-	sinon
+	sinon // Bonsoir
 		si age = 65 alors
 			écrire("cas3")
 		fsi
 	fsi
-	
+	// Sa marche aucune erreur
 	si age /= 10 alors
 		écrire("cas 4")
 	sinon
