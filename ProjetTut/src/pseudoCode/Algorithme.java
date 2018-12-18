@@ -243,7 +243,7 @@ public class Algorithme {
 	
 	public int getLigneCourrante()
 	{
-		return this.getLigneCourrante();
+		return this.ligneCourrante;
 	}
 
 	public boolean getEstVrai ()

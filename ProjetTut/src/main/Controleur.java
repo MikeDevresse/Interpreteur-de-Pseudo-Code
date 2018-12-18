@@ -14,7 +14,7 @@ public class Controleur
 {
 	
 	/** nom du fichier */
-	private final String input = "tests/TestLire.algo";
+	private final String input = "tests/testConditions.algo";
 	
 	/** objet programme */
 	private Programme prog;
@@ -23,6 +23,10 @@ public class Controleur
 	private LectureFichier lecture;
 	
 	private Scanner sc;
+	
+	private int ligneAAttendre = -1;
+	
+	private int ligneRestantes = -1;
 	
 	/**
 	 * Constructeur du controleur.
@@ -45,7 +49,7 @@ public class Controleur
 		
 		while ( !prog.getMain().estTerminer() )
 		{
-			a.afficher( prog.getMain().getVariables(), prog.getTraceExec() );
+			a.afficher( prog.getMain().getVariables(), prog.getTraceExec() );	
 			prog.getCurrent().ligneSuivante();
 		}
 		
@@ -59,7 +63,20 @@ public class Controleur
 	
 	public void attend ()
 	{
-		this.sc.nextLine();
+		if ( this.ligneRestantes > 0)
+		{
+			ligneRestantes--;
+		}
+		else if ( ligneAAttendre != -1 && ligneAAttendre != prog.getCurrent().getLigneCourrante() )
+		{
+			
+		}
+		else
+		{
+			ligneRestantes = -1;
+			ligneAAttendre = -1;
+			this.sc.nextLine();
+		}
 	}
 	
 	/**

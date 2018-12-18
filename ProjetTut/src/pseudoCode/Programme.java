@@ -42,6 +42,7 @@ public class Programme {
 		int debut = 0;
 		ArrayList<String> lignes = null;
 		for (int i = 0; i < fichier.length; i++) {
+			System.out.println( fichier[i] );
 			String[] mots = fichier[i].split(" ");
 			if (mots[0].equals("ALGORITHME") || i == fichier.length - 1) {
 				if (lignes != null) {
