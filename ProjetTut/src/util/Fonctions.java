@@ -36,8 +36,11 @@ public class Fonctions {
 		}
 	}
 
-	/*
-	 * TODO attendre le CUI pour la saisie des valeurs
+	/**
+	 * Permet à l'utilisateur de renseigner la valeur d'une variable
+	 * @param vars ensemble des variables
+	 * @param a algorithme en cours
+	 * @param ctrl controleur
 	 */
 	private static void lire(String vars,Algorithme a, Controleur ctrl) {
 		vars = vars.replace(" ", "");
