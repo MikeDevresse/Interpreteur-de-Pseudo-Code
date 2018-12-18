@@ -50,6 +50,7 @@ public class Controleur
 	 */
 	private Controleur ()
 	{
+		Controleur.ctrl = this;
 		this.sc = new Scanner(System.in);
 		this.lecture = new LectureFichier(input);
 		try
