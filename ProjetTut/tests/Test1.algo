@@ -17,6 +17,14 @@ DEBUT
 	a <-- b
 	b <-- tmp
 	
+	si 1 < 2
+	et 8 > 10 alors
+		écrire("mdr")
+		ecrire("mdr2")
+	sinon
+		ecrire("mdr3")
+	fsi
+	
 	écrire(a)
 	écrire(b)
 	
