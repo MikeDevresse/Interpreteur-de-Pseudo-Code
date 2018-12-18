@@ -13,7 +13,7 @@ DEBUT
 			écrire("cas2")
 		fsi
 	sinon // Bonsoir
-		si age = 65 alors
+		si age = 10 alors
 			écrire("cas3")
 		fsi
 	fsi
