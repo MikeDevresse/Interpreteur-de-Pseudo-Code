@@ -1,8 +1,7 @@
 package main;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import ihmCui.Affichage;
@@ -32,7 +31,7 @@ public class Controleur
 	
 	private int ligneRestantes = -1;
 	
-	private int nbSteps = 0;
+	private ArrayList<Integer> etapes;
 	
 	private static Controleur ctrl;
 	
@@ -50,6 +49,7 @@ public class Controleur
 	 */
 	private Controleur ()
 	{
+		etapes = new ArrayList<Integer>();
 		Controleur.ctrl = this;
 		this.sc = new Scanner(System.in);
 		this.lecture = new LectureFichier(input);
@@ -69,9 +69,16 @@ public class Controleur
 		
 		while ( !prog.getMain().estTerminer() )
 		{
-			if ( prog.getCurrent().ligneSuivante() )
+			try
 			{
-				a.afficher( prog.getMain().getVariables(), prog.getTraceExec() );		
+				if ( prog.getCurrent().ligneSuivante() )
+				{
+					a.afficher( prog.getMain().getVariables(), prog.getTraceExec() );		
+				}
+			}
+			catch ( AlgorithmeException e )
+			{
+				e.printStackTrace();
 			}
 		}
 		
@@ -93,18 +100,7 @@ public class Controleur
 	public void attend ()
 	{
 
-		try
-		{
-			FileOutputStream fichier = new FileOutputStream("histo/progstep" + nbSteps++ + ".ser");
-			ObjectOutputStream oos = new ObjectOutputStream(fichier);
-			oos.writeObject( prog );
-			oos.flush();
-			oos.close();
-		}
-		catch ( Exception e )
-		{
-			e.printStackTrace();
-		}
+		etapes.add( this.prog.getCurrent().getLigneCourrante() );
 		
 		if ( this.ligneRestantes > 0)
 		{
@@ -138,14 +134,12 @@ public class Controleur
 	
 	private void retour ()
 	{
-		System.out.println( "a" );
+		this.ligneAAttendre = this.etapes.get( etapes.size() - 2 );
 		try
 		{
-    		FileInputStream fileIn = new FileInputStream("histo/progstep" + --this.nbSteps +".ser");
-    		ObjectInputStream in = new ObjectInputStream(fileIn);
-    		this.prog = (Programme) in.readObject();
+			this.prog = new Programme(this.lecture.getTexteParLigne());
 		}
-		catch ( Exception e )
+		catch ( AlgorithmeException e )
 		{
 			e.printStackTrace();
 		}

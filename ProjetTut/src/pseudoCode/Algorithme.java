@@ -13,9 +13,8 @@ import main.Controleur;
 import util.Condition;
 import util.Fonctions;
 
-public class Algorithme implements Serializable {
+public class Algorithme {
 
-	private static final long serialVersionUID = 1L;
 
 	private Interpreter interpreteur;
 
@@ -62,9 +61,9 @@ public class Algorithme implements Serializable {
 
 	/**
 	 * Interprète la ligne suivante
+	 * @throws AlgorithmeException 
 	 */
-	public boolean ligneSuivante() {
-		System.out.println( "l : " + ligneCourrante );
+	public boolean ligneSuivante() throws AlgorithmeException {
 		if (ligneCourrante == fichier.length) {
 			this.fin = true;
 			return false;
@@ -72,6 +71,7 @@ public class Algorithme implements Serializable {
 		
 		String current = fichier[ligneCourrante++];
 		if ( current.trim().equals("") ) return false;
+		System.out.println( "l : " + ligneCourrante );
 		Controleur ctrl = Controleur.getControleur();
 		ctrl.attend();
 		estVrai = true;

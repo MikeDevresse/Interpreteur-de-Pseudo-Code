@@ -8,9 +8,7 @@ import java.io.Serializable;
  * @param <T> type de la variable
  */
 
-public class Variable<T> implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+public class Variable<T> {
 
 	private String nom;
 	private String type;
