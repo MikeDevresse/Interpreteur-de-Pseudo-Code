@@ -43,6 +43,8 @@ public class Algorithme {
 
 	private boolean estVrai;
 
+	private int niveauCondition;
+
 	/**
 	 * Instanciation de algorithme.
 	 *
@@ -55,6 +57,7 @@ public class Algorithme {
 		this.nom = nom;
 		this.ensVariables = new ArrayList<Variable>();
 		this.fichier = fichier;
+		this.niveauCondition = 0;
 	}
 
 	/**
@@ -97,7 +100,7 @@ public class Algorithme {
 		 * Début de l'algorithme
 		 */
 		if (this.def.equals("algo")) {
-			if (current.matches("\\w*[ ]*<--[ ]*\\w*")) {
+			if (current.matches("\\w*[ ]*<--[ ]*.*")) {
 				String[] parties = current.split("<--");
 				setValeur(parties[0].trim(), parties[1].trim());
 			}
@@ -137,20 +140,79 @@ public class Algorithme {
 				ligneCourrante = i;
 				interpreterCondition(condition);
 			}
+
+			/*
+			 * Gestion des boucles
+			 */
+			if (current.matches(".*tq.*alors.*")) {
+				String condition = current.split("tq | alors")[1];
+				interpreterBoucle(ligneCourrante, condition);
+
+			} else if (current.matches(".*tq .*")) {
+				String condition = current.split("tq")[1];
+				boolean conditionFinie = false;
+				int i;
+				for (i = ligneCourrante; i < fichier.length && !conditionFinie; i++) {
+
+					if (!fichier[i].trim().matches(".* alors$")) {
+						condition += fichier[i].trim() + " ";
+					}
+
+					if (fichier[i].trim().contains("alors")) {
+						condition += fichier[i].split("alors")[0];
+						conditionFinie = true;
+					}
+				}
+
+				ligneCourrante = i;
+				interpreterBoucle(ligneCourrante, condition);
+			}
 		}
 
 		if (mots[0].equals("FIN"))
 			this.fin = true;
-//		}
+
 		return true;
 	}
 
+	/**
+	 * Interprète une structure conditionnelle
+	 * @param condition condition
+	 * @throws AlgorithmeException
+	 */
 	public void interpreterCondition(String condition) throws AlgorithmeException {
-		// Condition valide
-		if (Condition.condition(condition, this.interpreteur)) {
+		//Condition non valide
+		if (!Condition.condition(condition, this.getInterpreteur())) {
+			do {
+				ligneCourrante++;
+			} while (!fichier[ligneCourrante].trim().equals("fsi") && !fichier[ligneCourrante].trim().equals("sinon"));
+		} else { //condition valide
 			do {
 				ligneSuivante();
-			} while (!fichier[this.ligneCourrante - 1].equals("fsi"));
+			} while (!fichier[ligneCourrante].trim().equals("fsi") && !fichier[ligneCourrante].trim().equals("sinon"));
+
+			if (fichier[ligneCourrante].trim().equals("sinon")) {
+				do {
+					ligneCourrante++;
+				} while (!fichier[ligneCourrante].trim().equals("fsi"));
+			}
+		}
+	}
+	
+	/**
+	 * Interprète une structure itérative
+	 * @param ligneBoucle ligne de début de boucle
+	 * @param condition condition
+	 * @throws AlgorithmeException
+	 */
+	public void interpreterBoucle(int ligneBoucle, String condition) throws AlgorithmeException {
+		
+		
+		while (Condition.condition(condition, this.getInterpreteur())) {
+			ligneCourrante = ligneBoucle;
+			do {
+				ligneSuivante();
+			} while (!fichier[ligneCourrante].trim().equals("ftq"));
 		}
 	}
 

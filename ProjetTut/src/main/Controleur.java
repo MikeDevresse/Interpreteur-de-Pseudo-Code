@@ -65,7 +65,7 @@ public class Controleur
 
 		Affichage a = new Affichage(lecture.getTexteParLigne());
 		
-		a.afficher( prog );	
+		//a.afficher( prog );	
 		
 		while ( !prog.getMain().estTerminer() )
 		{
@@ -74,7 +74,7 @@ public class Controleur
 			{
 				if ( prog.getCurrent().ligneSuivante() )
 				{
-					a.afficher( prog );		
+					//a.afficher( prog );		
 				}
 			}
 			catch ( AlgorithmeException e )
