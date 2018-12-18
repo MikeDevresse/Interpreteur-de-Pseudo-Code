@@ -3,6 +3,8 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
+import org.omg.CORBA.COMM_FAILURE;
+
 import ihmCui.Affichage;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Programme;
@@ -59,12 +61,19 @@ public class Controleur
 		
 	}
 	
+	/**
+	 * Permet à l'utilisateur de renseigner la valeur d'une variable
+	 * @param nomVar nom de la variable
+	 */
 	public void lireVariable(String nomVar) {
 		System.out.print("Entrez la valeur de " + nomVar + " : ");
 		String valeur = this.sc.nextLine();
 		this.prog.getCurrent().setValeur(nomVar, valeur);
 	}
 	
+	/**
+	 * Attend une action de l'utilisateur
+	 */
 	public void attend ()
 	{
 		if ( this.ligneRestantes > 0)
@@ -79,7 +88,18 @@ public class Controleur
 		{
 			ligneRestantes = -1;
 			ligneAAttendre = -1;
-			this.sc.nextLine();
+			String commande = this.sc.nextLine();
+			
+			if (commande.equals("b")) {
+				System.out.println("arrière");
+			}else if (commande.matches("L[0-9]*")) {
+				System.out.println("saut de ligne : " + commande.replaceAll("L([0-9]*)", "$1"));
+			}else if (commande.matches("[+-] var \\w*")) {
+				if (commande.startsWith("+"))
+					System.out.println("ajout de la variable " + commande.replaceAll("[+-] var (\\w*)", "$1"));
+				else
+					System.out.println("suppression de variable " + commande.replaceAll("[+-] var (\\w*)", "$1"));
+			}
 		}
 		try
 		{
