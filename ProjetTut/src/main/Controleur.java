@@ -34,6 +34,17 @@ public class Controleur
 	
 	private int nbSteps = 0;
 	
+	private static Controleur ctrl;
+	
+	
+	
+	public static Controleur getControleur() {
+		if (Controleur.ctrl == null)
+			return new Controleur();
+		else
+			return Controleur.ctrl;
+	}
+	
 	/**
 	 * Constructeur du controleur.
 	 */
