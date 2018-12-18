@@ -42,6 +42,8 @@ public class Affichage {
 		syntaxes.put("sinon",      ANSI_BLUE);
 		syntaxes.put("fsi",        ANSI_BLUE);
 		syntaxes.put("alors",      ANSI_BLUE);
+		syntaxes.put("fq",         ANSI_BLUE);
+		syntaxes.put("ftq",        ANSI_BLUE);
 		
 		syntaxes.put("fonction",   ANSI_CYAN);
 		
