@@ -1,0 +1,12 @@
+ALGORITHME TestLire
+constante:
+
+variable:
+	a : entier
+	b : entier
+	
+DEBUT
+	lire(a)
+	écrire(a)
+	
+FIN 

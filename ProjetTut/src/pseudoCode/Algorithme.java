@@ -98,10 +98,12 @@ public class Algorithme {
 				setValeur(parties[0].trim(), parties[1]);
 			}
 
+			//évaluation des fonctions
 			if (current.matches(".*\\(.*\\)")) {
 				Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this, this.ctrl);
 			}
 
+			//évaluation des conditions
 			if (current.matches(".*si.*alors.*")) {
 				String condition = current.split("si | alors")[1];
 				if (!Condition.condition(condition, this.getInterpreteur())) {
