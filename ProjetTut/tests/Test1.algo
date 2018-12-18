@@ -2,8 +2,8 @@ ALGORITHME Test1
 constante:
 
 variable:
-	a : entier
-	b : entier
+	a :   entier
+	b :   entier
 	tmp : entier
 	
 DEBUT
@@ -19,13 +19,13 @@ DEBUT
 	
 	si 1 < 2
 	et 8 > 10 alors
-		écrire("mdr")
+		écrire        ("mdr")
 		ecrire("mdr2")
 	sinon
 		ecrire("mdr3")
 	fsi
 	
-	écrire(a)
+	écrire            (a)
 	écrire(b)
 	
 FIN 
