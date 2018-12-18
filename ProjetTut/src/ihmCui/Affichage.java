@@ -43,7 +43,6 @@ public class Affichage {
 		syntaxes.put("fsi",        ANSI_BLUE);
 		syntaxes.put("alors",      ANSI_BLUE);
 		
-<<<<<<< HEAD
 		syntaxes.put("fonction",   ANSI_CYAN);
 		
 		syntaxes.put("entier",     ANSI_GREEN);
@@ -57,9 +56,6 @@ public class Affichage {
 		syntaxes.put("constante",  ANSI_PURPLE);
 		syntaxes.put("DEBUT",      ANSI_PURPLE);
 		syntaxes.put("FIN",        ANSI_PURPLE);
-=======
-		syntaxes.put("fonction", ANSI_CYAN);
->>>>>>> branch 'master' of https://github.com/MikeDevresse/ProjetTutS3
 	}
 	
 	/**
