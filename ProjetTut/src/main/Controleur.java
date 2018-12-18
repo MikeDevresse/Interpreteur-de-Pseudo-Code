@@ -43,16 +43,24 @@ public class Controleur
 
 		Affichage a = new Affichage(lecture.getTexteParLigne());
 		
-		while (true) {
+		while ( !prog.getMain().estTerminer() )
+		{
 			a.afficher( prog.getMain().getVariables(), prog.getTraceExec() );
-			String commande = sc.nextLine();
+			prog.getCurrent().ligneSuivante();
 		}
+		
 	}
 	
 	public void lireVariable(String nomVar) {
 		System.out.print("Entrez la valeur de " + nomVar + " : ");
 		String valeur = this.sc.nextLine();
 		System.out.println(valeur);
+		this.prog.getMain().setValeur(nomVar, valeur);
+	}
+	
+	public void attend ()
+	{
+		this.sc.nextLine();
 	}
 	
 	/**

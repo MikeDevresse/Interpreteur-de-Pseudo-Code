@@ -41,6 +41,8 @@ public class Algorithme {
 	private Programme prog;
 	
 	private Controleur ctrl;
+	
+	private boolean estVrai;
 
 	/**
 	 * Instanciation de algorithme.
@@ -61,14 +63,16 @@ public class Algorithme {
 	 * Interprète la ligne suivante
 	 */
 	public void ligneSuivante() {
+		String current = fichier[ligneCourrante++];
+		if ( current.trim().equals("") ) return;
+		this.ctrl.attend();
+		estVrai = true;
 		if (ligneCourrante == fichier.length) {
 			this.fin = true;
 			return;
 		}
-		String current = fichier[ligneCourrante++];
 		String[] mots = current.split(" ");
-		boolean ignore = current.trim().equals("");
-		if (!debut && !ignore) {
+		if (!debut ) {
 			// type de variables : constantes
 			if (mots[0].replaceAll(":", "").equals("constante")) {
 				this.def = "constante";
@@ -88,7 +92,7 @@ public class Algorithme {
 				for (String s : current.split(":")[0].split(","))
 					ajouterVariable(VariableFactory.createVariable(s.trim(), type, estConstante));
 			}
-		} else if (debut && !ignore) {
+		} else if (debut) {
 			if (current.split("<--").length == 2) {
 				String[] parties = current.split("<--");
 				setValeur(parties[0].trim(), parties[1]);
@@ -103,6 +107,7 @@ public class Algorithme {
 			if (current.matches(".*si.*alors.*")) {
 				String condition = current.split("si | alors")[1];
 				if (!Condition.condition(condition, this.getInterpreteur())) {
+					estVrai = false;
 					do {
 						ligneCourrante++;
 					} while (!fichier[ligneCourrante].trim().equals("fsi")
@@ -120,6 +125,20 @@ public class Algorithme {
 					}
 				}
 
+			}
+			
+			if ( current.matches( ".*tq.*alors.*" ))
+			{
+				String condition = current.split("tq | alors")[1];
+				int ligneDebut = this.getLigneCourrante();
+				while ( Condition.condition( condition, this.getInterpreteur() ))
+				{
+					do {
+						ligneSuivante();
+					} while ( !fichier[ligneCourrante].trim().equals( "ftq" ));
+					ligneCourrante = ligneDebut;
+				}
+				this.estVrai = false;
 			}
 
 			if (mots[0].equals("FIN"))
@@ -227,4 +246,8 @@ public class Algorithme {
 		return this.getLigneCourrante();
 	}
 
+	public boolean getEstVrai ()
+	{
+		return this.estVrai;
+	}
 }
