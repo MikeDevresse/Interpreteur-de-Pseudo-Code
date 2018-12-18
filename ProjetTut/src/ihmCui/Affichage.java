@@ -32,27 +32,29 @@ public class Affichage {
 		
 		if(ligneHaut<0) {ligneHaut=0; ligneBas = 40;}
 		
-		for(int i=ligneHaut; )
-		for(String str : code) {
-			str = str.replace("\t", "  ");
-			cpt++;
-			
-			str = redistribuer(str);
-			
-			String[] strTab = str.split("\\|");
-			for(String str2 : strTab) {
-				if(cpt==ligneC) {
-					Console.couleurFond(CouleurConsole.CYAN);
-					Console.print(String.format("|%2d %-76.76s|", cpt, str2));
-					Console.normal();
-				}else
-					Console.print(String.format("|%2d %-76.76s|", cpt, str2));
+		for(int i=ligneHaut; i<ligneBas; i++) {
+			try {
+				String str = code[i];
+				str = str.replace("\t", "  ");
+				cpt++;
 				
-				ecrireVar(cptVar, vars);
-				cptVar++;
+				str = redistribuer(str);
 				
-				Console.print("\n");
-			}
+				String[] strTab = str.split("\\|");
+				for(String str2 : strTab) {
+					if(cpt==ligneC) {
+						Console.couleurFond(CouleurConsole.CYAN);
+						Console.print(String.format("|%2d %-76.76s|", cpt, str2));
+						Console.normal();
+					}else
+						Console.print(String.format("|%2d %-76.76s|", cpt, str2));
+					
+					ecrireVar(cptVar, vars);
+					cptVar++;
+					
+					Console.print("\n");
+				}
+			}catch(Exception e) {}
 		}
 		
 		console(exec);
