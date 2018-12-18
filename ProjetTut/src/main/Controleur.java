@@ -14,7 +14,7 @@ public class Controleur
 {
 	
 	/** nom du fichier */
-	private final String input = "tests/Test3.algo";
+	private final String input = "tests/TestLire.algo";
 	
 	/** objet programme */
 	private Programme prog;
@@ -30,10 +30,10 @@ public class Controleur
 	private Controleur ()
 	{
 		this.sc = new Scanner(System.in);
-		lecture = new LectureFichier(input);
+		this.lecture = new LectureFichier(input);
 		try
 		{
-			prog = new Programme(lecture.getTexteParLigne(), this);
+			this.prog = new Programme(lecture.getTexteParLigne(), this);
 		}
 		catch ( AlgorithmeException e )
 		{
@@ -52,6 +52,7 @@ public class Controleur
 	public void lireVariable(String nomVar) {
 		System.out.print("Entrez la valeur de " + nomVar + " : ");
 		String valeur = this.sc.nextLine();
+		System.out.println(this.prog);
 		this.prog.getMain().setValeur(nomVar, valeur);
 	}
 	
