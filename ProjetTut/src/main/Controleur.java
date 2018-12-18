@@ -1,9 +1,9 @@
 package main;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Scanner;
-
-import org.omg.CORBA.COMM_FAILURE;
 
 import ihmCui.Affichage;
 import pseudoCode.AlgorithmeException;
@@ -76,6 +76,20 @@ public class Controleur
 	 */
 	public void attend ()
 	{
+
+		try
+		{
+			FileOutputStream fichier = new FileOutputStream("histo/progstep" + nbSteps++ + ".ser");
+			ObjectOutputStream oos = new ObjectOutputStream(fichier);
+			oos.writeObject( prog );
+			oos.flush();
+			oos.close();
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
+		}
+		
 		if ( this.ligneRestantes > 0)
 		{
 			ligneRestantes--;
@@ -91,7 +105,7 @@ public class Controleur
 			String commande = this.sc.nextLine();
 			
 			if (commande.equals("b")) {
-				System.out.println("arrière");
+				retour();
 			}else if (commande.matches("L[0-9]*")) {
 				System.out.println("saut de ligne : " + commande.replaceAll("L([0-9]*)", "$1"));
 			}else if (commande.matches("[+-] var \\w*")) {
@@ -101,13 +115,15 @@ public class Controleur
 					System.out.println("suppression de variable " + commande.replaceAll("[+-] var (\\w*)", "$1"));
 			}
 		}
+	}
+	
+	private void retour ()
+	{
 		try
 		{
-			FileOutputStream fichier = new FileOutputStream("histo/progstep" + nbSteps++ + ".ser");
-			ObjectOutputStream oos = new ObjectOutputStream(fichier);
-			oos.writeObject( prog );
-			oos.flush();
-			oos.close();
+    		FileInputStream fileIn = new FileInputStream("histo/progstep" + --this.nbSteps +".ser");
+    		ObjectInputStream in = new ObjectInputStream(fileIn);
+    		this.prog = (Programme) in.readObject();
 		}
 		catch ( Exception e )
 		{
