@@ -1,5 +1,7 @@
 package ihmCui;
 
+import iut.algo.Console;
+import iut.algo.CouleurConsole;
 import pseudoCode.Algorithme;
 import pseudoCode.Variable;
 
@@ -11,16 +13,7 @@ public class Affichage {
 	}
 	
 	public void afficher(Variable[] vars, String exec) {
-		String affichage = "";
-		
-		int cpt=0;
-		int cptTVar=0;
-		
-
-		
-		affichage += String.format("-----------%31s-----------\n", " ");
-		affichage += String.format("| CODE    |%31s| DONNEES |\n", " ");
-		affichage += "---------------------------------------------------------------------------------\n";
+		entete();
 		
 		for(String str : code) {
 			str = str.replace("\t", "  ");
@@ -36,16 +29,36 @@ public class Affichage {
 			affichage += "\n";
 		}
 		
-		affichage += "---------------------------------------------------------------------------------\n\n";
-		affichage += "-----------\n";
-		affichage += "| CONSOLE |\n";
-		affichage += "---------------------------------------------------------------------------------\n";
-		
-		for(String str : exec.split("\n")) {
-			affichage += String.format("|%-79s|\n", str);
+		console();
+	}
+	
+	private void entete() {
+		Console.print(String.format("+---------+%69s+---------+\n", " "));
+		Console.print(String.format("| CODE    |%69s| DONNEES |\n", " "));
+		for(int i=0; i<140;i++)
+			Console.print("-");
+		Console.print("\n");
+		Console.print(String.format("| 0 %-76.76s|", fichier[0]));
+		Console.print("    NOM     |    TYPE   |   VALEUR   |\n");
+	}
+	
+	private void console() {
+		for(int i=0; i<140;i++)
+			Console.print("-");
+		Console.print("\n\n");
+		Console.print("+---------+\n");
+		Console.print("| CONSOLE |\n");
+		Console.print("+---------+---------------------------------------------------------------------+\n");
+		for(int i=0; i<3; i++) {
+			try {
+				Console.print(String.format("|%-79s|\n", algo.getProgramme().getTraceExec().split("\n")[i]));
+			}catch(Exception e) {
+				Console.print(String.format("|%-79s|\n", " "));
+			}
 		}
-		affichage += "---------------------------------------------------------------------------------\n";
+		for(int i=0; i<140;i++)
+			Console.print("-");
+		Console.print("\n");
 		
-		System.out.println(affichage);
 	}
 }

@@ -224,6 +224,10 @@ public class Algorithme
 	{
 		return this.prog;
 	}
+	
+	public String[] getFichier() {
+		return this.fichier;
+	}
 
 	public boolean estTerminer ()
 	{
