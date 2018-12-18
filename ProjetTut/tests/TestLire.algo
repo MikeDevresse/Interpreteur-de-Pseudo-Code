@@ -6,7 +6,7 @@ variable:
 	b : entier
 	
 DEBUT
-	lire(a)
-	écrire(a)
+	lire(a, b)
+	écrire(a © "lol" © b)
 	
 FIN 

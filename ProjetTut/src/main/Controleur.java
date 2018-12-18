@@ -2,6 +2,7 @@ package main;
 import java.util.Scanner;
 
 import ihmCui.Affichage;
+import pseudoCode.Algorithme;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Programme;
 
@@ -54,8 +55,7 @@ public class Controleur
 	public void lireVariable(String nomVar) {
 		System.out.print("Entrez la valeur de " + nomVar + " : ");
 		String valeur = this.sc.nextLine();
-		System.out.println(valeur);
-		this.prog.getMain().setValeur(nomVar, valeur);
+		this.prog.getCurrent().setValeur(nomVar, valeur);
 	}
 	
 	public void attend ()

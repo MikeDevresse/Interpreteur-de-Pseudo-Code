@@ -44,7 +44,7 @@ public class Fonctions {
 	 */
 	private static void lire(String vars,Algorithme a, Controleur ctrl) {
 		vars = vars.replace(" ", "");
-
+		
 		for (String var : vars.split(",")) {
 			ctrl.lireVariable(var);
 		}
@@ -58,8 +58,7 @@ public class Fonctions {
 	private static void ecrire(String contenu, Algorithme a) {
 		Interpreter interpreter = a.getInterpreteur();
 		try {
-			
-			a.getProgramme().traceExec += interpreter.eval(contenu) + "\n" ;
+			a.getProgramme().traceExec += interpreter.eval(contenu.trim()) + "\n" ;
 		} catch (EvalError e) {
 			e.printStackTrace();
 		}
