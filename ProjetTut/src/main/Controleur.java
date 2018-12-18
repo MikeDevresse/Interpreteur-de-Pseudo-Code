@@ -1,8 +1,9 @@
 package main;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 import ihmCui.Affichage;
-import pseudoCode.Algorithme;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Programme;
 
@@ -28,6 +29,8 @@ public class Controleur
 	private int ligneAAttendre = -1;
 	
 	private int ligneRestantes = -1;
+	
+	private int nbSteps = 0;
 	
 	/**
 	 * Constructeur du controleur.
@@ -77,6 +80,18 @@ public class Controleur
 			ligneRestantes = -1;
 			ligneAAttendre = -1;
 			this.sc.nextLine();
+		}
+		try
+		{
+			FileOutputStream fichier = new FileOutputStream("histo/progstep" + nbSteps++ + ".ser");
+			ObjectOutputStream oos = new ObjectOutputStream(fichier);
+			oos.writeObject( prog );
+			oos.flush();
+			oos.close();
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
 		}
 	}
 	

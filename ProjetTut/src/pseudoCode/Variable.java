@@ -1,12 +1,16 @@
 package pseudoCode;
 
+import java.io.Serializable;
+
 /**
  * Représente une variable dans l'algorithme
  *
  * @param <T> type de la variable
  */
 
-public class Variable<T> {
+public class Variable<T> implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 
 	private String nom;
 	private String type;
