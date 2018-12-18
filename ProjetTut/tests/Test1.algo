@@ -2,30 +2,19 @@ ALGORITHME Test1
 constante:
 
 variable:
-	a :   entier
-	b :   entier
-	tmp : entier
+
+	a : entier
+	b : entier
+	c : entier
 	
 DEBUT
-	a <-- 1
+	a <-- 0
 	b <-- 10
-
-	écrire(a)
-	écrire(b)
+	c <-- 2+2
 	
-	tmp <-- a
-	a <-- b
-	b <-- tmp
-	
-	si 1 < 2
-	et 8 > 10 alors
-		écrire        ("mdr")
-		ecrire("mdr2")
-	sinon
-		ecrire("mdr3")
-	fsi
-	
-	écrire            (a)
-	écrire(b)
+	tq a < 10 alors
+		ecrire(a)
+		a <-- a+1
+	ftq
 	
 FIN 
