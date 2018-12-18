@@ -46,7 +46,7 @@ public class LectureFichier
 		}
 		catch ( Exception e )
 		{
-			sRet += e;
+			e.printStackTrace();
 		}
 		return sRet;
 	}

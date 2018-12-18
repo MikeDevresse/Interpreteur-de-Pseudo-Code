@@ -8,10 +8,19 @@ import pseudoCode.Variable;
 public class Affichage {
 	private String[] code;
 	
+	/**
+	 * Constructeur
+	 * @param code pseudo-code
+	 */
 	public Affichage(String[] code) {
 		this.code = code;
 	}
 	
+	/**
+	 * Crée l'affichage
+	 * @param vars ensemble des variables de l'algorithme
+	 * @param exec trace d'exécution de l'algorithme
+	 */
 	public void afficher(Variable[] vars, String exec) {
 		entete();
 		
