@@ -24,13 +24,15 @@ public class Affichage {
 	public void afficher(Variable[] vars, String exec, int ligneC) {
 		entete();
 		
-		int cpt = 0;
 		int cptVar = 0;
+
+		
 		
 		int ligneHaut = ligneC-20;
 		int ligneBas  = ligneC+20;
 		
 		if(ligneHaut<0) {ligneHaut=0; ligneBas = 40;}
+		int cpt = ligneHaut;
 		
 		for(int i=ligneHaut; i<ligneBas; i++) {
 			try {
