@@ -31,7 +31,7 @@ public class Fonctions {
 			break;
 
 		case "lire":
-			Fonctions.lire(contenu,a);
+			Fonctions.lire(contenu,a, ctrl);
 			break;
 		}
 	}
@@ -39,11 +39,11 @@ public class Fonctions {
 	/*
 	 * TODO attendre le CUI pour la saisie des valeurs
 	 */
-	private static void lire(String vars,Algorithme a) {
+	private static void lire(String vars,Algorithme a, Controleur ctrl) {
 		vars = vars.replace(" ", "");
 
 		for (String var : vars.split(",")) {
-			System.out.println("lecture de " + var);
+			ctrl.lireVariable(var);
 		}
 	}
 
