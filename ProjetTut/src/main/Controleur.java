@@ -17,7 +17,7 @@ public class Controleur
 {
 	
 	/** nom du fichier */
-	private final String input = "tests/testConditions.algo";
+	private final String input = "tests/Test1.algo";
 	
 	/** objet programme */
 	private Programme prog;
@@ -65,15 +65,16 @@ public class Controleur
 
 		Affichage a = new Affichage(lecture.getTexteParLigne());
 		
-		a.afficher( prog.getMain().getVariables(), prog.getTraceExec(),prog.getCurrent().getLigneCourrante() );	
+		//a.afficher( prog.getMain().getVariables(), prog.getTraceExec(),prog.getCurrent().getLigneCourrante() );	
 		
 		while ( !prog.getMain().estTerminer() )
 		{
+			//System.out.println("lol");
 			try
 			{
 				if ( prog.getCurrent().ligneSuivante() )
 				{
-					a.afficher( prog.getMain().getVariables(), prog.getTraceExec(), prog.getCurrent().getLigneCourrante() );		
+					//a.afficher( prog.getMain().getVariables(), prog.getTraceExec(), prog.getCurrent().getLigneCourrante() );		
 				}
 			}
 			catch ( AlgorithmeException e )

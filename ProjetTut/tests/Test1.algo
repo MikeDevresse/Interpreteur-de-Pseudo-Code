@@ -17,6 +17,13 @@ DEBUT
 	a <-- b
 	b <-- tmp
 	
+	si a < 2 
+	et 15 < 20
+	et 8 < 10 
+	et a > 5 alors
+		écrire("mdr")
+	fsi
+	
 	écrire(a)
 	écrire(b)
 	

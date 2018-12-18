@@ -57,6 +57,7 @@ public class Algorithme {
 		this.nom = nom;
 		this.ensVariables = new ArrayList<Variable>();
 		this.fichier = fichier;
+		//this.def = "";
 	}
 
 	/**
@@ -71,87 +72,141 @@ public class Algorithme {
 		
 		String current = fichier[ligneCourrante++];
 		if ( current.trim().equals("") ) return false;
-		System.out.println( "l : " + ligneCourrante );
-		Controleur ctrl = Controleur.getControleur();
-		ctrl.attend();
-		estVrai = true;
+		
 		
 		String[] mots = current.split(" ");
-		if (!debut ) {
-			// type de variables : constantes
-			if (mots[0].replaceAll(":", "").equals("constante")) {
-				this.def = "constante";
-			}
-			// type de variables : variables
-			else if (mots[0].replaceAll(":", "").equals("variable")) {
-				this.def = "variable";
-			} else if (mots[0].equals("DEBUT")) {
-				this.debut = true;
-			} else {
-				// définition des variables
-				if (this.def == null || this.def == "") {
-					return false;
+		if (mots[0].replace(":", "").equals("constante")) {
+			this.def = "const";
+		} else if (mots[0].replace(":", "").equals("variable")) {
+			this.def = "var";
+		}else if (this.def != null || !this.def.equals("")) {
+			if (current.matches("[[\\w*],*]*[ ]*\\w*:[ ]*\\w*")) {
+				String type = current.split(":")[1].trim();
+				for (String var : current.split(":")[0].split(",")) {
+					ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const")));
 				}
-				boolean estConstante = def.equals("constante");
-				if ( current.matches( "\\w*[ ]*\\:[ ]*\\w*" ))
-				{
-    				String type = current.split(":")[1].trim();
-    				for (String s : current.split(":")[0].split(","))
-    					ajouterVariable(VariableFactory.createVariable(s.trim(), type, estConstante));
-				}
+					
 			}
-		} else if (debut) {
-			if (current.split("<--").length == 2) {
+		}
+		
+		
+		if (mots[0].equals("DEBUT"))
+			this.def = "algo";
+		
+		if (this.def.equals("algo")) {
+			//System.out.println(current);
+			if (current.matches("\\w*[ ]*<--[ ]*\\w*")) {
 				String[] parties = current.split("<--");
-				setValeur(parties[0].trim(), parties[1]);
-			}
-
-			//évaluation des fonctions
-			if (current.matches(".*\\(.*\\)")) {
-				Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
-			}
-
-			//évaluation des conditions
-			if (current.matches(".*si.*alors.*")) {
-				String condition = current.split("si | alors")[1];
-				if (!Condition.condition(condition, this.getInterpreteur())) {
-					estVrai = false;
-					do {
-						ligneCourrante++;
-					} while (!fichier[ligneCourrante].trim().equals("fsi")
-							&& !fichier[ligneCourrante].trim().equals("sinon"));
-				} else {
-					do {
-						ligneSuivante();
-					} while (!fichier[ligneCourrante].trim().equals("fsi")
-							&& !fichier[ligneCourrante].trim().equals("sinon"));
-
-					if (fichier[ligneCourrante].trim().equals("sinon")) {
-						do {
-							ligneCourrante++;
-						} while (!fichier[ligneCourrante].trim().equals("fsi"));
-					}
-				}
-
+				setValeur(parties[0].trim(), parties[1].trim());
 			}
 			
-			if ( current.matches( ".*tq.*alors.*" ))
-			{
-				String condition = current.split("tq | alors")[1];
-				int ligneDebut = this.getLigneCourrante();
-				while ( Condition.condition( condition, this.getInterpreteur() ))
-				{
-					do {
-						ligneSuivante();
-					} while ( !fichier[ligneCourrante].trim().equals( "ftq" ));
-					ligneCourrante = ligneDebut;
+			
+			if (current.matches(".*si .* alors.*")) {
+				System.out.println("condition");
+				String condition = current.split("si | alors")[1];
+				System.out.println(condition);
+			} else if (current.matches(".*si .*") && !current.contains("alors")) {
+				String condition = current.split("si")[1];
+				boolean conditionFinie = false;
+				int i;
+				for (i = ligneCourrante; i < fichier.length && !conditionFinie; i++) {
+					
+					if (!fichier[i].trim().matches(".* alors$")) {
+						condition += fichier[i].trim() + " ";
+					}
+						
+					if (fichier[i].trim().contains("alors") ) {
+						condition += fichier[i].split("alors")[0];
+						conditionFinie = true;
+					}					
 				}
-				this.estVrai = false;
+				
+				System.out.println(ligneCourrante);
 			}
-
+		}
+		
+		
+//		System.out.println( "l : " + ligneCourrante );
+//		Controleur ctrl = Controleur.getControleur();
+//		ctrl.attend();
+//		estVrai = true;
+//		
+//		String[] mots = current.split(" ");
+//		if (!debut ) {
+//			// type de variables : constantes
+//			if (mots[0].replaceAll(":", "").equals("constante")) {
+//				this.def = "constante";
+//			}
+//			// type de variables : variables
+//			else if (mots[0].replaceAll(":", "").equals("variable")) {
+//				this.def = "variable";
+//			} else if (mots[0].equals("DEBUT")) {
+//				this.debut = true;
+//			} else {
+//				// définition des variables
+//				if (this.def == null || this.def == "") {
+//					return false;
+//				}
+//				boolean estConstante = def.equals("constante");
+//				if ( current.matches( "\\w*[ ]*\\:[ ]*\\w*" ))
+//				{
+//    				String type = current.split(":")[1].trim();
+//    				for (String s : current.split(":")[0].split(","))
+//    					ajouterVariable(VariableFactory.createVariable(s.trim(), type, estConstante));
+//				}
+//			}
+//		} else if (debut) {
+//			if (current.split("<--").length == 2) {
+//				String[] parties = current.split("<--");
+//				setValeur(parties[0].trim(), parties[1]);
+//			}
+//
+//			//évaluation des fonctions
+//			if (current.matches(".*\\(.*\\)")) {
+//				Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
+//			}
+//
+//			//évaluation des conditions
+//			if (current.matches(".*si.*alors.*")) {
+//				String condition = current.split("si | alors")[1].replace("\n", " ");
+//				if (!Condition.condition(condition, this.getInterpreteur())) {
+//					estVrai = false;
+//					do {
+//						ligneCourrante++;
+//					} while (!fichier[ligneCourrante].trim().equals("fsi")
+//							&& !fichier[ligneCourrante].trim().equals("sinon"));
+//				} else {
+//					do {
+//						ligneSuivante();
+//					} while (!fichier[ligneCourrante].trim().equals("fsi")
+//							&& !fichier[ligneCourrante].trim().equals("sinon"));
+//
+//					if (fichier[ligneCourrante].trim().equals("sinon")) {
+//						do {
+//							ligneCourrante++;
+//						} while (!fichier[ligneCourrante].trim().equals("fsi"));
+//					}
+//				}
+//
+//			}
+//			
+//			if ( current.matches( ".*tq.*alors.*" ))
+//			{
+//				String condition = current.split("tq | alors")[1];
+//				int ligneDebut = this.getLigneCourrante();
+//				while ( Condition.condition( condition, this.getInterpreteur() ))
+//				{
+//					do {
+//						ligneSuivante();
+//					} while ( !fichier[ligneCourrante].trim().equals( "ftq" ));
+//					ligneCourrante = ligneDebut;
+//				}
+//				this.estVrai = false;
+//			}
+//
 			if (mots[0].equals("FIN"))
 				this.fin = true;
-		}
+//		}
 		return true;
 	}
 
@@ -203,7 +258,7 @@ public class Algorithme {
 	 */
 	public void setValeur(String nomVar, String valeur) {
 		Interpreter interpreter = this.getInterpreteur();
-
+		
 		valeur = Variable.traduire(valeur);
 
 		try {
