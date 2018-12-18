@@ -1,5 +1,6 @@
 package pseudoCode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -12,7 +13,9 @@ import main.Controleur;
 import util.Condition;
 import util.Fonctions;
 
-public class Algorithme {
+public class Algorithme implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private Interpreter interpreteur;
 

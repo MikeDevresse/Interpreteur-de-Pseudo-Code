@@ -1,11 +1,14 @@
 package pseudoCode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import bsh.Interpreter;
 import main.Controleur;
 
-public class Programme {
+public class Programme implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	public String traceExec;
 
 	/** fichier. */
@@ -13,8 +16,6 @@ public class Programme {
 
 	/** algo. */
 	private ArrayList<Algorithme> algos;
-
-	private static Interpreter interpreter;
 
 	private Algorithme main;
 	
@@ -32,7 +33,6 @@ public class Programme {
 		this.ctrl = ctrl;
 		this.traceExec = "";
 
-		Programme.interpreter = new Interpreter();
 		this.fichier = fichier;
 
 		this.algos = new ArrayList<Algorithme>();
