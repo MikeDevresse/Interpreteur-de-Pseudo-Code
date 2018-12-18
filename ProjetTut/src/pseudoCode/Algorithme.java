@@ -63,14 +63,16 @@ public class Algorithme {
 	 * Interprète la ligne suivante
 	 */
 	public void ligneSuivante() {
-		String current = fichier[ligneCourrante++];
-		if ( current.trim().equals("") ) return;
-		this.ctrl.attend();
-		estVrai = true;
 		if (ligneCourrante == fichier.length) {
 			this.fin = true;
 			return;
 		}
+		
+		String current = fichier[ligneCourrante++];
+		if ( current.trim().equals("") ) return;
+		this.ctrl.attend();
+		estVrai = true;
+		
 		String[] mots = current.split(" ");
 		if (!debut ) {
 			// type de variables : constantes
