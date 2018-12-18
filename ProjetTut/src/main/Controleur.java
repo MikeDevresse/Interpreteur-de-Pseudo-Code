@@ -2,6 +2,7 @@ package main;
 import java.util.Scanner;
 
 import ihmCui.Affichage;
+import pseudoCode.Algorithme;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Programme;
 
@@ -34,10 +35,10 @@ public class Controleur
 	private Controleur ()
 	{
 		this.sc = new Scanner(System.in);
-		lecture = new LectureFichier(input);
+		this.lecture = new LectureFichier(input);
 		try
 		{
-			prog = new Programme(lecture.getTexteParLigne(), this);
+			this.prog = new Programme(lecture.getTexteParLigne(), this);
 		}
 		catch ( AlgorithmeException e )
 		{
@@ -58,7 +59,7 @@ public class Controleur
 	public void lireVariable(String nomVar) {
 		System.out.print("Entrez la valeur de " + nomVar + " : ");
 		String valeur = this.sc.nextLine();
-		this.prog.getMain().setValeur(nomVar, valeur);
+		this.prog.getCurrent().setValeur(nomVar, valeur);
 	}
 	
 	public void attend ()
