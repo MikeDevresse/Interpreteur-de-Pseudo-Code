@@ -65,7 +65,7 @@ public class Affichage {
 	private void entete() {
 		Console.print(String.format("+---------+%69s+---------+\n", " "));
 		Console.print(String.format("| CODE    |%69s| DONNEES |\n", " "));
-		for(int i=0; i<140;i++)
+		for(int i=0; i<119;i++)
 			Console.print("-");
 		Console.print("\n");
 	}
@@ -80,7 +80,7 @@ public class Affichage {
 	}
 	
 	private void console(String exec) {
-		for(int i=0; i<140;i++)
+		for(int i=0; i<119;i++)
 			Console.print("-");
 		Console.print("\n\n");
 		Console.print("+---------+\n");
@@ -93,7 +93,7 @@ public class Affichage {
 				Console.print(String.format("|%-79s|\n", " "));
 			}
 		}
-		for(int i=0; i<140;i++)
+		for(int i=0; i<81;i++)
 			Console.print("-");
 		Console.print("\n");
 		
