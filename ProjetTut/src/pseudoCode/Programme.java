@@ -18,6 +18,8 @@ public class Programme {
 
 	private Algorithme main;
 	
+	private Algorithme current;
+
 	private Controleur ctrl;
 
 	/**
@@ -37,15 +39,16 @@ public class Programme {
 
 		String nom = "";
 		boolean main = false;
+		int debut = 0;
 		ArrayList<String> lignes = null;
 		for (int i = 0; i < fichier.length; i++) {
 			String[] mots = fichier[i].split(" ");
 			if (mots[0].equals("ALGORITHME") || i == fichier.length - 1) {
 				if (lignes != null) {
-					Algorithme a = new Algorithme(nom, lignes.toArray(new String[lignes.size()]), this, ctrl);
+					Algorithme a = new Algorithme(nom, debut, lignes.toArray(new String[lignes.size()]), this, ctrl);
 					algos.add(a);
 					if (main) {
-						this.main = a;
+						this.current = this.main = a;
 					}
 				}
 				if (mots[0].equals("ALGORITHME")) {
@@ -56,6 +59,7 @@ public class Programme {
 						main = false;
 						nom = mots[1].replaceAll("(\\w*)\\([\\w]*\\)", "$1");
 					}
+					debut = i;
 
 					lignes = new ArrayList<String>();
 				}
@@ -73,6 +77,11 @@ public class Programme {
 
 	public Algorithme getMain() {
 		return this.main;
+	}
+	
+	public Algorithme getCurrent()
+	{
+		return this.current;
 	}
 
 	public String getTraceExec() {

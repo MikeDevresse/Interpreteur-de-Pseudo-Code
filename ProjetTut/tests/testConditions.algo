@@ -8,7 +8,7 @@ DEBUT
 	age <-- 10
 	si age <= 30 et age >= 10 alors 
 		si age < 15 alors
-			écrire("cas1")
+			écrire("cas1") écrire("cas2")
 		si age > 15 alors
 			écrire("cas2")
 		fsi

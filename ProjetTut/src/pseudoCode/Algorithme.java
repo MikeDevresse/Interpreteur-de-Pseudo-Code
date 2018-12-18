@@ -35,6 +35,8 @@ public class Algorithme {
 
 	/** ligne courrante. */
 	private int ligneCourrante = 0;
+	
+	private int ligneDebut;
 
 	private Programme prog;
 	
@@ -45,9 +47,10 @@ public class Algorithme {
 	 *
 	 * @param nom nom
 	 */
-	public Algorithme(String nom, String[] fichier, Programme p, Controleur ctrl) {
+	public Algorithme(String nom, int ligneDebut, String[] fichier, Programme p, Controleur ctrl) {
 		this.ctrl = ctrl;
 		this.prog = p;
+		this.ligneDebut = ligneDebut;
 		this.interpreteur = new Interpreter();
 		this.nom = nom;
 		this.ensVariables = new ArrayList<Variable>();
@@ -210,6 +213,16 @@ public class Algorithme {
 	 */
 	public boolean estTerminer() {
 		return this.fin;
+	}
+	
+	public int getLigneDebut()
+	{
+		return this.ligneDebut;
+	}
+	
+	public int getLigneCourrante()
+	{
+		return this.getLigneCourrante();
 	}
 
 }
