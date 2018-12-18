@@ -2,7 +2,7 @@ ALGORITHME TestConditions
 constante:
 
 variable :
-	age 	: entier
+	age : entier
 	
 DEBUT
 	age <-- 10

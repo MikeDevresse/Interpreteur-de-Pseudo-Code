@@ -236,6 +236,10 @@ public class Algorithme {
 	public Programme getProgramme() {
 		return this.prog;
 	}
+	
+	public String[] getFichier() {
+		return this.fichier;
+	}
 
 	/**
 	 * Retourne si le programme est terminé
