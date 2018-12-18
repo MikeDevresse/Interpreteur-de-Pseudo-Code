@@ -2,6 +2,7 @@ package pseudoCode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.ResourceBundle.Control;
 
 /**
  * Interprète le code d'un algorithme
@@ -172,21 +173,24 @@ public class Algorithme {
 		if (mots[0].equals("FIN"))
 			this.fin = true;
 
+		Controleur.getControleur().attend();
+
 		return true;
 	}
 
 	/**
 	 * Interprète une structure conditionnelle
+	 * 
 	 * @param condition condition
 	 * @throws AlgorithmeException
 	 */
 	public void interpreterCondition(String condition) throws AlgorithmeException {
-		//Condition non valide
+		// Condition non valide
 		if (!Condition.condition(condition, this.getInterpreteur())) {
 			do {
 				ligneCourrante++;
 			} while (!fichier[ligneCourrante].trim().equals("fsi") && !fichier[ligneCourrante].trim().equals("sinon"));
-		} else { //condition valide
+		} else { // condition valide
 			do {
 				ligneSuivante();
 			} while (!fichier[ligneCourrante].trim().equals("fsi") && !fichier[ligneCourrante].trim().equals("sinon"));
@@ -198,16 +202,16 @@ public class Algorithme {
 			}
 		}
 	}
-	
+
 	/**
 	 * Interprète une structure itérative
+	 * 
 	 * @param ligneBoucle ligne de début de boucle
-	 * @param condition condition
+	 * @param condition   condition
 	 * @throws AlgorithmeException
 	 */
 	public void interpreterBoucle(int ligneBoucle, String condition) throws AlgorithmeException {
-		
-		
+
 		while (Condition.condition(condition, this.getInterpreteur())) {
 			ligneCourrante = ligneBoucle;
 			do {

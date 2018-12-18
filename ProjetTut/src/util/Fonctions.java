@@ -58,7 +58,7 @@ public class Fonctions {
 	private static void ecrire(String contenu, Algorithme a) {
 		Interpreter interpreter = a.getInterpreteur();
 		try {
-			System.out.println(interpreter.eval(contenu.trim()));
+//			System.out.println(interpreter.eval(contenu.trim()));
 			a.getProgramme().traceExec += interpreter.eval(contenu.trim()) + "\n" ;
 		} catch (EvalError e) {
 			e.printStackTrace();

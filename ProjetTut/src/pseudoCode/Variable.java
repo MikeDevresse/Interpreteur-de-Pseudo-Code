@@ -89,6 +89,7 @@ public class Variable<T> {
 				parts[i] = parts[i].replaceAll("([0-9]+)\\^([0-9]+)", "Math.pow($1,$2)");
 				parts[i] = parts[i].replaceAll("\\\\/¯([0-9]+)", "Math.sqrt($1)");
 				parts[i] = parts[i].replaceAll("©", "+");
+				parts[i] = parts[i].replaceAll("([\\w]+)\\+\\+", "$1 += 1");
 			} else {
 				parts[i] = "\"" + parts[i] + "\"";
 			}
