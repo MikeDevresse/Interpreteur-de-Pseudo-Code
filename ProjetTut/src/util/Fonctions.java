@@ -1,10 +1,11 @@
-package pseudoCode;
+package util;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import bsh.EvalError;
 import bsh.Interpreter;
+import pseudoCode.Algorithme;
 
 /**
  * Ensemble des fonctions primitives du pseudo-code.

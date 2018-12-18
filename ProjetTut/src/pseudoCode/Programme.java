@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import bsh.Interpreter;
 
 public class Programme {
-	protected String traceExec;
+	public String traceExec;
 
 	/** fichier. */
 	private String[] fichier;

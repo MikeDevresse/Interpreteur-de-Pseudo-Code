@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import bsh.EvalError;
 import bsh.Interpreter;
+import util.Condition;
+import util.Fonctions;
 
 public class Algorithme {
 
@@ -91,7 +93,7 @@ public class Algorithme {
 
 			if (current.matches(".*si.*alors.*")) {
 				String condition = current.split("si | alors")[1];
-				if (!this.condition(condition)) {
+				if (!Condition.condition(condition, this.getInterpreteur())) {
 					do {
 						ligneCourrante++;
 					} while (!fichier[ligneCourrante].trim().equals("fsi")
@@ -188,24 +190,7 @@ public class Algorithme {
 	 * @param condition condition
 	 * @return vrai si syntaxiquement valide
 	 */
-	public boolean condition(String condition) {
-		condition = condition.replaceAll("/=", "!=");
-		condition = condition.replaceAll("([a-zA-Z0-9]+[ ]*)=([ ]*[a-zA-Z0-9]+)", "$1==$2");
-		condition = condition.replaceAll("et", "&&");
-		condition = condition.replaceAll("(.*)xou(.*)", "($1||$2) && !($1 && $2)");
-		condition = condition.replaceAll("ou", "||");
-		condition = condition.replaceAll("non", "!");
-
-		Interpreter interpreter = this.getInterpreteur();
-		try {
-			return ((boolean) interpreter.eval(condition));
-		} catch (EvalError e) {
-			e.printStackTrace();
-		}
-
-		return false;
-
-	}
+	
 
 	/**
 	 * Retourne le programme
