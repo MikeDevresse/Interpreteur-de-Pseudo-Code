@@ -75,7 +75,8 @@ public class Affichage {
 				String[] strTab = str.split("\\|");
 				for(String str2 : strTab) {
 					if(cpt==ligneC+1) {
-						Console.couleurFond(CouleurConsole.CYAN);
+						Console.couleurFond(CouleurConsole.VERT);
+						Console.couleurFont(CouleurConsole.NOIR);
 						Console.print(String.format("|%2d %-76.76s| ", cpt, str2));
 						Console.normal();
 					}else {
@@ -141,12 +142,12 @@ public class Affichage {
 	
 	private void colorer(String str) {
 		String ret="";
+		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
 		String[] mots = str.split(" ");
 		for(int i=0; i<mots.length;i++) {
 			if(syntaxes.containsKey(mots[i])) {
 				mots[i] = syntaxes.get(mots[i])+mots[i]+ANSI_RESET;
 			}
-			mots[i] = mots[i].replaceAll("([éàèa-zA-Z0-9]+[ ]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
 			
 			Console.print(mots[i]+" ");
 		}

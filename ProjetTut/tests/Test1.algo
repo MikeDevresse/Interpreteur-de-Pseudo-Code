@@ -2,10 +2,10 @@ ALGORITHME Test1
 constante:
 
 variable:
+
 	a : entier
 	b : entier
 	c : entier
-	tmp : entier
 	
 DEBUT
 	a <-- 0
@@ -16,6 +16,5 @@ DEBUT
 		ecrire(a)
 		a <-- a+1
 	ftq
-
 	
 FIN 
