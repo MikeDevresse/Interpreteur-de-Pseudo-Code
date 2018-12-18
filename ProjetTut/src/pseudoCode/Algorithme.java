@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import bsh.EvalError;
 import bsh.Interpreter;
+import main.Controleur;
 import util.Condition;
 import util.Fonctions;
 
@@ -36,13 +37,16 @@ public class Algorithme {
 	private int ligneCourrante = 0;
 
 	private Programme prog;
+	
+	private Controleur ctrl;
 
 	/**
 	 * Instanciation de algorithme.
 	 *
 	 * @param nom nom
 	 */
-	public Algorithme(String nom, String[] fichier, Programme p) {
+	public Algorithme(String nom, String[] fichier, Programme p, Controleur ctrl) {
+		this.ctrl = ctrl;
 		this.prog = p;
 		this.interpreteur = new Interpreter();
 		this.nom = nom;
@@ -88,7 +92,7 @@ public class Algorithme {
 			}
 
 			if (current.matches(".*\\(.*\\)")) {
-				Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
+				Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this, this.ctrl);
 			}
 
 			if (current.matches(".*si.*alors.*")) {

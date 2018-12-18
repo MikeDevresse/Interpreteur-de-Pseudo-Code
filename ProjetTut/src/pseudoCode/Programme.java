@@ -3,6 +3,7 @@ package pseudoCode;
 import java.util.ArrayList;
 
 import bsh.Interpreter;
+import main.Controleur;
 
 public class Programme {
 	public String traceExec;
@@ -16,6 +17,8 @@ public class Programme {
 	private static Interpreter interpreter;
 
 	private Algorithme main;
+	
+	private Controleur ctrl;
 
 	/**
 	 * Instanciation de programme.
@@ -23,7 +26,8 @@ public class Programme {
 	 * @param fichier the fichier
 	 * @throws AlgorithmeException the algorithme exception
 	 */
-	public Programme(String[] fichier) throws AlgorithmeException {
+	public Programme(String[] fichier, Controleur ctrl) throws AlgorithmeException {
+		this.ctrl = ctrl;
 		this.traceExec = "";
 
 		Programme.interpreter = new Interpreter();
@@ -38,7 +42,7 @@ public class Programme {
 			String[] mots = fichier[i].split(" ");
 			if (mots[0].equals("ALGORITHME") || i == fichier.length - 1) {
 				if (lignes != null) {
-					Algorithme a = new Algorithme(nom, lignes.toArray(new String[lignes.size()]), this);
+					Algorithme a = new Algorithme(nom, lignes.toArray(new String[lignes.size()]), this, ctrl);
 					algos.add(a);
 					if (main) {
 						this.main = a;

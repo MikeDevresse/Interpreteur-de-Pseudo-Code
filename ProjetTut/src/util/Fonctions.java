@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 import bsh.EvalError;
 import bsh.Interpreter;
+import main.Controleur;
 import pseudoCode.Algorithme;
 
 /**
@@ -20,7 +21,7 @@ public class Fonctions {
 	 * @param nomFonction nom de la fonction
 	 * @param contenu paramètre envoyés
 	 */
-	public static void evaluer(String nomFonction, String contenu, Algorithme a) {
+	public static void evaluer(String nomFonction, String contenu, Algorithme a, Controleur ctrl) {
 
 		nomFonction = nomFonction.trim();
 		switch (nomFonction) {
