@@ -52,8 +52,7 @@ public class Controleur
 	public void lireVariable(String nomVar) {
 		System.out.print("Entrez la valeur de " + nomVar + " : ");
 		String valeur = this.sc.nextLine();
-		System.out.println(this.prog);
-		this.prog.getMain().setValeur(nomVar, valeur);
+		System.out.println(valeur);
 	}
 	
 	/**
