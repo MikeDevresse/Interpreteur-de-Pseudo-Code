@@ -94,7 +94,6 @@ public class Algorithme {
 			this.def = "algo";
 		
 		if (this.def.equals("algo")) {
-			//System.out.println(current);
 			if (current.matches("\\w*[ ]*<--[ ]*\\w*")) {
 				String[] parties = current.split("<--");
 				setValeur(parties[0].trim(), parties[1].trim());
