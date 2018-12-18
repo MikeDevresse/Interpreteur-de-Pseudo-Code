@@ -50,7 +50,7 @@ public class Controleur
 		
 		while ( !prog.getMain().estTerminer() )
 		{
-			a.afficher( prog.getMain().getVariables(), prog.getTraceExec() );	
+			a.afficher( prog.getMain().getVariables(), prog.getTraceExec(), prog.getCurrent().getLigneCourrante() );	
 			prog.getCurrent().ligneSuivante();
 		}
 		

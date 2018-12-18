@@ -21,24 +21,35 @@ public class Affichage {
 	 * @param vars ensemble des variables de l'algorithme
 	 * @param exec trace d'exécution de l'algorithme
 	 */
-	public void afficher(Variable[] vars, String exec) {
+	public void afficher(Variable[] vars, String exec, int ligneC) {
 		entete();
+		
+		int cpt = 0;
+		int cptVar = 0;
 		
 		for(String str : code) {
 			str = str.replace("\t", "  ");
 			cpt++;
-			affichage += String.format("|%2d %-38s|", cpt, str);
-			if(cptTVar == 0) 
-				affichage += "    NOM     |    TYPE   |   VALEUR   |";
-			else if(cptTVar <= vars.length)
-				affichage += String.format("%-37s|", vars[cptTVar-1]);
-			else
-				affichage += String.format("%-37s|", " ");
-			cptTVar++;
-			affichage += "\n";
+			
+			str = redistribuer(str);
+			
+			String[] strTab = str.split("\\|");
+			for(String str2 : strTab) {
+				if(cpt==ligneC) {
+					Console.couleurFond(CouleurConsole.CYAN);
+					Console.print(String.format("|%2d %-76.76s|", cpt, str2));
+					Console.normal();
+				}else
+					Console.print(String.format("|%2d %-76.76s|", cpt, str2));
+				
+				ecrireVar(cptVar, vars);
+				cptVar++;
+				
+				Console.print("\n");
+			}
 		}
 		
-		console();
+		console(exec);
 	}
 	
 	private void entete() {
@@ -47,20 +58,27 @@ public class Affichage {
 		for(int i=0; i<140;i++)
 			Console.print("-");
 		Console.print("\n");
-		Console.print(String.format("| 0 %-76.76s|", fichier[0]));
-		Console.print("    NOM     |    TYPE   |   VALEUR   |\n");
 	}
 	
-	private void console() {
+	private void ecrireVar(int cptVar, Variable[] vars) {
+		if(cptVar==0)
+			Console.print("    NOM     |    TYPE   |   VALEUR   |");
+		else if(cptVar <= vars.length)
+			Console.print(String.format("%-37s|", vars[cptVar-1]));
+		else
+			Console.print(String.format("%-37s|", " "));
+	}
+	
+	private void console(String exec) {
 		for(int i=0; i<140;i++)
 			Console.print("-");
 		Console.print("\n\n");
 		Console.print("+---------+\n");
 		Console.print("| CONSOLE |\n");
 		Console.print("+---------+---------------------------------------------------------------------+\n");
-		for(int i=0; i<3; i++) {
+		for(int i=exec.split("\n").length-3; i<exec.split("\n").length; i++) {
 			try {
-				Console.print(String.format("|%-79s|\n", algo.getProgramme().getTraceExec().split("\n")[i]));
+				Console.print(String.format("|%-79s|\n", exec.split("\n")[i]));
 			}catch(Exception e) {
 				Console.print(String.format("|%-79s|\n", " "));
 			}
@@ -69,5 +87,12 @@ public class Affichage {
 			Console.print("-");
 		Console.print("\n");
 		
+	}
+	
+	private String redistribuer(String str) {
+		if(str.length() > 76) {
+			str = str.substring(0, 75)+"|"+str.substring(75);
+		}
+		return str;
 	}
 }
