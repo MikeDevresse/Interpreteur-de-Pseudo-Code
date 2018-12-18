@@ -87,6 +87,9 @@ public class Controleur
 			ligneAAttendre = -1;
 			String commande = this.sc.nextLine();
 			
+			/*
+			 * Gestion des commandes
+			 */
 			if (commande.equals("b")) {
 				System.out.println("arrière");
 			}else if (commande.matches("L[0-9]*")) {
