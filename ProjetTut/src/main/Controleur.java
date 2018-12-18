@@ -1,4 +1,6 @@
 package main;
+import java.util.Scanner;
+
 import ihmCui.Affichage;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Programme;
@@ -20,15 +22,18 @@ public class Controleur
 	/** lecteur de fichier */
 	private LectureFichier lecture;
 	
+	private Scanner sc;
+	
 	/**
 	 * Constructeur du controleur.
 	 */
 	private Controleur ()
 	{
+		this.sc = new Scanner(System.in);
 		lecture = new LectureFichier(input);
 		try
 		{
-			prog = new Programme(lecture.getTexteParLigne());
+			prog = new Programme(lecture.getTexteParLigne(), this);
 		}
 		catch ( AlgorithmeException e )
 		{
@@ -37,7 +42,17 @@ public class Controleur
 		
 
 		Affichage a = new Affichage(lecture.getTexteParLigne());
-		a.afficher( prog.getMain().getVariables(), prog.getTraceExec() );
+		
+		while (true) {
+			a.afficher( prog.getMain().getVariables(), prog.getTraceExec() );
+			String commande = sc.nextLine();
+		}
+	}
+	
+	public void lireVariable(String nomVar) {
+		System.out.print("Entrez la valeur de " + nomVar + " : ");
+		String valeur = this.sc.nextLine();
+		this.prog.getMain().setValeur(nomVar, valeur);
 	}
 	
 	/**
