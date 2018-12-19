@@ -96,4 +96,10 @@ public class Programme {
 		return "";
 		// return algo.toString();
 	}
+
+	public void reset ()
+	{
+		this.main.reset();
+		
+	}
 }

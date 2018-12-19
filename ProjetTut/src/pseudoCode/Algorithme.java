@@ -37,6 +37,8 @@ public class Algorithme {
 
 	/** ligne courrante. */
 	private int ligneCourrante = 0;
+	
+	private int ligneDebutAlgorithme;
 
 	private int ligneDebut;
 
@@ -84,6 +86,7 @@ public class Algorithme {
 			current = fichier[ligneCourrante++];
 			mots = current.split( " " );
 		} while ( !mots[0].equals( "DEBUT" ));
+		this.ligneDebutAlgorithme = ligneCourrante;
 		this.def = "algo";
 	}
 
@@ -351,5 +354,11 @@ public class Algorithme {
 	public String getNom ()
 	{
 		return this.nom;
+	}
+
+	public void reset ()
+	{
+		this.ligneCourrante = this.ligneDebutAlgorithme;
+		
 	}
 }

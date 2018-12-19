@@ -135,6 +135,16 @@ public class Affichage {
 		System.out.println(affichage);
 	}
 	
+	public void ajouterVariableATracer ( Variable v )
+	{
+		this.ensVars.add( v );
+	}
+	
+	public void enleverVariableATracer ( Variable v )
+	{
+		this.ensVars.remove( v );
+	}
+	
 	private String entete() {
 		String ret="";
 		
