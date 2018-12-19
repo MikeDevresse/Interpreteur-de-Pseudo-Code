@@ -60,6 +60,8 @@ public class Affichage {
 		
 		syntaxes.put("fonction",   ANSI_CYAN);
 		
+		syntaxes.put("fonction",   ANSI_YELLOW);
+		
 		syntaxes.put("entier",     ANSI_GREEN);
 		syntaxes.put("double",     ANSI_GREEN);
 		syntaxes.put("chaine",     ANSI_GREEN);
@@ -129,7 +131,7 @@ public class Affichage {
 		}
 		
 		affichage += console(exec);
-		if(OSWindows) AnsiConsole.out.println(affichage);
+		if(OSWindows) AnsiConsole.out.println(affichage);AnsiConsole.systemUninstall();
 		System.out.println(affichage);
 	}
 	
@@ -191,6 +193,7 @@ public class Affichage {
 	private String colorer(String str) {
 		String ret="";
 		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
+		str = str.replaceAll("(\\/\\/[éèà\\w]*)",  syntaxes.get("commentaire")+"$1"+ANSI_RESET+"(");
 		String[] mots = str.split(" ");
 		for(int i=0; i<mots.length;i++) {
 			if(syntaxes.containsKey(mots[i])) {
