@@ -112,7 +112,11 @@ public class Programme {
 
 	public void enleverLigneFausse ( int ligne )
 	{
-		this.lignesFausses.remove( ligne );
+		for ( int i = 0 ; i<lignesFausses.size() ; i++ )
+		if ( lignesFausses.get( i ) == ligne )
+		{
+			lignesFausses.remove( i );
+		}
 		
 	}
 	
