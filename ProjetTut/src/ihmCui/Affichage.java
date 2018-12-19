@@ -41,8 +41,6 @@ public class Affichage {
 	 * @param code pseudo-code
 	 */
 	public Affichage(String[] code) {
-		if(OSWindows)
-			AnsiConsole.systemInstall();
 		
 		this.code = code;
 		syntaxes = new HashMap<String, String>();
@@ -125,7 +123,11 @@ public class Affichage {
 		}
 		
 		affichage += console(exec);
-		if(OSWindows) AnsiConsole.out.println(affichage);
+		if(OSWindows) {
+			AnsiConsole.systemInstall();
+			AnsiConsole.out.println(affichage);
+			AnsiConsole.systemUninstall();
+		}
 		System.out.println(affichage);
 	}
 	
