@@ -100,6 +100,7 @@ public class Algorithme {
 			this.fin = true;
 			return false;
 		}
+		this.estVrai = true;
 
 		String current = fichier[ligneCourrante++];
 		if ( current.matches( ".*//.*" ))
@@ -131,6 +132,7 @@ public class Algorithme {
 			 * Gestion des fonctions
 			 */
 			if (current.matches(".+\\(.*\\)")) {
+				
 				Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
 			}
 
@@ -229,6 +231,7 @@ public class Algorithme {
 			this.niveauCondition--;
 
 		} else { // condition invalide
+			this.estVrai = false;
 			do {
 				ligneCourrante++; // saut à l'alternative ou la fin de la condition
 			} while (!fichier[ligneCourrante].trim().equals("fsi") && !fichier[ligneCourrante].trim().equals("sinon")
