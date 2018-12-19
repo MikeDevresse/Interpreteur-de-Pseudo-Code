@@ -60,6 +60,8 @@ public class Affichage {
 		
 		syntaxes.put("commentaire",ANSI_YELLOW);
 		
+		syntaxes.put("griffe",     ANSI_BLUE);
+		
 		syntaxes.put("entier",     ANSI_GREEN);
 		syntaxes.put("double",     ANSI_GREEN);
 		syntaxes.put("chaine",     ANSI_GREEN);
@@ -89,8 +91,6 @@ public class Affichage {
 		int ligneC = prog.getCurrent().getLigneCourrante();
 		
 		int cptVar = 0;
-
-		
 		
 		int ligneHaut = ligneC-20;
 		int ligneBas  = ligneC+20;
@@ -189,7 +189,7 @@ public class Affichage {
 				ligne = String.format("%-81.81s", ligne);
 				ret +="|"+colorerConsole(ligne)+"|\n";
 			}catch(Exception e) {
-				ret+=String.format("|%-79s|\n", " ");
+				ret+=String.format("|%-79s|\n", " ");syntaxes.put("commentaire",ANSI_YELLOW);
 			}
 		}
 		for(int i=0; i<81;i++)
@@ -198,7 +198,6 @@ public class Affichage {
 		
 		return ret;
 	}
-	
 	private String redistribuer(String str) {
 		if(str.length() > 76) {
 			str = str.substring(0, 75)+"|"+str.substring(75);
@@ -234,31 +233,34 @@ public class Affichage {
 		String ret="";
 		String commentaire="";
 		boolean comm = false;
+		boolean grif = false;
 		
 		if(str.matches("(.*)(//.*)\\|")) {
 			commentaire = str.replaceAll("(.*)(//.*)\\|", syntaxes.get("commentaire")+"$2"+ANSI_RESET+"| ");
 			str = str.replaceAll("(.*)(//.*)\\|", "$1");
 		}
 		
+		
+		str = str.replaceAll("(\".*\")", syntaxes.get("griffe")+"$1"+ANSI_RESET);
+		
 		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
 		
 		str += commentaire;
-		
-		System.out.println("str => "+str);
 		
 		String[] mots = str.split(" ");
 		for(int i=0; i<mots.length;i++) {
 			if(mots[i].contains("//"))
 				comm=true;
+			if(mots[i].contains("\""))
+				grif = !grif;
 			
-			if(syntaxes.containsKey(mots[i]) && !comm) {
+			if(syntaxes.containsKey(mots[i]) && !comm && !grif) {
 				mots[i] = syntaxes.get(mots[i])+mots[i]+ANSI_RESET;
 			}
 			ret+=mots[i]+" ";
 		}
 		ret = ret.trim();
 		
-		//ret += commentaire;
 		return ret;
 	}
 }
