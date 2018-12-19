@@ -211,8 +211,6 @@ public class Affichage {
 			commentaire = str.replaceAll("(.*)(//.*)\\|", syntaxes.get("commentaire")+"$2"+ANSI_RESET+"| ");
 			str = str.replaceAll("(.*)(//.*)\\|", "$1");
 		}
-		System.out.println("Ligne => "+str);
-		System.out.println("comme => "+commentaire);
 		
 		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
 		
