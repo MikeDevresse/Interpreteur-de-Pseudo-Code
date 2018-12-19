@@ -215,6 +215,7 @@ public class Affichage {
 		
 		return ret;
 	}
+	
 	private String redistribuer(String str) {
 		if(str.length() > 76) {
 			str = str.substring(0, 75)+"|"+str.substring(75);
@@ -242,7 +243,6 @@ public class Affichage {
 				ret += str;
 				break;
 		}
-		
 		return ret;
 	}
 	
@@ -257,9 +257,13 @@ public class Affichage {
 			str = str.replaceAll("(.*)(//.*)\\|", "$1");
 		}
 		
-		str = str.replaceAll("(\".*\")", syntaxes.get("griffe")+"$1"+ANSI_RESET);
+		String copy=str;
 		
 		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
+		
+		copy = copy.replaceAll("(\".*\")", syntaxes.get("griffe")+"$1"+ANSI_RESET);
+		
+		str = recupAnnotation(copy, str);
 		
 		str += commentaire;
 		
@@ -277,6 +281,20 @@ public class Affichage {
 		}
 		ret = ret.trim();
 		
+		return ret;
+	}
+	
+	private String recupAnnotation(String recup, String dest) {
+		String ret="";
+		String[] annotations = recup.split("\"");
+		String[] change      = recup.split("\"");
+		
+		for(int i=0; i<annotations.length; i++) {
+			if(i%2!=0)
+				ret += syntaxes.get("griffe")+"\""+annotations[i]+"\""+ANSI_RESET;
+			else
+				ret += change[i];
+		}
 		return ret;
 	}
 }
