@@ -184,7 +184,7 @@ public class Affichage {
 		ret+="+---------+---------------------------------------------------------------------+\n";
 		for(int i=exec.split("\n").length-3; i<exec.split("\n").length; i++) {
 			try {
-				ligne=exec.split("\n")[i];
+				ligne=String.format("%-77.77s", exec.split("\n")[i]);
 				
 				char prefix = ligne.charAt(0);
 				ligne = ligne.substring(2);
@@ -203,7 +203,6 @@ public class Affichage {
 						ret += String.format("|%-79s|\n", ligne);
 						break;
 				}
-				ret += "  ";
 			}catch(Exception e) {
 				ret+=String.format("|%-79s|\n", " ");
 			}
