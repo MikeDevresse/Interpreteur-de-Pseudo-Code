@@ -199,4 +199,10 @@ public class Controleur
 	{
 		new Controleur();
 	}
+
+	public Programme getProgramme ()
+	{
+		return this.prog;
+		
+	}
 }
