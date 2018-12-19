@@ -1,5 +1,8 @@
 package main;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -175,6 +178,13 @@ public class Controleur
 				ligneAAttendre = ligne;
 				this.etapes = new ArrayList<Integer>();
 				this.prog.reset();
+			}
+			else if ( commande.matches( "cp var [\\w]+" ))
+			{
+				StringSelection selection = new StringSelection( prog.getTraceVar(commande.split(" ")[2]) );
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(selection, selection);
+				this.reste();
 			}
 			
 			if ( !commande.equals( "" ))

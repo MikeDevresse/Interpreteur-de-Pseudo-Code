@@ -121,6 +121,8 @@ public class Programme {
 	
 	public void reset ()
 	{
+		this.traceExec = "";
+		this.traceVariable = "    NOM     |    TYPE   |   VALEUR   |\n";
 		this.main.reset();
 		
 	}
@@ -139,6 +141,19 @@ public class Programme {
 	public void enleverVariableATracer ( Variable v )
 	{
 		this.ensVars.remove( v );
+	}
+	
+	public String getTraceVar ( String var )
+	{
+		String sRet = this.traceVariable.split( "\n" )[0] + "\n";
+		for ( String s : this.traceVariable.split( "\n" ))
+		{
+			if ( s.replaceAll( " ", "" ).split("|")[0].equals( var ))
+			{
+				sRet += s + "\n";
+			}
+		}
+		return sRet;
 	}
 	
 }
