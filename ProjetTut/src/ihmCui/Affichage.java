@@ -169,6 +169,15 @@ public class Affichage {
 		ensLigneRouge.add((Integer)ligne);
 	}
 	
+	public String getVar(String nom) {
+		String ret ="";
+		for(Variable var : ensVars)
+			if(var.getNom().equals(nom))
+				ret=String.format("|%5s | %5s | %5s |\n|%5s | %5s | %5s |\n", "Nom","Type","Valeur", var.getNom(), var.getType(), var.getValeur());
+
+		return ret;
+	}
+	
 	private String entete() {
 		String ret="";
 		
