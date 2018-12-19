@@ -58,7 +58,7 @@ public class Affichage {
 		
 		syntaxes.put("fonction",   ANSI_CYAN);
 		
-		syntaxes.put("commentaire",   ANSI_YELLOW);
+		syntaxes.put("commentaire",ANSI_YELLOW);
 		
 		syntaxes.put("entier",     ANSI_GREEN);
 		syntaxes.put("double",     ANSI_GREEN);
@@ -112,7 +112,7 @@ public class Affichage {
 					if(cpt==ligneC+1) {
 						affichage += ANSI_GREEN_BACKGROUND;
 						affichage += ANSI_BLACK;
-						affichage += String.format("|%2d %-76.76s| ", cpt, str2);
+						affichage += String.format("|%2d %-76.76s|", cpt, str2);
 						affichage += ANSI_RESET;
 					}else {
 						str2 = String.format("|%2d %-76.76s|",cpt, str2);
@@ -254,6 +254,8 @@ public class Affichage {
 			}
 			ret+=mots[i]+" ";
 		}
+		ret = ret.trim();
+		
 		//ret += commentaire;
 		return ret;
 	}
