@@ -94,49 +94,56 @@ public class Affichage {
 		int ligneC = prog.getCurrent().getLigneCourrante();
 		
 		int cptVar = 0;
+		String[] vars = prog.traceVariable.split("\n");
 		
-		int ligneHaut = ligneC-20;
-		int ligneBas  = ligneC+20;
+		int ligneHaut = ligneC-15;
+		int ligneBas  = ligneC+15;
 		
-		if(ligneC>code.length-20) {ligneBas=code.length;ligneHaut=ligneBas-40;}
-		if(ligneHaut<0) {ligneHaut=0; ligneBas = 40;}
+		if(ligneC>code.length-15) {ligneBas=code.length;ligneHaut=ligneBas-30;}
+		if(ligneHaut<0) {ligneHaut=0; ligneBas = 30;}
 		
-		System.out.println( prog.traceVariable );
 		int cpt = ligneHaut;
 		
 		for(int i=ligneHaut; i<ligneBas; i++) {
 			try {
 				String str = code[i];
 				str = str.replace("\t", "  ");
+				
 				cpt++;
 				
-				str = redistribuer(str);
-				
-				String[] strTab = str.split("\\|");
-				for(String str2 : strTab) {
-					if(cpt==ligneC+1) {
-						if ( prog.getLignesFausses().contains( ligneC ))
-							affichage += ANSI_RED_BACKGROUND;
-						else
-							affichage += ANSI_GREEN_BACKGROUND;
-						affichage += ANSI_BLACK;
-						affichage += String.format("|%2d %-76.76s|", cpt, str2);
-						affichage += ANSI_RESET;
-					}else if(ensLigneRouge.contains((Integer)cpt)){
+				if(cpt==ligneC+1) {
+					if ( prog.getLignesFausses().contains( ligneC ))
 						affichage += ANSI_RED_BACKGROUND;
-						affichage += ANSI_BLACK;
-						affichage += String.format("|%2d %-76.76s|", cpt, str2);
-						affichage += ANSI_RESET;
-					}else {
-						str2 = String.format("|%2d %-76.76s|",cpt, str2);
-						affichage += colorer(str2);
-					}
-					
-					cptVar++;
-					
-					affichage += "\n";
+					else
+						affichage += ANSI_GREEN_BACKGROUND;
+					affichage += ANSI_BLACK;
+					affichage += String.format("|%2d %-76.76s|", cpt, str);
+					affichage += ANSI_RESET;
+				}else if(ensLigneRouge.contains((Integer)cpt)){
+					affichage += ANSI_RED_BACKGROUND;
+					affichage += ANSI_BLACK;
+					affichage += String.format("|%2d %-76.76s|", cpt, str);
+					affichage += ANSI_RESET;
+				}else if(str != null){
+					str = String.format("|%2d %-76.76s|",cpt, str);
+					affichage += colorer(str);
 				}
-			}catch(Exception e) {}
+			}catch(Exception e) {
+				affichage += String.format("|%-79.79s|", " ");
+			}
+				
+			try {
+				cptVar++;
+				
+				if(cptVar==0)
+					affichage +="    NOM     |    TYPE   |   VALEUR   |";
+				else if(cptVar <= vars.length)
+					affichage +=String.format("%-37s", vars[cptVar-1]);
+				else
+					affichage +=String.format("%-37s|", " ");
+				
+				affichage += "\n";
+			}catch(Exception e) {System.out.println(e);}
 		}
 		
 		affichage += console(exec);
