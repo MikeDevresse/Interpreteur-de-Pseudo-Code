@@ -18,7 +18,7 @@ public class Controleur
 {
 
 	/** nom du fichier */
-	private final String input = "tests/testConditions.algo";
+	private final String	   input		  = "tests/Test2.algo";
 
 	/** objet programme */
 	private Programme		   prog;
@@ -63,7 +63,6 @@ public class Controleur
 		}
 
 		this.aff = new Affichage( lecture.getTexteParLigne(), prog, getVariableATracer() );
-
 
 		this.aff.afficher();
 
@@ -119,7 +118,6 @@ public class Controleur
 	/**
 	 * Attend une action de l'utilisateur
 	 */
-
 	public void attend ()
 	{
 		this.aff.afficher();
@@ -200,5 +198,11 @@ public class Controleur
 	public static void main ( String[] a )
 	{
 		new Controleur();
+	}
+
+	public Programme getProgramme ()
+	{
+		return this.prog;
+		
 	}
 }

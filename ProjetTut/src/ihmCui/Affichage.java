@@ -1,12 +1,10 @@
 package ihmCui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.fusesource.jansi.AnsiConsole;
 
-import iut.algo.Console;
-import iut.algo.CouleurConsole;
-import pseudoCode.Algorithme;
 import pseudoCode.Programme;
 import pseudoCode.Variable;
 
@@ -22,18 +20,31 @@ public class Affichage {
 	private static final String ANSI_CYAN   = "\u001B[36m";
 	private static final String ANSI_WHITE  = "\u001B[37m";
 	
+	private static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
+	private static final String ANSI_RED_BACKGROUND = "\u001B[41m";
+	private static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
+	private static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
+	private static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
+	private static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
+	private static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
+	private static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+	
 	private String[] code;
 	private HashMap<String, String> syntaxes;
 	
-	private boolean OSWindows=false;
+	private boolean OSWindows=true;
+	
+	private Programme prog;
+	
+	private ArrayList<Variable> ensVars;
 	
 	/**
 	 * Constructeur
 	 * @param code pseudo-code
 	 */
-	public Affichage(String[] code) {
-		if(OSWindows)
-			AnsiConsole.systemInstall();
+	public Affichage(String[] code, Programme prog, ArrayList<Variable> ensVars ) {
+		this.ensVars = ensVars;
+		this.prog = prog;
 		
 		this.code = code;
 		syntaxes = new HashMap<String, String>();
@@ -65,10 +76,11 @@ public class Affichage {
 	 * @param vars ensemble des variables de l'algorithme
 	 * @param exec trace d'exécution de l'algorithme
 	 */
-	public void afficher(Programme prog) {
-		entete();
+	public void afficher() {
+		String affichage = "";
+		affichage += entete();
 		
-		Variable[] vars = prog.getCurrent().getVariables();
+		Variable[] vars = this.ensVars.toArray( new Variable[ensVars.size()] );
 		String exec = prog.traceExec;
 		int ligneC = prog.getCurrent().getLigneCourrante();
 		
@@ -96,62 +108,90 @@ public class Affichage {
 				String[] strTab = str.split("\\|");
 				for(String str2 : strTab) {
 					if(cpt==ligneC+1) {
-						Console.couleurFond(CouleurConsole.VERT);
-						Console.couleurFont(CouleurConsole.NOIR);
-						Console.print(String.format("|%2d %-76.76s| ", cpt, str2));
-						Console.normal();
+						affichage += ANSI_GREEN_BACKGROUND;
+						affichage += ANSI_BLACK;
+						affichage += String.format("|%2d %-76.76s| ", cpt, str2);
+						affichage += ANSI_RESET;
 					}else {
 						str2 = String.format("|%2d %-76.76s|",cpt, str2);
-						colorer(str2);
+						affichage += colorer(str2);
 						//Console.print(String.format("|%2d %-76.76s|",cpt, str2));
 					}
 					
-					ecrireVar(cptVar, vars);
+					affichage += ecrireVar(cptVar, vars);
 					cptVar++;
 					
-					Console.print("\n");
+					affichage += "\n";
 				}
 			}catch(Exception e) {}
 		}
 		
-		console(exec);
-	}
-	
-	private void entete() {
-		Console.print(String.format("+---------+%69s+---------+\n", " "));
-		Console.print(String.format("| CODE    |%69s| DONNEES |\n", " "));
-		for(int i=0; i<119;i++)
-			Console.print("-");
-		Console.print("\n");
-	}
-	
-	private void ecrireVar(int cptVar, Variable[] vars) {
-		if(cptVar==0)
-			Console.print("    NOM     |    TYPE   |   VALEUR   |");
-		else if(cptVar <= vars.length)
-			Console.print(String.format("%-37s|", vars[cptVar-1]));
+		affichage += console(exec);
+		if(OSWindows) { 
+			AnsiConsole.systemInstall();
+			AnsiConsole.out.println(affichage);
+			AnsiConsole.systemUninstall();
+		}
 		else
-			Console.print(String.format("%-37s|", " "));
+			System.out.println(affichage);
+	} 
+	
+	public void ajouterVariableATracer ( Variable v )
+	{
+		this.ensVars.add( v );
 	}
 	
-	private void console(String exec) {
+	public void enleverVariableATracer ( Variable v )
+	{
+		this.ensVars.remove( v );
+	}
+	
+	private String entete() {
+		String ret="";
+		
+		ret+=String.format("+---------+%69s+---------+\n", " ");
+		ret+=String.format("| CODE    |%69s| DONNEES |\n", " ");
 		for(int i=0; i<119;i++)
-			Console.print("-");
-		Console.print("\n\n");
-		Console.print("+---------+\n");
-		Console.print("| CONSOLE |\n");
-		Console.print("+---------+---------------------------------------------------------------------+\n");
+			ret += "-";
+		ret+="\n";
+		
+		return ret;
+	}
+	
+	private String ecrireVar(int cptVar, Variable[] vars) {
+		String ret="";
+		
+		if(cptVar==0)
+			ret+="    NOM     |    TYPE   |   VALEUR   |";
+		else if(cptVar <= vars.length)
+			ret+=String.format("%-37s|", vars[cptVar-1]);
+		else
+			ret+=String.format("%-37s|", " ");
+		
+		return ret;
+	}
+	
+	private String console(String exec) {
+		String ret="";
+		
+		for(int i=0; i<119;i++)
+			ret+="-";
+		ret+="\n\n";
+		ret+="+---------+\n";
+		ret+="| CONSOLE |\n";
+		ret+="+---------+---------------------------------------------------------------------+\n";
 		for(int i=exec.split("\n").length-3; i<exec.split("\n").length; i++) {
 			try {
-				Console.print(String.format("|%-79s|\n", exec.split("\n")[i]));
+				ret+=String.format("|%-79s|\n", exec.split("\n")[i]);
 			}catch(Exception e) {
-				Console.print(String.format("|%-79s|\n", " "));
+				ret+=String.format("|%-79s|\n", " ");
 			}
 		}
 		for(int i=0; i<81;i++)
-			Console.print("-");
-		Console.print("\n");
+			ret+="-";
+		ret+="\n";
 		
+		return ret;
 	}
 	
 	private String redistribuer(String str) {
@@ -161,16 +201,18 @@ public class Affichage {
 		return str;
 	}
 	
-	private void colorer(String str) {
+	private String colorer(String str) {
 		String ret="";
 		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
+		str = str.replaceAll("(\\/\\/[éèà\\w]*)",  syntaxes.get("commentaire")+"$1"+ANSI_RESET+"(");
 		String[] mots = str.split(" ");
 		for(int i=0; i<mots.length;i++) {
 			if(syntaxes.containsKey(mots[i])) {
 				mots[i] = syntaxes.get(mots[i])+mots[i]+ANSI_RESET;
 			}
 			
-			Console.print(mots[i]+" ");
+			ret+=mots[i]+" ";
 		}
+		return ret;
 	}
 }
