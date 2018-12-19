@@ -18,11 +18,7 @@ public class Controleur
 {
 
 	/** nom du fichier */
-<<<<<<< HEAD
 	private final String input = "tests/testConditions.algo";
-=======
-	private final String	   input		  = "tests/Test2.algo";
->>>>>>> branch 'master' of https://github.com/MikeDevresse/ProjetTutS3.git
 
 	/** objet programme */
 	private Programme		   prog;
@@ -68,18 +64,9 @@ public class Controleur
 
 		this.aff = new Affichage( lecture.getTexteParLigne(), prog, getVariableATracer() );
 
-<<<<<<< HEAD
-		//this.aff.afficher(prog);
-=======
-		this.aff.afficher();
->>>>>>> branch 'master' of https://github.com/MikeDevresse/ProjetTutS3.git
 
-<<<<<<< HEAD
-		while (!prog.getMain().estTerminer()) {
-			try {
-				if (prog.getCurrent().ligneSuivante()) {
-					//this.aff.afficher(prog);
-=======
+		this.aff.afficher();
+
 		while ( !prog.getMain().estTerminer() )
 		{
 			try
@@ -87,7 +74,6 @@ public class Controleur
 				if ( prog.getCurrent().ligneSuivante() )
 				{
 					this.aff.afficher();
->>>>>>> branch 'master' of https://github.com/MikeDevresse/ProjetTutS3.git
 				}
 			}
 			catch ( AlgorithmeException e )
@@ -133,14 +119,10 @@ public class Controleur
 	/**
 	 * Attend une action de l'utilisateur
 	 */
-<<<<<<< HEAD
-	public void attend() {
-		//this.aff.afficher(prog);
-=======
+
 	public void attend ()
 	{
 		this.aff.afficher();
->>>>>>> branch 'master' of https://github.com/MikeDevresse/ProjetTutS3.git
 
 		etapes.add( this.prog.getCurrent().getLigneCourrante() );
 
