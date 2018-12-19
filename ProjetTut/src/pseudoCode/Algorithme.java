@@ -102,7 +102,10 @@ public class Algorithme {
 		}
 
 		String current = fichier[ligneCourrante++];
-		if (current.trim().equals(""))
+		if ( current.matches( ".*//.*" ))
+			current = current.replaceAll( "(.*)//.*", "$1" );
+		current = current.trim();
+		if (current.equals(""))
 			return false;
 
 		String[] mots = current.split(" ");
@@ -116,7 +119,6 @@ public class Algorithme {
 		 */
 		if ( this.def.equals( "algo" ))
 		{
-			
 			/*
 			 * Affectation des variables
 			 */
@@ -128,7 +130,7 @@ public class Algorithme {
 			/*
 			 * Gestion des fonctions
 			 */
-			if (current.matches(".*\\(.*\\)")) {
+			if (current.matches(".+\\(.*\\)")) {
 				Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
 			}
 
