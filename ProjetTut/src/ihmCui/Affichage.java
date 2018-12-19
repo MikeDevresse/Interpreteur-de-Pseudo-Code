@@ -175,7 +175,7 @@ public class Affichage {
 	
 	private String console(String exec) {
 		String ret="";
-		
+		String ligne="";
 		for(int i=0; i<119;i++)
 			ret+="-";
 		ret+="\n\n";
@@ -184,7 +184,25 @@ public class Affichage {
 		ret+="+---------+---------------------------------------------------------------------+\n";
 		for(int i=exec.split("\n").length-3; i<exec.split("\n").length; i++) {
 			try {
-				ret+=String.format("|%-79s|\n", exec.split("\n")[i]);
+				ligne=String.format("%-77.77s", exec.split("\n")[i]);
+				
+				char prefix = ligne.charAt(0);
+				ligne = ligne.substring(2);
+				
+				switch (prefix) {
+					case 'l' :
+						ret += String.format("|%-79s|\n", ANSI_YELLOW+ligne+ANSI_RESET);
+						break;
+					case 'e' :
+						ret += String.format("|%-79s|\n", ANSI_PURPLE+ligne+ANSI_RESET);
+						break;
+					case 'a' :
+						ret += String.format("|%-79s|\n", ANSI_BLUE+ligne+ANSI_RESET);
+						break;
+					case 'r' :
+						ret += String.format("|%-79s|\n", ligne);
+						break;
+				}
 			}catch(Exception e) {
 				ret+=String.format("|%-79s|\n", " ");
 			}
