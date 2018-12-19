@@ -71,6 +71,8 @@ public class Affichage {
 		syntaxes.put("ALGORITHME", ANSI_PURPLE);
 		syntaxes.put("variable",   ANSI_PURPLE);
 		syntaxes.put("constante",  ANSI_PURPLE);
+		syntaxes.put("variable:",  ANSI_PURPLE);
+		syntaxes.put("constante:", ANSI_PURPLE);
 		syntaxes.put("DEBUT",      ANSI_PURPLE);
 		syntaxes.put("FIN",        ANSI_PURPLE);
 		
