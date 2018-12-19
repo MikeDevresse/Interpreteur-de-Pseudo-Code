@@ -77,6 +77,11 @@ public class Programme {
 	{
 		return this.current;
 	}
+	
+	public ArrayList<Algorithme> getAlgos ()
+	{
+		return this.algos;
+	}
 
 	public String getTraceExec() {
 		return this.traceExec;
