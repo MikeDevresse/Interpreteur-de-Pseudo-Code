@@ -318,7 +318,7 @@ public class Algorithme {
 		for (int i = ligneDebut; i <= ligneFin; i++)
 			this.prog.ajouterLigneFausse(i);
 
-		this.ligneCourrante = ligneDebut;
+		this.ligneCourrante = ligneDebut; 
 		Controleur.getControleur().attend();
 		this.prog.resetLigneFausse();
 
