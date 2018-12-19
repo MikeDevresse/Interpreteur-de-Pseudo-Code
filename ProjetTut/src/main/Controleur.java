@@ -18,7 +18,7 @@ public class Controleur
 {
 
 	/** nom du fichier */
-	private final String	   input		  = "tests/Test2.algo";
+	private final String	   input		  = "tests/TestPrimitives.algo";
 
 	/** objet programme */
 	private Programme		   prog;
