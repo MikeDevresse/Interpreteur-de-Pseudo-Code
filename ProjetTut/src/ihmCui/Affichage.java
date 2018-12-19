@@ -118,7 +118,10 @@ public class Affichage {
 				String[] strTab = str.split("\\|");
 				for(String str2 : strTab) {
 					if(cpt==ligneC+1) {
-						affichage += ANSI_GREEN_BACKGROUND;
+						if ( prog.getLignesFausses().contains( ligneC ) )
+							affichage += ANSI_RED_BACKGROUND;
+						else	
+							affichage += ANSI_GREEN_BACKGROUND;
 						affichage += ANSI_BLACK;
 						affichage += String.format("|%2d %-76.76s|", cpt, str2);
 						affichage += ANSI_RESET;

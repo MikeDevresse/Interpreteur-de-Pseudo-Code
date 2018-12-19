@@ -213,7 +213,6 @@ public class Algorithme {
 	 * @throws AlgorithmeException
 	 */
 	public void interpreterCondition(String condition, int niveauCondition) throws AlgorithmeException {
-
 		int cptLigne = ligneCourrante;
 
 		int nbSi = 0;
@@ -238,6 +237,7 @@ public class Algorithme {
 
 		if (Condition.condition(condition, this.getInterpreteur())) {
 			// interprétation de la condition
+			Controleur.getControleur().attend();
 			do {
 				ligneSuivante();
 			} while (ligneCourrante != ligneSinon && ligneCourrante != ligneFsi);
@@ -249,14 +249,17 @@ public class Algorithme {
 					ligneCourrante++;
 				} while (ligneCourrante != ligneFsi+1);
 			}
-			
+
 			
 			
 		} else { // condition invalide
+			this.prog.ajouterLigneFausse( ligneCourrante );
+			Controleur.getControleur().attend();
 			do {
 				ligneCourrante++; // saut à l'alternative ou la fin de la condition
 			} while ((ligneCourrante != ligneSinon+1 && ligneCourrante != ligneFsi+1));
 		}
+		
 	}
 
 	/**
