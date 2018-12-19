@@ -161,7 +161,8 @@ public class Affichage {
 		this.ensVars.remove( v );
 	}
 	
-	public void ajouterLigneRouge(int ligne) {
+	public void ajouterLigneRouge(int ligne) 
+	{
 		ensLigneRouge.add((Integer)ligne);
 	}
 	
