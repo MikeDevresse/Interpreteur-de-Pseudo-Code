@@ -99,6 +99,14 @@ public class Programme {
 
 	public void reset ()
 	{
+		this.traceExec = "";
+		for ( Algorithme algo : algos ) 
+		{
+			for ( Variable var : algo.getVariables())
+			{
+				var.setValeur( null );
+			}
+		}
 		this.main.reset();
 		
 	}

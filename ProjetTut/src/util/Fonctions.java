@@ -80,10 +80,7 @@ public class Fonctions {
 	private static String ecrire(String contenu, Algorithme a) {
 		Interpreter interpreter = a.getInterpreteur();
 		try {
-			System.out.println( contenu );
-			contenu = contenu.replaceAll( "([\\w']+)\\(([\\w]*)\\)", Fonctions.evaluer( "$1", "$2", a ) );
-			System.out.println( contenu );
-			a.getProgramme().traceExec += interpreter.eval(contenu.trim()) + "\n" ;
+			a.getProgramme().traceExec += "e:" + interpreter.eval(contenu.trim()) + "\n" ;
 			return "" + interpreter.eval( contenu );
 		} catch (EvalError e) {
 			e.printStackTrace();

@@ -17,6 +17,6 @@ DEBUT
 	a <-- b
 	b <-- tmp
 	
-	écrire("a + b bonjour" © a)
+	écrire("a © b bonjour" © a)
 	écrire(b)
 FIN 

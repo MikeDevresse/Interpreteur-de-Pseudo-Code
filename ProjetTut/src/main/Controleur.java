@@ -18,7 +18,7 @@ public class Controleur
 {
 
 	/** nom du fichier */
-	private final String	   input		  = "tests/TestPrimitives.algo";
+	private final String	   input		  = "tests/Test2.algo";
 
 
 	/** objet programme */
@@ -94,6 +94,7 @@ public class Controleur
 	{
 		System.out.print( "Entrez la valeur de " + nomVar + " : " );
 		String valeur = this.sc.nextLine();
+		this.prog.traceExec += "l:"+valeur;
 		this.prog.getCurrent().setValeur( nomVar, valeur );
 	}
 
@@ -169,9 +170,12 @@ public class Controleur
 				}
 				reste();
 			}
-			else if ( commande.matches( "L[0-9]*" ) )
+			else if ( commande.matches( "[Ll][0-9]+" ) )
 			{
-				System.out.println( "saut de ligne : " + commande.replaceAll( "L([0-9]*)", "$1" ) );
+				int ligne = Integer.parseInt( commande.replaceAll( "[Ll]([0-9]+)", "$1" ) )-1;
+				ligneAAttendre = ligne;
+				this.etapes = new ArrayList<Integer>();
+				this.prog.reset();
 			}
 			else if ( commande.matches( "[+-] var \\w*" ) )
 			{
@@ -183,13 +187,15 @@ public class Controleur
 	
 	private void reste ()
 	{
-		this.ligneAAttendre = this.etapes.get( etapes.size() - 1 );
+		this.ligneAAttendre = this.etapes.get( this.etapes.indexOf( prog.getCurrent().getLigneCourrante() ) );
 		this.prog.reset();
+		this.etapes = new ArrayList<Integer>();
 	}
 
 	private void retour ()
 	{
-		this.ligneAAttendre = this.etapes.get( etapes.size() - 2 );
+		this.ligneAAttendre = this.etapes.get( this.etapes.indexOf( prog.getCurrent().getLigneCourrante() ) - 1 );
+		this.etapes = new ArrayList<Integer>();
 		this.prog.reset();
 	}
 
