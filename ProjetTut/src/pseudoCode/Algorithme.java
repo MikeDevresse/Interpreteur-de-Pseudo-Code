@@ -75,6 +75,24 @@ public class Algorithme {
 					}
 
 				}
+				if ( current.matches( "[[\\w*],*]*[ ]*\\w*<--[ ]*\\w*" ))
+				{
+					String type ="";
+					String valeur = current.replaceAll( "[[\\w*],*]*[ ]*\\w*<--[ ]*(\\w*)","$1");
+					if ( valeur.matches( "\"[\\w]*\"" ))
+						type = "chaine";
+					else if ( valeur.matches( "'[\\w]'" ))
+						type = "caractere";
+					else if ( valeur.matches( "[0-9]+" ) )
+						type = "entier";
+					else if ( valeur.matches( "[0-9]+.[0-9]*" ))
+						type = "reel";
+					else if ( valeur.equals( "true" ) || valeur.equals( "false" ))
+						type = "booleen";
+					
+					for ( String var : current.split( "<--" )[0].split( "," ))
+						ajouterVariable(VariableFactory.createVariable( var.trim(), type, this.def.equals( "const" ) ));
+				}
 			}
 			current = fichier[ligneCourrante++];
 			mots = current.split(" ");

@@ -145,7 +145,7 @@ public class Controleur
 			/*
 			 * Gestion des commandes
 			 */
-			if ( commande.equals( "b" ) )
+			if ( commande.equalsIgnoreCase( "b" ) )
 			{
 				retour();
 			}

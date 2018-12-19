@@ -32,12 +32,17 @@ public class VariableFactory {
 
 			case "entier":
 				return new Variable<Integer[]>(nom, type, constante);
+			case "booleen":
 			case "booléen":
 				return new Variable<Boolean[]>(nom, type, constante);
+			case "chaine" :
+			case "chaîne" :
 			case "chaîne de caractère":
 				return new Variable<String[]>(nom, type, constante);
 			case "réel":
+			case "reel":
 				return new Variable<Double[]>(nom, type, constante);
+			case "caractere":
 			case "caractère":
 				return new Variable<Character[]>(nom, type, constante);
 
