@@ -206,8 +206,6 @@ public class Algorithme {
 
 		this.niveauCondition++;
 
-		// System.out.println("debut : " + condition + " | niveau : " + niveauCondition
-		// + " | ligne : " + ligneCourrante);
 		if (Condition.condition(condition, this.getInterpreteur()) && this.niveauCondition == niveauCondition) {
 			// interprétation de la condition
 			do {
