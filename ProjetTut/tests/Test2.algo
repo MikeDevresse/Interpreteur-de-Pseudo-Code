@@ -10,7 +10,7 @@ DEBUT
 	a <-- 1
 	b <-- 10
 
-	écrire(a )
+	écrire(a) //écrire OUI si tq ecrire("")!!!!!!!!!!!!!!!!!
 	écrire(b)
 	
 	tmp <-- a

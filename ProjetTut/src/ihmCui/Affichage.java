@@ -58,6 +58,8 @@ public class Affichage {
 		
 		syntaxes.put("fonction",   ANSI_CYAN);
 		
+		syntaxes.put("commentaire",   ANSI_YELLOW);
+		
 		syntaxes.put("entier",     ANSI_GREEN);
 		syntaxes.put("double",     ANSI_GREEN);
 		syntaxes.put("chaine",     ANSI_GREEN);
@@ -203,8 +205,15 @@ public class Affichage {
 	
 	private String colorer(String str) {
 		String ret="";
+		String commentaire="";
+		
+		if(str.matches("(.*)(//.*)\\|")) {
+			commentaire = str.replaceAll("(.*)(//.*)\\|", syntaxes.get("commentaire")+"$2"+ANSI_RESET+"| ");
+			str = str.replaceAll("(.*)(//.*)\\|", "$1");
+		}
+		
 		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
-		str = str.replaceAll("(\\/\\/[éèà\\w]*)",  syntaxes.get("commentaire")+"$1"+ANSI_RESET+"(");
+		
 		String[] mots = str.split(" ");
 		for(int i=0; i<mots.length;i++) {
 			if(syntaxes.containsKey(mots[i])) {
@@ -213,6 +222,7 @@ public class Affichage {
 			
 			ret+=mots[i]+" ";
 		}
+		ret += commentaire;
 		return ret;
 	}
 }
