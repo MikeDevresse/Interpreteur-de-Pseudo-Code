@@ -1,12 +1,10 @@
 package ihmCui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.fusesource.jansi.AnsiConsole;
 
-import iut.algo.Console;
-import iut.algo.CouleurConsole;
-import pseudoCode.Algorithme;
 import pseudoCode.Programme;
 import pseudoCode.Variable;
 
@@ -36,11 +34,18 @@ public class Affichage {
 	
 	private boolean OSWindows=true;
 	
+	private Programme prog;
+	
+	private ArrayList<Variable> ensVars;
+	
 	/**
 	 * Constructeur
 	 * @param code pseudo-code
 	 */
-	public Affichage(String[] code) {
+	public Affichage(String[] code, Programme prog, ArrayList<Variable> ensVars ) {
+		this.ensVars = ensVars;
+		this.prog = prog;
+
 		
 		this.code = code;
 		syntaxes = new HashMap<String, String>();
@@ -72,11 +77,11 @@ public class Affichage {
 	 * @param vars ensemble des variables de l'algorithme
 	 * @param exec trace d'exécution de l'algorithme
 	 */
-	public void afficher(Programme prog) {
+	public void afficher() {
 		String affichage = "";
 		affichage += entete();
 		
-		Variable[] vars = prog.getCurrent().getVariables();
+		Variable[] vars = this.ensVars.toArray( new Variable[ensVars.size()] );
 		String exec = prog.traceExec;
 		int ligneC = prog.getCurrent().getLigneCourrante();
 		
@@ -189,6 +194,7 @@ public class Affichage {
 	private String colorer(String str) {
 		String ret="";
 		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
+		str = str.replaceAll("(\\/\\/[éèà\\w]*)",  syntaxes.get("commentaire")+"$1"+ANSI_RESET+"(");
 		String[] mots = str.split(" ");
 		for(int i=0; i<mots.length;i++) {
 			if(syntaxes.containsKey(mots[i])) {
