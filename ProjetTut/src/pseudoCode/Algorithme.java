@@ -44,7 +44,6 @@ public class Algorithme {
 
 	private Programme prog;
 
-	private boolean estVrai;
 
 	private int niveauCondition;
 
@@ -101,7 +100,6 @@ public class Algorithme {
 			this.fin = true;
 			return false;
 		}
-		this.estVrai = true;
 
 		String current = fichier[ligneCourrante++];
 		if ( current.matches( ".*//.*" ))
@@ -255,7 +253,6 @@ public class Algorithme {
 			
 			
 		} else { // condition invalide
-			this.estVrai = false;
 			do {
 				ligneCourrante++; // saut à l'alternative ou la fin de la condition
 			} while ((ligneCourrante != ligneSinon+1 && ligneCourrante != ligneFsi+1));
@@ -390,10 +387,6 @@ public class Algorithme {
 
 	public int getLigneCourrante() {
 		return this.ligneCourrante;
-	}
-
-	public boolean getEstVrai() {
-		return this.estVrai;
 	}
 
 	public String getNom() {
