@@ -118,7 +118,7 @@ public class Algorithme {
 			 */
 			if (current.matches(".*si .* alors.*")) {
 				String condition = current.split("si | alors")[1];
-				interpreterCondition(condition);
+				interpreterCondition(condition, this.niveauCondition);
 			} else if (current.matches(".*si .*") && !current.contains("alors")) {
 				/*
 				 * Gestion des conditions sur plusieurs lignes
@@ -138,8 +138,8 @@ public class Algorithme {
 					}
 				}
 
-				ligneCourrante = i; //saut à la fin de la condition
-				interpreterCondition(condition); //interprétation de la condition
+				ligneCourrante = i; // saut à la fin de la condition
+				interpreterCondition(condition, this.niveauCondition); // interprétation de la condition
 			}
 
 			/*
@@ -165,8 +165,8 @@ public class Algorithme {
 					}
 				}
 
-				ligneCourrante = i; //saut à la fin de la condition
-				interpreterBoucle(ligneCourrante, condition); //interprétation de la boucle
+				ligneCourrante = i; // saut à la fin de la condition
+				interpreterBoucle(ligneCourrante, condition); // interprétation de la boucle
 			}
 		}
 
@@ -176,7 +176,7 @@ public class Algorithme {
 		if (mots[0].equals("FIN"))
 			this.fin = true;
 
-		Controleur.getControleur().attend();
+		// Controleur.getControleur().attend();
 
 		return true;
 	}
@@ -187,25 +187,35 @@ public class Algorithme {
 	 * @param condition condition
 	 * @throws AlgorithmeException
 	 */
-	public void interpreterCondition(String condition) throws AlgorithmeException {
-		// Condition non valide
-		if (!Condition.condition(condition, this.getInterpreteur())) {
-			do {
-				ligneCourrante++; //saut à l'alternative ou la fin de la condition
-			} while (!fichier[ligneCourrante].trim().equals("fsi") && !fichier[ligneCourrante].trim().equals("sinon"));
-		} else { // condition valide
-			//interprétation de la condition
+	public void interpreterCondition(String condition, int niveauCondition) throws AlgorithmeException {
+
+		this.niveauCondition++;
+
+		// System.out.println("debut : " + condition + " | niveau : " + niveauCondition
+		// + " | ligne : " + ligneCourrante);
+		if (Condition.condition(condition, this.getInterpreteur()) && this.niveauCondition == niveauCondition) {
+			// interprétation de la condition
 			do {
 				ligneSuivante();
-			} while (!fichier[ligneCourrante].trim().equals("fsi") && !fichier[ligneCourrante].trim().equals("sinon"));
+			} while (!fichier[ligneCourrante].trim().equals("fsi") && !fichier[ligneCourrante].trim().equals("sinon")
+					&& this.niveauCondition == niveauCondition);
 
-			//saut jusqu'à la fin de la condition
+			// saut jusqu'à la fin de la condition
 			if (fichier[ligneCourrante].trim().equals("sinon")) {
 				do {
 					ligneCourrante++;
-				} while (!fichier[ligneCourrante].trim().equals("fsi"));
+				} while (!fichier[ligneCourrante].trim().equals("fsi") && this.niveauCondition == niveauCondition);
 			}
+
+			this.niveauCondition--;
+
+		} else { // condition invalide
+			do {
+				ligneCourrante++; // saut à l'alternative ou la fin de la condition
+			} while (!fichier[ligneCourrante].trim().equals("fsi") && !fichier[ligneCourrante].trim().equals("sinon")
+					&& this.niveauCondition == niveauCondition);
 		}
+
 	}
 
 	/**
@@ -218,7 +228,7 @@ public class Algorithme {
 	public void interpreterBoucle(int ligneBoucle, String condition) throws AlgorithmeException {
 
 		while (Condition.condition(condition, this.getInterpreteur())) {
-			ligneCourrante = ligneBoucle; //retour en haut de la boucle
+			ligneCourrante = ligneBoucle; // retour en haut de la boucle
 			do {
 				ligneSuivante();
 			} while (!fichier[ligneCourrante].trim().equals("ftq"));

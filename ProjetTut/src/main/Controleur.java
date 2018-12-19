@@ -17,7 +17,7 @@ import pseudoCode.Programme;
 public class Controleur {
 
 	/** nom du fichier */
-	private final String input = "tests/testBoucle.algo";
+	private final String input = "tests/testConditions.algo";
 
 	/** objet programme */
 	private Programme prog;
@@ -60,12 +60,12 @@ public class Controleur {
 
 		this.aff = new Affichage(lecture.getTexteParLigne());
 
-		this.aff.afficher(prog);
+		//this.aff.afficher(prog);
 
 		while (!prog.getMain().estTerminer()) {
 			try {
 				if (prog.getCurrent().ligneSuivante()) {
-					this.aff.afficher(prog);
+					//this.aff.afficher(prog);
 				}
 			} catch (AlgorithmeException e) {
 				e.printStackTrace();
@@ -89,7 +89,7 @@ public class Controleur {
 	 * Attend une action de l'utilisateur
 	 */
 	public void attend() {
-		this.aff.afficher(prog);
+		//this.aff.afficher(prog);
 
 		etapes.add(this.prog.getCurrent().getLigneCourrante());
 
