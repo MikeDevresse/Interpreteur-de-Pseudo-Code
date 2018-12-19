@@ -277,7 +277,6 @@ public class Algorithme {
 					nbTq--;
 		}
 		
-		
 		while (Condition.condition(condition, this.interpreteur)) {
 			ligneCourrante = ligneBoucle; // retour en haut de la boucle
 			do {
