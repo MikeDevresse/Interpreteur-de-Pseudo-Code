@@ -109,6 +109,12 @@ public class Programme {
 	{
 		this.lignesFausses.add( ligne );
 	}
+
+	public void enleverLigneFausse ( int ligne )
+	{
+		this.lignesFausses.remove( ligne );
+		
+	}
 	
 	public void reset ()
 	{

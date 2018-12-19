@@ -245,6 +245,7 @@ public class Algorithme {
 		} else { // condition invalide
 			this.prog.ajouterLigneFausse( ligneCourrante );
 			Controleur.getControleur().attend();
+			this.prog.enleverLigneFausse( ligneCourrante );
 			do {
 				ligneCourrante++; // saut à l'alternative ou la fin de la condition
 			} while ((ligneCourrante != ligneSinon+1 && ligneCourrante != ligneFsi+1));
@@ -288,6 +289,7 @@ public class Algorithme {
 		System.out.println( ligneCourrante );
 		this.prog.ajouterLigneFausse( ligneCourrante );
 		Controleur.getControleur().attend();
+		this.prog.enleverLigneFausse ( ligneCourrante );
 		ligneCourrante = ligneFtq+1;
 		
 	}
