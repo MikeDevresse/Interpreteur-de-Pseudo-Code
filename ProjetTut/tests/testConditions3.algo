@@ -8,20 +8,8 @@ DEBUT
 	age <-- 10
 	si age = 10 alors
 		ecrire("oui")
-	fsi
-	
-	si age <= 30 et age >= 10 alors 
-		si age < 15 alors
-			écrire("cas1")
-		sinon
-			si age > 15 alors
-				écrire("cas2")
-			fsi
-		fsi
 	sinon
-		si age = 10 alors
-			écrire("cas3")
-		fsi
+		ecrire("non")
 	fsi
 	
 	si age /= 10 alors

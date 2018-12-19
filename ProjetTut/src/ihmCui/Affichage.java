@@ -58,8 +58,6 @@ public class Affichage {
 		
 		syntaxes.put("fonction",   ANSI_CYAN);
 		
-		syntaxes.put("commentaire",   ANSI_YELLOW);
-		
 		syntaxes.put("entier",     ANSI_GREEN);
 		syntaxes.put("double",     ANSI_GREEN);
 		syntaxes.put("chaine",     ANSI_GREEN);
@@ -178,7 +176,7 @@ public class Affichage {
 	
 	private String console(String exec) {
 		String ret="";
-		String ligne="";
+		
 		for(int i=0; i<119;i++)
 			ret+="-";
 		ret+="\n\n";
@@ -187,25 +185,7 @@ public class Affichage {
 		ret+="+---------+---------------------------------------------------------------------+\n";
 		for(int i=exec.split("\n").length-3; i<exec.split("\n").length; i++) {
 			try {
-				ligne=String.format("%-77.77s", exec.split("\n")[i]);
-				
-				char prefix = ligne.charAt(0);
-				ligne = ligne.substring(2);
-				
-				switch (prefix) {
-					case 'l' :
-						ret += String.format("|%-79s|\n", ANSI_YELLOW+ligne+ANSI_RESET);
-						break;
-					case 'e' :
-						ret += String.format("|%-79s|\n", ANSI_PURPLE+ligne+ANSI_RESET);
-						break;
-					case 'a' :
-						ret += String.format("|%-79s|\n", ANSI_BLUE+ligne+ANSI_RESET);
-						break;
-					case 'r' :
-						ret += String.format("|%-79s|\n", ligne);
-						break;
-				}
+				ret+=String.format("|%-79s|\n", exec.split("\n")[i]);
 			}catch(Exception e) {
 				ret+=String.format("|%-79s|\n", " ");
 			}
@@ -226,15 +206,8 @@ public class Affichage {
 	
 	private String colorer(String str) {
 		String ret="";
-		String commentaire="";
-		
-		if(str.matches("(.*)(//.*)\\|")) {
-			commentaire = str.replaceAll("(.*)(//.*)\\|", syntaxes.get("commentaire")+"$2"+ANSI_RESET+"| ");
-			str = str.replaceAll("(.*)(//.*)\\|", "$1");
-		}
-		
 		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
-		
+		str = str.replaceAll("(\\/\\/[éèà\\w]*)",  syntaxes.get("commentaire")+"$1"+ANSI_RESET+"(");
 		String[] mots = str.split(" ");
 		for(int i=0; i<mots.length;i++) {
 			if(syntaxes.containsKey(mots[i])) {
@@ -243,7 +216,6 @@ public class Affichage {
 			
 			ret+=mots[i]+" ";
 		}
-		ret += commentaire;
 		return ret;
 	}
 }
