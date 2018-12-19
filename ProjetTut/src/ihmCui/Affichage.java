@@ -45,8 +45,6 @@ public class Affichage {
 	public Affichage(String[] code, Programme prog, ArrayList<Variable> ensVars ) {
 		this.ensVars = ensVars;
 		this.prog = prog;
-		if(OSWindows)
-			AnsiConsole.systemInstall();
 		
 		this.code = code;
 		syntaxes = new HashMap<String, String>();
@@ -59,8 +57,6 @@ public class Affichage {
 		syntaxes.put("ftq",        ANSI_BLUE);
 		
 		syntaxes.put("fonction",   ANSI_CYAN);
-		
-		syntaxes.put("fonction",   ANSI_YELLOW);
 		
 		syntaxes.put("entier",     ANSI_GREEN);
 		syntaxes.put("double",     ANSI_GREEN);
@@ -131,8 +127,13 @@ public class Affichage {
 		}
 		
 		affichage += console(exec);
-		if(OSWindows) AnsiConsole.out.println(affichage);AnsiConsole.systemUninstall();
-		System.out.println(affichage);
+		if(OSWindows) { 
+			AnsiConsole.systemInstall();
+			AnsiConsole.out.println(affichage);
+			AnsiConsole.systemUninstall();
+		}
+		else
+			System.out.println(affichage);
 	}
 	
 	public void ajouterVariableATracer ( Variable v )
