@@ -1,13 +1,13 @@
 package main;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import ihmCui.Affichage;
+import pseudoCode.Algorithme;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Programme;
+import pseudoCode.Variable;
 
 /*
  * Retour en arriere :
@@ -17,7 +17,7 @@ import pseudoCode.Programme;
 public class Controleur {
 
 	/** nom du fichier */
-	private final String input = "tests/testBoucle.algo";
+	private final String input = "tests/Test2.algo";
 
 	/** objet programme */
 	private Programme prog;
@@ -57,15 +57,17 @@ public class Controleur {
 		} catch (AlgorithmeException e) {
 			e.printStackTrace();
 		}
+		
+		
+		
+		this.aff = new Affichage(lecture.getTexteParLigne(), prog, getVariableATracer());
 
-		this.aff = new Affichage(lecture.getTexteParLigne());
-
-		this.aff.afficher(prog);
+		this.aff.afficher();
 
 		while (!prog.getMain().estTerminer()) {
 			try {
 				if (prog.getCurrent().ligneSuivante()) {
-					this.aff.afficher(prog);
+					this.aff.afficher();
 				}
 			} catch (AlgorithmeException e) {
 				e.printStackTrace();
@@ -84,12 +86,31 @@ public class Controleur {
 		String valeur = this.sc.nextLine();
 		this.prog.getCurrent().setValeur(nomVar, valeur);
 	}
+	
+	public ArrayList<Variable> getVariableATracer ()
+	{
+		ArrayList<Variable> ensVars = new ArrayList<Variable>();
+		for ( Algorithme algo : this.prog.getAlgos() )
+		{
+			for ( Variable var : algo.getVariables() )
+			{
+				System.out.print( "Tracer la variable \"" + var.getNom() + "\" de l'algo " + algo.getNom()  + " (Y/n) : ");
+				String reponse = sc.nextLine();
+				if ( reponse.trim().equalsIgnoreCase( "Y" ) || reponse.trim().equals( "" ))
+				{
+					ensVars.add( var );
+				}
+			}
+		}
+		
+		return ensVars;
+	}
 
 	/**
 	 * Attend une action de l'utilisateur
 	 */
 	public void attend() {
-		this.aff.afficher(prog);
+		this.aff.afficher();
 
 		etapes.add(this.prog.getCurrent().getLigneCourrante());
 
