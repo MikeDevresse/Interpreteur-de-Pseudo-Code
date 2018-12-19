@@ -38,6 +38,8 @@ public class Affichage {
 	
 	private ArrayList<Variable> ensVars;
 	
+	private ArrayList<Integer> ensLigneRouge;
+	
 	/**
 	 * Constructeur
 	 * @param code pseudo-code
@@ -45,6 +47,8 @@ public class Affichage {
 	public Affichage(String[] code, Programme prog, ArrayList<Variable> ensVars ) {
 		this.ensVars = ensVars;
 		this.prog = prog;
+		
+		this.ensLigneRouge = new ArrayList<Integer>();
 		
 		this.code = code;
 		syntaxes = new HashMap<String, String>();
@@ -118,6 +122,11 @@ public class Affichage {
 						affichage += ANSI_BLACK;
 						affichage += String.format("|%2d %-76.76s|", cpt, str2);
 						affichage += ANSI_RESET;
+					}else if(ensLigneRouge.contains((Integer)cpt)){
+						affichage += ANSI_RED_BACKGROUND;
+						affichage += ANSI_BLACK;
+						affichage += String.format("|%2d %-76.76s|", cpt, str2);
+						affichage += ANSI_RESET;
 					}else {
 						str2 = String.format("|%2d %-76.76s|",cpt, str2);
 						affichage += colorer(str2);
@@ -133,6 +142,7 @@ public class Affichage {
 		
 		affichage += console(exec);
 		if(OSWindows) { 
+			
 			AnsiConsole.systemInstall();
 			AnsiConsole.out.println(affichage);
 			AnsiConsole.systemUninstall();
@@ -149,6 +159,10 @@ public class Affichage {
 	public void enleverVariableATracer ( Variable v )
 	{
 		this.ensVars.remove( v );
+	}
+	
+	public void ajouterLigneRouge(int ligne) {
+		ensLigneRouge.add((Integer)ligne);
 	}
 	
 	private String entete() {
