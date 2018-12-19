@@ -45,6 +45,15 @@ public class Variable<T> {
 	public String getNom() {
 		return nom;
 	}
+	
+	/**
+	 * Retourne le type de la variable
+	 * 
+	 * @return type
+	 */
+	public String getType() {
+		return type;
+	}
 
 	/**
 	 * Retourne si la variable est une constante
