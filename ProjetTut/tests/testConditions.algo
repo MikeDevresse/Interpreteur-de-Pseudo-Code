@@ -2,22 +2,24 @@ ALGORITHME TestConditions
 constante:
 
 variable :
-	age 	: entier
+	age : entier
 	
 DEBUT
 	age <-- 10
 	si age <= 30 et age >= 10 alors 
 		si age < 15 alors
 			écrire("cas1")
-		si age > 15 alors
-			écrire("cas2")
+		sinon
+			si age > 15 alors
+				écrire("cas2")
+			fsi
 		fsi
-	sinon
-		si age = 65 alors
+	sinon // Bonsoir
+		si age = 10 alors
 			écrire("cas3")
 		fsi
 	fsi
-	
+	// Sa marche aucune erreur
 	si age /= 10 alors
 		écrire("cas 4")
 	sinon

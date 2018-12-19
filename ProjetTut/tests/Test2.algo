@@ -10,14 +10,13 @@ DEBUT
 	a <-- 1
 	b <-- 10
 
-	écrire(a)
+	écrire(a )
 	écrire(b)
 	
 	tmp <-- a
 	a <-- b
 	b <-- tmp
 	
-	écrire("bonjour" © a)
+	écrire("a + b bonjour" © a)
 	écrire(b)
-	
 FIN 

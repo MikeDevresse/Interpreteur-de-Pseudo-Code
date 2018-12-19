@@ -1,5 +1,7 @@
 package pseudoCode;
 
+import java.io.Serializable;
+
 /**
  * Représente une variable dans l'algorithme
  *
@@ -61,7 +63,6 @@ public class Variable<T> {
 	public void setValeur(T valeur) {
 		this.valeur = valeur;
 	}
-	
 
 	/**
 	 * Défini le nom de la variable
@@ -71,22 +72,33 @@ public class Variable<T> {
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	
-	public static String traduire ( String expression )
-	{
-		String[] parts = expression.split( "\"" );
-		for ( int i=0 ; i<parts.length ; i = i+2 )
-		{
-    		parts[i] = parts[i].replaceAll( "×", "*" );
-    		parts[i] = parts[i].replaceAll( "mod","%");
-    		parts[i] = parts[i].replaceAll( "([0-9]+[ ]*)/([ ]*[0-9]+)","$1/(double)$2" );
-    		parts[i] = parts[i].replaceAll( "div","/(int)" );
-    		parts[i] = parts[i].replaceAll( "([0-9]+)\\^([0-9]+)", "Math.pow($1,$2)" );
-    		parts[i] = parts[i].replaceAll( "\\\\/¯([0-9]+)", "Math.sqrt($1)" );
+
+	/**
+	 * Traduit une expression pseudo-code en Java
+	 * @param expression chaîne de caractère pseudo code
+	 * @return chaîne de caractère java
+	 */
+	public static String traduire(String expression) {
+		String[] parts = expression.split("\"");
+		for (int i = 0; i < parts.length; i++) {
+			if (i % 2 == 0) {
+				parts[i] = parts[i].replaceAll("×", "*");
+				parts[i] = parts[i].replaceAll("mod", "%");
+				parts[i] = parts[i].replaceAll("([0-9]+[ ]*)/([ ]*[0-9]+)", "$1/(double)$2");
+				parts[i] = parts[i].replaceAll("div", "/(int)");
+				parts[i] = parts[i].replaceAll("([0-9]+)\\^([0-9]+)", "Math.pow($1,$2)");
+				parts[i] = parts[i].replaceAll("\\\\/¯([0-9]+)", "Math.sqrt($1)");
+				parts[i] = parts[i].replaceAll("©", "+");
+				parts[i] = parts[i].replaceAll("([\\w]+)\\+\\+", "$1 += 1");
+			} else {
+				parts[i] = "\"" + parts[i] + "\"";
+			}
 		}
 		String sRet = "";
-		for ( String s : parts)
+
+		for (String s : parts)
 			sRet += s;
+
 		return sRet;
 	}
 
@@ -95,9 +107,9 @@ public class Variable<T> {
 		String s = "";
 
 		if (this.valeur != null)
-			s += String.format("|%12s|%12s|%24s|", this.nom, this.type, this.valeur+"");
+			s += String.format("%12s|%11s|%12s", this.nom, this.type, this.valeur + "");
 		else
-			s += String.format("|%12s|%12s|%24s|", this.nom, this.type, "NULL");
+			s += String.format("%12s|%11s|%12s", this.nom, this.type, "NULL");
 
 		return s;
 	}
