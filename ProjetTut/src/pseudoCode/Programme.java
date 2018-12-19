@@ -113,13 +113,9 @@ public class Programme {
 		this.lignesFausses.add( ligne );
 	}
 
-	public void enleverLigneFausse ( int ligne )
+	public void resetLigneFausse ()
 	{
-		for ( int i = 0 ; i<lignesFausses.size() ; i++ )
-		if ( lignesFausses.get( i ) == ligne )
-		{
-			lignesFausses.remove( i );
-		}
+		this.lignesFausses = new ArrayList<Integer>();
 		
 	}
 	
