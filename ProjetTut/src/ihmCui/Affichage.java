@@ -32,7 +32,7 @@ public class Affichage {
 	private String[] code;
 	private HashMap<String, String> syntaxes;
 	
-	private boolean OSWindows=true;
+	private boolean OSWindows=false;
 	
 	private Programme prog;
 	
@@ -117,7 +117,6 @@ public class Affichage {
 					}else {
 						str2 = String.format("|%2d %-76.76s|",cpt, str2);
 						affichage += colorer(str2);
-						//Console.print(String.format("|%2d %-76.76s|",cpt, str2));
 					}
 					
 					affichage += ecrireVar(cptVar, vars);
@@ -232,6 +231,7 @@ public class Affichage {
 	private String colorer(String str) {
 		String ret="";
 		String commentaire="";
+		boolean comm = false;
 		
 		if(str.matches("(.*)(//.*)\\|")) {
 			commentaire = str.replaceAll("(.*)(//.*)\\|", syntaxes.get("commentaire")+"$2"+ANSI_RESET+"| ");
@@ -240,15 +240,21 @@ public class Affichage {
 		
 		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
 		
+		str += commentaire;
+		
+		System.out.println("str => "+str);
+		
 		String[] mots = str.split(" ");
 		for(int i=0; i<mots.length;i++) {
-			if(syntaxes.containsKey(mots[i])) {
+			if(mots[i].contains("//"))
+				comm=true;
+			
+			if(syntaxes.containsKey(mots[i]) && !comm) {
 				mots[i] = syntaxes.get(mots[i])+mots[i]+ANSI_RESET;
 			}
-			
 			ret+=mots[i]+" ";
 		}
-		ret += commentaire;
+		//ret += commentaire;
 		return ret;
 	}
 }

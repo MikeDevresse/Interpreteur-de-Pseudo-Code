@@ -14,9 +14,9 @@ DEBUT
 	écrire(b)
 	
 	tmp <-- a
-	a <-- b
-	b <-- tmp
-	
+	a <-- b //zqihdkzqgdukyqzgdukyzqfdukyzqfdukyzfqd
+	b <-- tmp//commentaire
+    //test commentaire () if
 	écrire("a © b bonjour" © a)
 	écrire(b)
 FIN 
