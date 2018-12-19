@@ -280,10 +280,17 @@ public class Algorithme {
 		
 		while (Condition.condition(condition, this.interpreteur)) {
 			ligneCourrante = ligneBoucle; // retour en haut de la boucle
+			Controleur.getControleur().attend();
 			do {
 				ligneSuivante();
 			} while (ligneCourrante != ligneFtq);
 		}
+		ligneCourrante = ligneBoucle;
+		System.out.println( ligneCourrante );
+		this.prog.ajouterLigneFausse( ligneCourrante );
+		Controleur.getControleur().attend();
+		ligneCourrante = ligneFtq+1;
+		
 	}
 
 	/**
