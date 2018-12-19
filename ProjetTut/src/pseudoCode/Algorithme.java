@@ -44,11 +44,6 @@ public class Algorithme {
 
 	private Programme prog;
 
-
-	private int niveauCondition;
-
-	private int niveauBoucle;
-
 	/**
 	 * Instanciation de algorithme.
 	 *
@@ -61,8 +56,6 @@ public class Algorithme {
 		this.nom = nom;
 		this.ensVariables = new ArrayList<Variable>();
 		this.fichier = fichier;
-		this.niveauCondition = 0;
-		this.niveauBoucle = 0;
 		initialiser();
 	}
 
@@ -139,9 +132,7 @@ public class Algorithme {
 			 */
 			if (current.matches(".*si .* alors.*")) {
 				String condition = current.split("si | alors")[1];
-				this.niveauCondition++;
-				interpreterCondition(condition, this.niveauCondition);
-				this.niveauCondition--;
+				interpreterCondition(condition);
 			} else if (current.matches(".*si .*") && !current.contains("alors")) {
 				/*
 				 * Gestion des conditions sur plusieurs lignes
@@ -162,9 +153,7 @@ public class Algorithme {
 				}
 
 				ligneCourrante = i; // saut à la fin de la condition
-				this.niveauCondition++;
-				interpreterCondition(condition, this.niveauCondition); // interprétation de la condition
-				this.niveauCondition--;
+				interpreterCondition(condition); // interprétation de la condition
 			}
 
 			/*
@@ -172,7 +161,7 @@ public class Algorithme {
 			 */
 			if (current.matches(".*tq.*alors.*")) {
 				String condition = current.split("tq | alors")[1];
-				interpreterBoucle(ligneCourrante, condition, this.niveauBoucle);
+				interpreterBoucle(ligneCourrante, condition);
 
 			} else if (current.matches(".*tq .*")) {
 				String condition = current.split("tq")[1];
@@ -191,7 +180,7 @@ public class Algorithme {
 				}
 
 				ligneCourrante = i; // saut à la fin de la condition
-				interpreterBoucle(ligneCourrante, condition, this.niveauBoucle); // interprétation de la boucle
+				interpreterBoucle(ligneCourrante, condition); // interprétation de la boucle
 			}
 		}
 
@@ -212,7 +201,7 @@ public class Algorithme {
 	 * @param condition condition
 	 * @throws AlgorithmeException
 	 */
-	public void interpreterCondition(String condition, int niveauCondition) throws AlgorithmeException {
+	public void interpreterCondition(String condition) throws AlgorithmeException {
 
 		int cptLigne = ligneCourrante;
 
@@ -266,20 +255,32 @@ public class Algorithme {
 	 * @param condition   condition
 	 * @throws AlgorithmeException
 	 */
-	public void interpreterBoucle(int ligneBoucle, String condition, int niveauBoucle) throws AlgorithmeException {
-		this.niveauBoucle++;
-		System.out.println("Entrée dans la boucle de niveau : " + niveauBoucle);
-		System.out.println(Condition.condition(condition, this.getInterpreteur()));
-		while (Condition.condition(condition, this.getInterpreteur())) {
-			System.out.println("rieugruig");
+	public void interpreterBoucle(int ligneBoucle, String condition) throws AlgorithmeException {
+
+		int cptLigne = ligneCourrante;
+
+		int nbTq = 0;
+		int ligneFtq = 0;
+		for (int i = cptLigne; i < fichier.length; i++) {
+			
+			if (fichier[i].matches(".*tq .* alors.*"))
+				nbTq++;
+
+			if (fichier[i].matches("ftq")) 
+				if (nbTq == 0) {
+					ligneFtq = i;
+					break;
+				} else 
+					nbTq--;
+		}
+		
+		
+		while (Condition.condition(condition, this.interpreteur)) {
 			ligneCourrante = ligneBoucle; // retour en haut de la boucle
 			do {
 				ligneSuivante();
-			} while (!fichier[ligneCourrante].trim().equals("ftq") && this.niveauBoucle == niveauBoucle);
+			} while (ligneCourrante != ligneFtq);
 		}
-
-		System.out.println("Sortie de la boucle de niveau : " + niveauBoucle);
-		this.niveauBoucle--;
 	}
 
 	/**
