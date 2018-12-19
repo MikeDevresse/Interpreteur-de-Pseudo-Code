@@ -77,6 +77,11 @@ public class Programme {
 	{
 		return this.current;
 	}
+	
+	public ArrayList<Algorithme> getAlgos ()
+	{
+		return this.algos;
+	}
 
 	public String getTraceExec() {
 		return this.traceExec;
@@ -90,5 +95,11 @@ public class Programme {
 	public String toString() {
 		return "";
 		// return algo.toString();
+	}
+
+	public void reset ()
+	{
+		this.main.reset();
+		
 	}
 }

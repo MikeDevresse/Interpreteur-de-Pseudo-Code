@@ -33,10 +33,12 @@ public class Algorithme {
 	private boolean fin = false;
 
 	/** def. */
-	private String def;
+	private String def = "";
 
 	/** ligne courrante. */
 	private int ligneCourrante = 0;
+	
+	private int ligneDebutAlgorithme;
 
 	private int ligneDebut;
 
@@ -59,6 +61,33 @@ public class Algorithme {
 		this.ensVariables = new ArrayList<Variable>();
 		this.fichier = fichier;
 		this.niveauCondition = 0;
+		initialiser();
+	}
+	
+	public void initialiser ()
+	{
+		String current = fichier[ligneCourrante++];
+		String[] mots = current.split(" ");
+		do
+		{
+			if (mots[0].replace(":", "").equals("constante")) {
+    			this.def = "const";
+    		} else if (mots[0].replace(":", "").equals("variable")) {
+    			this.def = "var";
+    		} else if (this.def != null || !this.def.equals("")) {
+    			if (current.matches("[[\\w*],*]*[ ]*\\w*:[ ]*\\w*")) {
+    				String type = current.split(":")[1].trim();
+    				for (String var : current.split(":")[0].split(",")) {
+    					ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const")));
+    				}
+    
+    			}
+    		}
+			current = fichier[ligneCourrante++];
+			mots = current.split( " " );
+		} while ( !mots[0].equals( "DEBUT" ));
+		this.ligneDebutAlgorithme = ligneCourrante;
+		this.def = "algo";
 	}
 
 	/**
@@ -76,31 +105,17 @@ public class Algorithme {
 		if (current.trim().equals(""))
 			return false;
 
-		/*
-		 * Gestion des variables
-		 */
 		String[] mots = current.split(" ");
-		if (mots[0].replace(":", "").equals("constante")) {
-			this.def = "const";
-		} else if (mots[0].replace(":", "").equals("variable")) {
-			this.def = "var";
-		} else if (this.def != null || !this.def.equals("")) {
-			if (current.matches("[[\\w*],*]*[ ]*\\w*:[ ]*\\w*")) {
-				String type = current.split(":")[1].trim();
-				for (String var : current.split(":")[0].split(",")) {
-					ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const")));
-				}
-
-			}
-		}
-
+		
 		if (mots[0].equals("DEBUT"))
 			this.def = "algo";
 
-		/*
-		 * Début de l'algorithme
-		 */
-		if (this.def.equals("algo")) {
+		
+		if ( this.def.equals( "algo" ))
+		{
+			/*
+			 * Début de l'algorithme
+			 */
 			if (current.matches("\\w*[ ]*<--[ ]*.*")) {
 				String[] parties = current.split("<--");
 				setValeur(parties[0].trim(), parties[1].trim());
@@ -274,6 +289,7 @@ public class Algorithme {
 	 * @return tableau de variables
 	 */
 	public Variable[] getVariables() {
+		
 		return this.ensVariables.toArray(new Variable[this.ensVariables.size()]);
 	}
 
@@ -343,5 +359,16 @@ public class Algorithme {
 
 	public boolean getEstVrai() {
 		return this.estVrai;
+	}
+	
+	public String getNom ()
+	{
+		return this.nom;
+	}
+
+	public void reset ()
+	{
+		this.ligneCourrante = this.ligneDebutAlgorithme;
+		
 	}
 }
