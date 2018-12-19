@@ -62,8 +62,8 @@ public class Controleur
 		{
 			e.printStackTrace();
 		}
-
-		this.aff = new Affichage( lecture.getTexteParLigne(), prog, getVariableATracer() );
+		getVariableATracer();
+		this.aff = new Affichage( lecture.getTexteParLigne(), prog );
 
 		this.aff.afficher();
 
@@ -98,9 +98,8 @@ public class Controleur
 		this.prog.getCurrent().setValeur( nomVar, valeur );
 	}
 
-	public ArrayList<Variable> getVariableATracer ()
+	public void getVariableATracer ()
 	{
-		ArrayList<Variable> ensVars = new ArrayList<Variable>();
 		for ( Algorithme algo : this.prog.getAlgos() )
 		{
 			for ( Variable var : algo.getVariables() )
@@ -109,12 +108,11 @@ public class Controleur
 				String reponse = sc.nextLine();
 				if ( reponse.trim().equalsIgnoreCase( "Y" ) || reponse.trim().equals( "" ) )
 				{
-					ensVars.add( var );
+					prog.ajouterVariableATracer( var );
 				}
 			}
 		}
 
-		return ensVars;
 	}
 
 	/**
@@ -161,11 +159,11 @@ public class Controleur
 						{
 							if ( ajouter )
 							{
-								aff.ajouterVariableATracer( var );
+								prog.ajouterVariableATracer( var );
 							}
 							else
 							{
-								aff.enleverVariableATracer( var );
+								prog.enleverVariableATracer( var );
 							}
 						}
 					}

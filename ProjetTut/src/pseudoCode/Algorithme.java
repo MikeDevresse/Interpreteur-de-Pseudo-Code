@@ -369,6 +369,8 @@ public class Algorithme {
 		try {
 			this.getVariable(nomVar).setValeur(interpreter.eval(valeur));
 			interpreter.eval(nomVar + " = " + this.getVariable(nomVar).getValeur());
+			if ( prog.getVariableATracer().contains( this.getVariable( nomVar ) ) )
+				prog.traceVariable += this.getVariable( nomVar ).toString() + "\n";
 		} catch (EvalError e) {
 			e.printStackTrace();
 		}
