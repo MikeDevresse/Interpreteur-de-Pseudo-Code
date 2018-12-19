@@ -36,7 +36,6 @@ public class Affichage {
 	
 	private Programme prog;
 	
-	private ArrayList<Variable> ensVars;
 	
 	private ArrayList<Integer> ensLigneRouge;
 	
@@ -44,8 +43,7 @@ public class Affichage {
 	 * Constructeur
 	 * @param code pseudo-code
 	 */
-	public Affichage(String[] code, Programme prog, ArrayList<Variable> ensVars ) {
-		this.ensVars = ensVars;
+	public Affichage(String[] code, Programme prog ) {
 		this.prog = prog;
 		
 		this.ensLigneRouge = new ArrayList<Integer>();
@@ -92,7 +90,6 @@ public class Affichage {
 		String affichage = "";
 		affichage += entete();
 		
-		Variable[] vars = this.ensVars.toArray( new Variable[ensVars.size()] );
 		String exec = prog.traceExec;
 		int ligneC = prog.getCurrent().getLigneCourrante();
 		
@@ -104,7 +101,7 @@ public class Affichage {
 		if(ligneC>code.length-20) {ligneBas=code.length;ligneHaut=ligneBas-40;}
 		if(ligneHaut<0) {ligneHaut=0; ligneBas = 40;}
 		
-		
+		System.out.println( prog.traceVariable );
 		int cpt = ligneHaut;
 		
 		for(int i=ligneHaut; i<ligneBas; i++) {
@@ -135,7 +132,6 @@ public class Affichage {
 						affichage += colorer(str2);
 					}
 					
-					affichage += ecrireVar(cptVar, vars);
 					cptVar++;
 					
 					affichage += "\n";
@@ -154,29 +150,11 @@ public class Affichage {
 			System.out.println(affichage);
 	} 
 	
-	public void ajouterVariableATracer ( Variable v )
-	{
-		this.ensVars.add( v );
-	}
-	
-	public void enleverVariableATracer ( Variable v )
-	{
-		this.ensVars.remove( v );
-	}
-	
 	public void ajouterLigneRouge(int ligne) 
 	{
 		ensLigneRouge.add((Integer)ligne);
 	}
 	
-	public String getVar(String nom) {
-		String ret ="";
-		for(Variable var : ensVars)
-			if(var.getNom().equals(nom))
-				ret=String.format("|%5s | %5s | %5s |\n|%5s | %5s | %5s |\n", "Nom","Type","Valeur", var.getNom(), var.getType(), var.getValeur());
-
-		return ret;
-	}
 	
 	private String entete() {
 		String ret="";

@@ -9,7 +9,8 @@ import main.Controleur;
 public class Programme {
 
 	public String traceExec;
-
+	public String traceVariable = "    NOM     |    TYPE   |   VALEUR   |\n";
+	
 	/** fichier. */
 	private String[] fichier;
 
@@ -22,6 +23,7 @@ public class Programme {
 	
 	private ArrayList<Integer> lignesFausses;
 
+	private ArrayList<Variable> ensVars;
 
 	/**
 	 * Instanciation de programme.
@@ -30,6 +32,7 @@ public class Programme {
 	 * @throws AlgorithmeException the algorithme exception
 	 */
 	public Programme(String[] fichier) throws AlgorithmeException {
+		this.ensVars = new ArrayList<Variable>();
 		this.lignesFausses = new ArrayList<Integer>();
 		this.traceExec = "";
 
@@ -125,4 +128,21 @@ public class Programme {
 		this.main.reset();
 		
 	}
+	
+	public ArrayList<Variable> getVariableATracer ()
+	{
+		return this.ensVars;
+	}
+
+	
+	public void ajouterVariableATracer ( Variable v )
+	{
+		this.ensVars.add( v );
+	}
+	
+	public void enleverVariableATracer ( Variable v )
+	{
+		this.ensVars.remove( v );
+	}
+	
 }
