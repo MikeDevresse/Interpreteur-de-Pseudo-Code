@@ -111,10 +111,14 @@ public class Algorithme {
 			this.def = "algo";
 
 		
+		/*
+		 * Début de l'algorithme
+		 */
 		if ( this.def.equals( "algo" ))
 		{
+			
 			/*
-			 * Début de l'algorithme
+			 * Affectation des variables
 			 */
 			if (current.matches("\\w*[ ]*<--[ ]*.*")) {
 				String[] parties = current.split("<--");
