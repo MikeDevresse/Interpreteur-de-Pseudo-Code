@@ -111,10 +111,14 @@ public class Algorithme {
 			this.def = "algo";
 
 		
+		/*
+		 * Début de l'algorithme
+		 */
 		if ( this.def.equals( "algo" ))
 		{
+			
 			/*
-			 * Début de l'algorithme
+			 * Affectation des variables
 			 */
 			if (current.matches("\\w*[ ]*<--[ ]*.*")) {
 				String[] parties = current.split("<--");
@@ -191,7 +195,7 @@ public class Algorithme {
 		if (mots[0].equals("FIN"))
 			this.fin = true;
 
-		// Controleur.getControleur().attend();
+		Controleur.getControleur().attend();
 
 		return true;
 	}

@@ -18,7 +18,11 @@ public class Controleur
 {
 
 	/** nom du fichier */
+<<<<<<< HEAD
 	private final String	   input		  = "tests/TestPrimitives.algo";
+=======
+	private final String	   input		  = "tests/testConditions.algo";
+>>>>>>> branch 'master' of https://github.com/MikeDevresse/ProjetTutS3.git
 
 	/** objet programme */
 	private Programme		   prog;
