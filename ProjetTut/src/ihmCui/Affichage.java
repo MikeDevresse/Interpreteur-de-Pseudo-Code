@@ -184,25 +184,9 @@ public class Affichage {
 		ret+="+---------+---------------------------------------------------------------------+\n";
 		for(int i=exec.split("\n").length-3; i<exec.split("\n").length; i++) {
 			try {
-				ligne=String.format("%-77.77s", exec.split("\n")[i]);
-				
-				char prefix = ligne.charAt(0);
-				ligne = ligne.substring(2);
-				
-				switch (prefix) {
-					case 'l' :
-						ret += String.format("|%-79s|\n", ANSI_YELLOW+ligne+ANSI_RESET);
-						break;
-					case 'e' :
-						ret += String.format("|%-79s|\n", ANSI_PURPLE+ligne+ANSI_RESET);
-						break;
-					case 'a' :
-						ret += String.format("|%-79s|\n", ANSI_BLUE+ligne+ANSI_RESET);
-						break;
-					case 'r' :
-						ret += String.format("|%-79s|\n", ligne);
-						break;
-				}
+				ligne = exec.split("\n")[i];
+				ligne = String.format("%-81.81s", ligne);
+				ret +="|"+colorerConsole(ligne)+"|\n";
 			}catch(Exception e) {
 				ret+=String.format("|%-79s|\n", " ");
 			}
@@ -219,6 +203,30 @@ public class Affichage {
 			str = str.substring(0, 75)+"|"+str.substring(75);
 		}
 		return str;
+	}
+	
+	private String colorerConsole(String str) {
+		String ret="";
+		
+		char prefix = str.charAt(0);
+		str = str.substring(2);
+		
+		switch (prefix) {
+			case 'l' :
+				ret += ANSI_YELLOW+str+ANSI_RESET;
+				break;
+			case 'e' :
+				ret += ANSI_PURPLE+str+ANSI_RESET;
+				break;
+			case 'a' :
+				ret += ANSI_BLUE+str+ANSI_RESET;
+				break;
+			default :
+				ret += str;
+				break;
+		}
+		
+		return ret;
 	}
 	
 	private String colorer(String str) {
