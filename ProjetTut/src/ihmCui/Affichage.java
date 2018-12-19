@@ -20,14 +20,14 @@ public class Affichage {
 	private static final String ANSI_CYAN   = "\u001B[36m";
 	private static final String ANSI_WHITE  = "\u001B[37m";
 	
-	private static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
-	private static final String ANSI_RED_BACKGROUND = "\u001B[41m";
-	private static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
+	private static final String ANSI_BLACK_BACKGROUND  = "\u001B[40m";
+	private static final String ANSI_RED_BACKGROUND    = "\u001B[41m";
+	private static final String ANSI_GREEN_BACKGROUND  = "\u001B[42m";
 	private static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
-	private static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
+	private static final String ANSI_BLUE_BACKGROUND   = "\u001B[44m";
 	private static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
-	private static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
-	private static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+	private static final String ANSI_CYAN_BACKGROUND   = "\u001B[46m";
+	private static final String ANSI_WHITE_BACKGROUND  = "\u001B[47m";
 	
 	private String[] code;
 	private HashMap<String, String> syntaxes;
@@ -71,6 +71,8 @@ public class Affichage {
 		syntaxes.put("constante",  ANSI_PURPLE);
 		syntaxes.put("DEBUT",      ANSI_PURPLE);
 		syntaxes.put("FIN",        ANSI_PURPLE);
+		
+		if(!(System.getProperty("os.name").equals("Linux"))) OSWindows = true;
 	}
 	
 	/**
