@@ -10,7 +10,6 @@ public class TestVariable {
 		/*Fonctions.evaluer("lire", "x, y, z, ab");
 		Fonctions.evaluer("ecrire", "\"salut\"");*/
 		
-		
 	}
 
 }

@@ -134,7 +134,7 @@ public class Affichage {
 		}
 		else
 			System.out.println(affichage);
-	} 
+	}
 	
 	public void ajouterVariableATracer ( Variable v )
 	{
