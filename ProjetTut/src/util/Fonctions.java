@@ -21,18 +21,39 @@ public class Fonctions {
 	 * @param nomFonction nom de la fonction
 	 * @param contenu paramètre envoyés
 	 */
-	public static void evaluer(String nomFonction, String contenu, Algorithme a) {
+	public static String evaluer(String nomFonction, String contenu, Algorithme a) {
 
 		nomFonction = nomFonction.trim();
-		switch (nomFonction) {
+		switch (nomFonction.toLowerCase() ) {
 		case "ecrire":
-		case "écrire":
-			Fonctions.ecrire(contenu,a);
-			break;
-
-		case "lire":
-			Fonctions.lire(contenu,a);
-			break;
+		case "écrire": return Fonctions.ecrire(contenu,a);
+		case "lire": return Fonctions.lire(contenu,a);
+		case "enchaine": return contenu.replaceAll("\"","");
+		case "enReel" : return Fonctions.enReel( Integer.parseInt( contenu.replaceAll( "\"", "" )  ) );
+		case "enentier" : return Fonctions.enEntier( Double.parseDouble( contenu.replaceAll( "\"", "" )  ) );
+		case "car" : return Fonctions.car( Integer.parseInt( contenu.replaceAll("\"","") ) );
+		case "ord" : return Fonctions.ord( contenu.replaceAll("\"","").charAt( 0 ) );
+		case "plancher" : return Fonctions.plancher( Double.parseDouble( contenu.replaceAll( "\"", "" ) ) );
+		case "plafond" : return Fonctions.plafond( Double.parseDouble( contenu.replaceAll( "\"", "" ) ) );
+		case "arrondi" : return Fonctions.arrondi( Double.parseDouble( contenu.replaceAll( "\"", "" ) ) );
+		case "aujourd'hui" :
+		case "aujourdhui" : return Fonctions.aujourdhui();
+		case "jour" : return Fonctions.jour( contenu.replaceAll( "\"", "" ) );
+		case "mois" : return Fonctions.mois( contenu.replaceAll( "\"", "" ) );
+		case "annee" : return Fonctions.annee( contenu.replaceAll( "\"", "" ) );
+		case "estreel" : return Fonctions.estReel( contenu.replaceAll( "\"", "" ) );
+		case "estentier" : return Fonctions.estEntier( contenu.replaceAll( "\"", "" ) );
+		case "hasard" : return Fonctions.hasard(Integer.parseInt( contenu.replaceAll( "\"", "" ) ));
+		default : 
+			for ( Algorithme algo : Controleur.getControleur().getProgramme().getAlgos() )
+			{
+				if ( algo.getNom().equals( nomFonction ))
+				{
+					// ICI : METTRE CE QUE RETOURNE LE SOUS ALGORITHME
+					return "";
+				}
+			}
+			return "";
 		}
 	}
 
@@ -42,12 +63,13 @@ public class Fonctions {
 	 * @param a algorithme en cours
 	 * @param ctrl controleur
 	 */
-	private static void lire(String vars,Algorithme a) {
+	private static String lire(String vars,Algorithme a) {
 		vars = vars.replace(" ", "");
 		Controleur ctrl = Controleur.getControleur();
 		for (String var : vars.split(",")) {
 			ctrl.lireVariable(var);
 		}
+		return "";
 	}
 
 	/**
@@ -55,34 +77,18 @@ public class Fonctions {
 	 * 
 	 * @param args parties de l'expression
 	 */
-	private static void ecrire(String contenu, Algorithme a) {
+	private static String ecrire(String contenu, Algorithme a) {
 		Interpreter interpreter = a.getInterpreteur();
 		try {
-//			System.out.println(interpreter.eval(contenu.trim()));
+			System.out.println( contenu );
+			contenu = contenu.replaceAll( "([\\w']+)\\(([\\w]*)\\)", Fonctions.evaluer( "$1", "$2", a ) );
+			System.out.println( contenu );
 			a.getProgramme().traceExec += interpreter.eval(contenu.trim()) + "\n" ;
+			return "" + interpreter.eval( contenu );
 		} catch (EvalError e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Transforme un double en chaîne de caractère.
-	 *
-	 * @param d double
-	 * @return string
-	 */
-	public static String enChaine(double d) {
-		return String.valueOf(d);
-	}
-
-	/**
-	 * Transforme un entier en chaîne de caractère.
-	 *
-	 * @param d entier
-	 * @return string
-	 */
-	public static String enChaine(int d) {
-		return String.valueOf(d);
+		return "";
 	}
 
 	/**
@@ -91,8 +97,8 @@ public class Fonctions {
 	 * @param s chaîne de caractère
 	 * @return int
 	 */
-	public static int enEntier(String s) {
-		return Integer.parseInt(s);
+	private static String enEntier(double d) {
+		return "" + (int)(d);
 	}
 
 	/**
@@ -101,8 +107,8 @@ public class Fonctions {
 	 * @param s chaîne de caractère
 	 * @return double
 	 */
-	public static double enReel(String s) {
-		return Double.parseDouble(s);
+	private static String enReel(int i) {
+		return "" + (double)(i);
 	}
 
 	/**
@@ -111,8 +117,8 @@ public class Fonctions {
 	 * @param codeCar code ASCII caractère
 	 * @return char
 	 */
-	public static char car(int codeCar) {
-		return (char) codeCar;
+	private static String car(int codeCar) {
+		return "" + (char) codeCar;
 	}
 
 	/**
@@ -121,8 +127,8 @@ public class Fonctions {
 	 * @param c caractère
 	 * @return int code ASCII
 	 */
-	public static int ord(char c) {
-		return (int) c;
+	private static String ord(char c) {
+		return "" + (int) c;
 	}
 
 	/**
@@ -131,8 +137,8 @@ public class Fonctions {
 	 * @param d réel
 	 * @return double arrondi
 	 */
-	public static double plancher(double d) {
-		return Math.floor(d);
+	private static String plancher(double d) {
+		return "" + Math.floor(d);
 	}
 
 	/**
@@ -141,8 +147,8 @@ public class Fonctions {
 	 * @param d réel
 	 * @return double
 	 */
-	public static double plafond(double d) {
-		return Math.ceil(d);
+	private static String plafond(double d) {
+		return "" + Math.ceil(d);
 	}
 
 	/**
@@ -151,8 +157,8 @@ public class Fonctions {
 	 * @param d réel
 	 * @return double
 	 */
-	public static double arrondi(double d) {
-		return Math.round(d);
+	private static String arrondi(double d) {
+		return "" + Math.round(d);
 	}
 
 	/**
@@ -160,7 +166,7 @@ public class Fonctions {
 	 *
 	 * @return string date
 	 */
-	public static String aujourdhui() {
+	private static String aujourdhui() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDateTime now = LocalDateTime.now();
 
@@ -173,8 +179,8 @@ public class Fonctions {
 	 * @param date date
 	 * @return int numéro du jour
 	 */
-	public static int jour(String date) {
-		return Integer.parseInt(date.split("/")[0]);
+	private static String jour(String date) {
+		return "" + Integer.parseInt(date.split("/")[0]);
 	}
 
 	/**
@@ -183,8 +189,8 @@ public class Fonctions {
 	 * @param date date
 	 * @return int anéne
 	 */
-	public static int mois(String date) {
-		return Integer.parseInt(date.split("/")[1]);
+	private static String mois(String date) {
+		return ""  + Integer.parseInt(date.split("/")[1]);
 	}
 
 	/**
@@ -193,8 +199,8 @@ public class Fonctions {
 	 * @param date date
 	 * @return int année
 	 */
-	public static int annee(String date) {
-		return Integer.parseInt(date.split("/")[2]);
+	private static String annee(String date) {
+		return "" + Integer.parseInt(date.split("/")[2]);
 	}
 
 	/**
@@ -203,12 +209,12 @@ public class Fonctions {
 	 * @param s chaîne de caractère
 	 * @return vrai si réel
 	 */
-	public static boolean estReel(String s) {
+	private static String estReel(String s) {
 		try {
 			Double.parseDouble(s);
-			return true;
+			return "true";
 		} catch (Exception e) {
-			return false;
+			return "false";
 		}
 	}
 
@@ -218,16 +224,16 @@ public class Fonctions {
 	 * @param s chaîne de caractère
 	 * @return vrai si entier
 	 */
-	public static boolean estEntier(String s) {
+	private static String estEntier(String s) {
 
-		if (Fonctions.estReel(s))
-			return false;
+		if (Fonctions.estReel(s).equals( "true" ))
+			return "false";
 
 		try {
 			Integer.parseInt(s);
-			return true;
+			return "true";
 		} catch (Exception e) {
-			return false;
+			return "false";
 		}
 	}
 
@@ -237,7 +243,7 @@ public class Fonctions {
 	 * @param a borne maximale exclue
 	 * @return int nombre aléatoire
 	 */
-	public static int hasard(int a) {
-		return (int) (Math.random() * a);
+	private static String hasard(int a) {
+		return "" + (int) (Math.random() * a);
 	}
 }
