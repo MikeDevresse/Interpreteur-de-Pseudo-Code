@@ -134,10 +134,7 @@ public class Affichage {
 				
 			try {
 				cptVar++;
-				
-				if(cptVar==0)
-					affichage +="    NOM     |    TYPE   |   VALEUR   |";
-				else if(cptVar <= vars.length)
+				if(cptVar <= vars.length)
 					affichage +=String.format("%-37s", vars[cptVar-1]);
 				else
 					affichage +=String.format("%-37s|", " ");
