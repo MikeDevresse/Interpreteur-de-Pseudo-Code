@@ -10,13 +10,13 @@ DEBUT
 	a <-- 1
 	b <-- 10
 
-	écrire(a )
+	écrire(a) //écrire OUI si tq ecrire("")!!!!!!!!!!!!!!!!!
 	écrire(b)
 	
 	tmp <-- a
-	a <-- b
-	b <-- tmp
-	
-	écrire("a + b bonjour" © a)
+	a <-- b //zqihdkzqgdukyqzgdukyzqfdukyzqfdukyzfqd
+	b <-- tmp//commentaire
+    //test commentaire () if
+	écrire("a © b bonjour" © a)
 	écrire(b)
 FIN 
