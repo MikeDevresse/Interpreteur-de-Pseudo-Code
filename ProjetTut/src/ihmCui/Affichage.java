@@ -103,7 +103,7 @@ public class Affichage {
 		if(ligneHaut<0) {ligneHaut=0; ligneBas = 30;}
 		
 		int cpt = ligneHaut;
-		
+		System.out.println( prog.getLignesFausses() );
 		for(int i=ligneHaut; i<ligneBas; i++) {
 			try {
 				String str = code[i];

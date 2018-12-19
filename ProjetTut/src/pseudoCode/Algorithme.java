@@ -263,7 +263,7 @@ public class Algorithme {
 			}
 
 		} else { // condition invalide
-			for (int i = ligneDebut; i < ligneFin; i++)
+			for (int i = ligneDebut; i <= ligneFin; i++)
 				this.prog.ajouterLigneFausse(i);
 
 			Controleur.getControleur().attend();
@@ -315,9 +315,10 @@ public class Algorithme {
 		}
 
 		// indication que la condition est fausse
-		for (int i = ligneDebut; i < ligneFin; i++)
+		for (int i = ligneDebut; i <= ligneFin; i++)
 			this.prog.ajouterLigneFausse(i);
 
+		this.ligneCourrante = ligneDebut;
 		Controleur.getControleur().attend();
 		this.prog.resetLigneFausse();
 
