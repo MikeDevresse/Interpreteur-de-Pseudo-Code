@@ -1,0 +1,22 @@
+ALGORITHME TestConditions
+constante:
+
+variable :
+	age : entier
+	
+DEBUT
+	age <-- 10
+	si age = 10 alors
+		ecrire("oui")
+	sinon
+		ecrire("non")
+	fsi
+	
+	si age /= 10 alors
+		écrire("cas 4")
+	sinon
+		écrire("cas 5")
+	fsi
+	
+FIN
+		
