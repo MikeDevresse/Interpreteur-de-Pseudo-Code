@@ -137,7 +137,6 @@ public class Controleur
 			ligneRestantes = -1;
 			ligneAAttendre = -1;
 			String commande = this.sc.nextLine();
-			System.out.println( "commande + " + commande );
 			if ( !commande.equals( "" ))
 				this.prog.traceExec += "a:";
 			/*
@@ -176,11 +175,6 @@ public class Controleur
 				ligneAAttendre = ligne;
 				this.etapes = new ArrayList<Integer>();
 				this.prog.reset();
-			}
-			else if ( commande.matches( "[+-] var \\w*" ) )
-			{
-				if ( commande.startsWith( "+" ) ) System.out.println( "ajout de la variable " + commande.replaceAll( "[+-] var (\\w*)", "$1" ) );
-				else System.out.println( "suppression de variable " + commande.replaceAll( "[+-] var (\\w*)", "$1" ) );
 			}
 			
 			if ( !commande.equals( "" ))
