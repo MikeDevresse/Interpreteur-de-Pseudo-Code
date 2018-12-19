@@ -37,16 +37,17 @@ public class Algorithme {
 
 	/** ligne courrante. */
 	private int ligneCourrante = 0;
-	
+
 	private int ligneDebutAlgorithme;
 
 	private int ligneDebut;
 
 	private Programme prog;
 
-	private boolean estVrai;
 
 	private int niveauCondition;
+
+	private int niveauBoucle;
 
 	/**
 	 * Instanciation de algorithme.
@@ -61,31 +62,30 @@ public class Algorithme {
 		this.ensVariables = new ArrayList<Variable>();
 		this.fichier = fichier;
 		this.niveauCondition = 0;
+		this.niveauBoucle = 0;
 		initialiser();
 	}
-	
-	public void initialiser ()
-	{
+
+	public void initialiser() {
 		String current = fichier[ligneCourrante++];
 		String[] mots = current.split(" ");
-		do
-		{
+		do {
 			if (mots[0].replace(":", "").equals("constante")) {
-    			this.def = "const";
-    		} else if (mots[0].replace(":", "").equals("variable")) {
-    			this.def = "var";
-    		} else if (this.def != null || !this.def.equals("")) {
-    			if (current.matches("[[\\w*],*]*[ ]*\\w*:[ ]*\\w*")) {
-    				String type = current.split(":")[1].trim();
-    				for (String var : current.split(":")[0].split(",")) {
-    					ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const")));
-    				}
-    
-    			}
-    		}
+				this.def = "const";
+			} else if (mots[0].replace(":", "").equals("variable")) {
+				this.def = "var";
+			} else if (this.def != null || !this.def.equals("")) {
+				if (current.matches("[[\\w*],*]*[ ]*\\w*:[ ]*\\w*")) {
+					String type = current.split(":")[1].trim();
+					for (String var : current.split(":")[0].split(",")) {
+						ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const")));
+					}
+
+				}
+			}
 			current = fichier[ligneCourrante++];
-			mots = current.split( " " );
-		} while ( !mots[0].equals( "DEBUT" ));
+			mots = current.split(" ");
+		} while (!mots[0].equals("DEBUT"));
 		this.ligneDebutAlgorithme = ligneCourrante;
 		this.def = "algo";
 	}
@@ -109,16 +109,15 @@ public class Algorithme {
 			return false;
 
 		String[] mots = current.split(" ");
-		
+
 		if (mots[0].equals("DEBUT"))
 			this.def = "algo";
 
-		
 		/*
 		 * Début de l'algorithme
 		 */
-		if ( this.def.equals( "algo" ))
-		{
+		if (this.def.equals("algo")) {
+
 			/*
 			 * Affectation des variables
 			 */
@@ -131,6 +130,7 @@ public class Algorithme {
 			 * Gestion des fonctions
 			 */
 			if (current.matches(".+\\(.*\\)")) {
+				
 				Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
 			}
 
@@ -139,7 +139,9 @@ public class Algorithme {
 			 */
 			if (current.matches(".*si .* alors.*")) {
 				String condition = current.split("si | alors")[1];
+				this.niveauCondition++;
 				interpreterCondition(condition, this.niveauCondition);
+				this.niveauCondition--;
 			} else if (current.matches(".*si .*") && !current.contains("alors")) {
 				/*
 				 * Gestion des conditions sur plusieurs lignes
@@ -160,7 +162,9 @@ public class Algorithme {
 				}
 
 				ligneCourrante = i; // saut à la fin de la condition
+				this.niveauCondition++;
 				interpreterCondition(condition, this.niveauCondition); // interprétation de la condition
+				this.niveauCondition--;
 			}
 
 			/*
@@ -168,7 +172,7 @@ public class Algorithme {
 			 */
 			if (current.matches(".*tq.*alors.*")) {
 				String condition = current.split("tq | alors")[1];
-				interpreterBoucle(ligneCourrante, condition);
+				interpreterBoucle(ligneCourrante, condition, this.niveauBoucle);
 
 			} else if (current.matches(".*tq .*")) {
 				String condition = current.split("tq")[1];
@@ -187,7 +191,7 @@ public class Algorithme {
 				}
 
 				ligneCourrante = i; // saut à la fin de la condition
-				interpreterBoucle(ligneCourrante, condition); // interprétation de la boucle
+				interpreterBoucle(ligneCourrante, condition, this.niveauBoucle); // interprétation de la boucle
 			}
 		}
 
@@ -210,31 +214,49 @@ public class Algorithme {
 	 */
 	public void interpreterCondition(String condition, int niveauCondition) throws AlgorithmeException {
 
-		this.niveauCondition++;
+		int cptLigne = ligneCourrante;
 
-		if (Condition.condition(condition, this.getInterpreteur()) && this.niveauCondition == niveauCondition) {
+		int nbSi = 0;
+		int ligneSinon = 0;
+		int ligneFsi = 0;
+		for (int i = cptLigne; i < fichier.length; i++) {
+			
+			if (fichier[i].matches(".*si .* alors.*"))
+				nbSi++;
+			if (fichier[i].matches("sinon")) 
+				if (nbSi == 0) 
+					ligneSinon = i;
+
+			if (fichier[i].matches("fsi")) 
+				if (nbSi == 0) {
+					ligneFsi = i;
+					break;
+				} else 
+					nbSi--;
+		}		
+
+
+		if (Condition.condition(condition, this.getInterpreteur())) {
 			// interprétation de la condition
 			do {
 				ligneSuivante();
-			} while (!fichier[ligneCourrante].trim().equals("fsi") && !fichier[ligneCourrante].trim().equals("sinon")
-					&& this.niveauCondition == niveauCondition);
-
+			} while (ligneCourrante != ligneSinon && ligneCourrante != ligneFsi);
+			
+			
 			// saut jusqu'à la fin de la condition
 			if (fichier[ligneCourrante].trim().equals("sinon")) {
 				do {
 					ligneCourrante++;
-				} while (!fichier[ligneCourrante].trim().equals("fsi") && this.niveauCondition == niveauCondition);
+				} while (ligneCourrante != ligneFsi+1);
 			}
-
-			this.niveauCondition--;
-
+			
+			
+			
 		} else { // condition invalide
 			do {
 				ligneCourrante++; // saut à l'alternative ou la fin de la condition
-			} while (!fichier[ligneCourrante].trim().equals("fsi") && !fichier[ligneCourrante].trim().equals("sinon")
-					&& this.niveauCondition == niveauCondition);
+			} while ((ligneCourrante != ligneSinon+1 && ligneCourrante != ligneFsi+1));
 		}
-
 	}
 
 	/**
@@ -244,14 +266,20 @@ public class Algorithme {
 	 * @param condition   condition
 	 * @throws AlgorithmeException
 	 */
-	public void interpreterBoucle(int ligneBoucle, String condition) throws AlgorithmeException {
-
+	public void interpreterBoucle(int ligneBoucle, String condition, int niveauBoucle) throws AlgorithmeException {
+		this.niveauBoucle++;
+		System.out.println("Entrée dans la boucle de niveau : " + niveauBoucle);
+		System.out.println(Condition.condition(condition, this.getInterpreteur()));
 		while (Condition.condition(condition, this.getInterpreteur())) {
+			System.out.println("rieugruig");
 			ligneCourrante = ligneBoucle; // retour en haut de la boucle
 			do {
 				ligneSuivante();
-			} while (!fichier[ligneCourrante].trim().equals("ftq"));
+			} while (!fichier[ligneCourrante].trim().equals("ftq") && this.niveauBoucle == niveauBoucle);
 		}
+
+		System.out.println("Sortie de la boucle de niveau : " + niveauBoucle);
+		this.niveauBoucle--;
 	}
 
 	/**
@@ -293,7 +321,7 @@ public class Algorithme {
 	 * @return tableau de variables
 	 */
 	public Variable[] getVariables() {
-		
+
 		return this.ensVariables.toArray(new Variable[this.ensVariables.size()]);
 	}
 
@@ -361,18 +389,12 @@ public class Algorithme {
 		return this.ligneCourrante;
 	}
 
-	public boolean getEstVrai() {
-		return this.estVrai;
-	}
-	
-	public String getNom ()
-	{
+	public String getNom() {
 		return this.nom;
 	}
 
-	public void reset ()
-	{
+	public void reset() {
 		this.ligneCourrante = this.ligneDebutAlgorithme;
-		
+
 	}
 }

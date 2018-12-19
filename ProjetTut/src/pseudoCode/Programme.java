@@ -19,6 +19,8 @@ public class Programme {
 	private Algorithme main;
 	
 	private Algorithme current;
+	
+	private ArrayList<Integer> lignesFausses;
 
 
 	/**
@@ -28,6 +30,7 @@ public class Programme {
 	 * @throws AlgorithmeException the algorithme exception
 	 */
 	public Programme(String[] fichier) throws AlgorithmeException {
+		this.lignesFausses = new ArrayList<Integer>();
 		this.traceExec = "";
 
 		this.fichier = fichier;
@@ -97,16 +100,18 @@ public class Programme {
 		// return algo.toString();
 	}
 
+	public ArrayList<Integer> getLignesFausses ()
+	{
+		return this.lignesFausses;
+	}
+	
+	public void ajouterLigneFausse ( int ligne )
+	{
+		this.lignesFausses.add( ligne );
+	}
+	
 	public void reset ()
 	{
-		this.traceExec = "";
-		for ( Algorithme algo : algos ) 
-		{
-			for ( Variable var : algo.getVariables())
-			{
-				var.setValeur( null );
-			}
-		}
 		this.main.reset();
 		
 	}

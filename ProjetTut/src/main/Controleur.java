@@ -18,7 +18,7 @@ public class Controleur
 {
 
 	/** nom du fichier */
-	private final String	   input		  = "tests/Test2.algo";
+	private final String	   input		  = "tests/testConditions.algo";
 
 
 	/** objet programme */
@@ -94,7 +94,7 @@ public class Controleur
 	{
 		System.out.print( "Entrez la valeur de " + nomVar + " : " );
 		String valeur = this.sc.nextLine();
-		this.prog.traceExec += "l:"+valeur;
+		this.prog.traceExec += "l:"+valeur+"\n";
 		this.prog.getCurrent().setValeur( nomVar, valeur );
 	}
 
@@ -130,7 +130,7 @@ public class Controleur
 		{
 			ligneRestantes--;
 		}
-		else if ( ligneAAttendre != -1 && ligneAAttendre != prog.getCurrent().getLigneCourrante() )
+		else if ( ligneAAttendre != -1 && ligneAAttendre > prog.getCurrent().getLigneCourrante() )
 		{
 
 		}
