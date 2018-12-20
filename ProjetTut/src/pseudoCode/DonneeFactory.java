@@ -6,7 +6,7 @@ package pseudoCode;
  *
  */
 
-public class VariableFactory {
+public class DonneeFactory {
 
 	/**
 	 * Parse une expression et crée la variable associée.
@@ -14,7 +14,7 @@ public class VariableFactory {
 	 * @param expression pseudo-code
 	 * @return variable
 	 */
-	public static Variable<?> createVariable(String nom, String type, boolean constante, Algorithme algo) {
+	public static Donnee<?> createVariable(String nom, String type, boolean constante, Algorithme algo) {
 
 		// nettoyage de l'expression
 		type = type.trim();

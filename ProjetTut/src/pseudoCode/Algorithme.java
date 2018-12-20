@@ -22,7 +22,7 @@ public class Algorithme {
 	private String nom;
 
 	/** ens variables. */
-	private ArrayList<Variable> ensVariables;
+	private ArrayList<Donnee> ensDonnees;
 
 	private String[] fichier;
 
@@ -56,7 +56,7 @@ public class Algorithme {
 		this.ligneDebut = ligneDebut;
 		this.interpreteur = new Interpreter();
 		this.nom = nom;
-		this.ensVariables = new ArrayList<Variable>();
+		this.ensDonnees = new ArrayList<Donnee>();
 		this.fichier = fichier;
 		initialiser();
 	}
@@ -76,7 +76,7 @@ public class Algorithme {
 				if (current.matches("[[\\w*],*]*[ ]*\\w*:[ ]*\\w*")) {
 					String type = current.split(":")[1].trim();
 					for (String var : current.split(":")[0].split(",")) {
-						ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const"),this));
+						ajouterDonnee(DonneeFactory.createVariable(var.trim(), type, this.def.equals("const"),this));
 					}
 
 				}
@@ -96,7 +96,7 @@ public class Algorithme {
 
 					for (String var : current.split("<--")[0].split(","))
 					{
-						ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const"),this));
+						ajouterDonnee(DonneeFactory.createVariable(var.trim(), type, this.def.equals("const"),this));
 						this.setValeur( var.trim(), valeur );
 					}
 				}
@@ -369,8 +369,8 @@ public class Algorithme {
 	 *
 	 * @param v variable
 	 */
-	public void ajouterVariable(Variable v) {
-		this.ensVariables.add(v);
+	public void ajouterDonnee(Donnee d) {
+		this.ensDonnees.add(d);
 	}
 
 	/**
@@ -379,10 +379,19 @@ public class Algorithme {
 	 * @param nomVar nom de la variable
 	 * @return variable
 	 */
-	public Variable getVariable(String nomVar) {
-		for (Variable v : this.ensVariables) {
-			if (v.getNom().equals(nomVar)) {
-				return v;
+	public Donnee getDonnee(String nomDonnee) {
+		for (Donnee d : this.ensDonnees) {
+			if (d.getNom().equals(nomDonnee)) {
+				return d;
+			}
+		}
+		return null;
+	}
+	
+	public Variable getVariable(String nomVariable) {
+		for (Donnee d : this.ensDonnees) {
+			if (d.getNom().equals(nomVariable) && d instanceof Variable ) {
+				return (Variable) d;
 			}
 		}
 		return null;
@@ -394,8 +403,12 @@ public class Algorithme {
 	 * @return tableau de variables
 	 */
 	public Variable[] getVariables() {
-
-		return this.ensVariables.toArray(new Variable[this.ensVariables.size()]);
+		ArrayList<Variable> ensVariables = new ArrayList<Variable>();
+		for ( Donnee d : ensDonnees )
+			if ( d instanceof Variable )
+				ensVariables.add( (Variable) d );
+		
+		return ensVariables.toArray(new Variable[ensVariables.size()]);
 	}
 
 	/**
@@ -404,32 +417,32 @@ public class Algorithme {
 	 * @param nomVar nom de la variable
 	 * @param valeur valeur de la variable
 	 */
-	public void setValeur(String nomVar, String valeur) {
+	public void setValeur(String nomDonnee, String valeur) {
 		Interpreter interpreter = this.getInterpreteur();
 
 		valeur = Variable.traduire(valeur);
 		
 
 		// évite l'interprétation du caractère
-		if (this.getVariable(nomVar).getType().equals("caractere"))
+		if (this.getVariable(nomDonnee).getType().equals("caractere"))
 			valeur = "\"" + valeur + "\"";
 		
 
 		try {
-			this.getVariable(nomVar).setValeur(interpreter.eval(valeur));
+			this.getVariable(nomDonnee).setValeur(interpreter.eval(valeur));
 			
 			//évite l'interprétation de la chaîne de caractère
 			Object interpretValeur;
-			if (this.getVariable(nomVar).getType().equals("chainedecaractere"))
-				interpretValeur = "\"" + this.getVariable(nomVar).getValeur() + "\"";
+			if (this.getVariable(nomDonnee).getType().equals("chainedecaractere"))
+				interpretValeur = "\"" + this.getVariable(nomDonnee).getValeur() + "\"";
 			else
-				interpretValeur = this.getVariable(nomVar).getValeur();
+				interpretValeur = this.getVariable(nomDonnee).getValeur();
 			
-			interpreter.eval(nomVar + " = " + interpretValeur);
+			interpreter.eval(nomDonnee + " = " + interpretValeur);
 			
 			
-			if (prog.getVariableATracer().contains(this.getVariable(nomVar)))
-				prog.traceVariable += this.getVariable(nomVar).toString() + "\n";
+			if (prog.getVariableATracer().contains(this.getVariable(nomDonnee)))
+				prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n";
 		} catch (EvalError e) {
 			e.printStackTrace();
 		}
@@ -437,8 +450,8 @@ public class Algorithme {
 
 	public String toString() {
 		String s = "Algorithme : " + this.nom + "\n";
-		for (Variable v : this.ensVariables) {
-			s += v + "\n";
+		for (Donnee d : this.ensDonnees) {
+			s += d + "\n";
 		}
 		return s;
 	}
