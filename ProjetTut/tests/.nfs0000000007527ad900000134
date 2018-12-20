@@ -1,0 +1,20 @@
+ALGORITHME Test1
+constante:
+
+variable:
+
+	a : entier
+	b : entier
+	c : entier
+	
+DEBUT
+	a <-- 0
+	b <-- 10
+	c <-- 2+2
+	
+	tq a < 10 alors
+		ecrire(a)
+		a <-- a+1
+	ftq
+	
+FIN 
