@@ -13,7 +13,7 @@ DEBUT
 	b <-- 0
 	c <-- 2+2
 	
-	d <-- "bonjour"
+	d <-- estReel("a")
 	ecrire(d)
 	
 FIN 

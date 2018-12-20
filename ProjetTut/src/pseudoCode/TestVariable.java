@@ -16,11 +16,18 @@ public class TestVariable {
 		
 		System.out.println(v);
 		
+		String s = "2.0";
+		System.out.println(s.matches("[0-9]*\\.[0-9]*"));
+		
 			
 		Interpreter i = new Interpreter();
 		
 		try {
-			System.out.println(i.eval("\"bonjour\""));
+			i.eval("private static String estReel(String s) {\n" + 
+					"	return \"\" + s.matches(\"[0-9]*\\\\.[0-9]*\");" +
+					"	}");
+			
+			System.out.println(i.eval("estReel(\"2\")"));
 		} catch (EvalError e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

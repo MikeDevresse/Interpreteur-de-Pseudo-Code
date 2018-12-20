@@ -106,14 +106,11 @@ public class Fonctions {
 			i.eval("private static String annee(String date) {\n" + 
 					"		return \"\" + Integer.parseInt(date.split(\"/\")[2]);\n" + 
 					"	}");
+			
 			i.eval("private static String estReel(String s) {\n" + 
-					"		try {\n" + 
-					"			Double.parseDouble(s);\n" + 
-					"			return \"true\";\n" + 
-					"		} catch (Exception e) {\n" + 
-					"			return \"false\";\n" + 
-					"		}\n" + 
+					"	return \"\" + s.matches(\"[0-9]*\\\\.[0-9]*\");" +
 					"	}");
+			
 			i.eval("private static String estEntier(String s) {\n" + 
 					"\n" + 
 					"		if (Fonctions.estReel(s).equals( \"true\" ))\n" + 
@@ -137,6 +134,7 @@ public class Fonctions {
 			e.printStackTrace();
 		}
 	}
+	
 
 	/**
 	 * Permet à l'utilisateur de renseigner la valeur d'une variable
