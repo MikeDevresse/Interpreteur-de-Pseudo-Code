@@ -83,10 +83,7 @@ public class Controleur
 		{
 			try
 			{
-				if ( prog.getCurrent().ligneSuivante() )
-				{
-					//this.aff.afficher();
-				}
+				prog.getCurrent().ligneSuivante();
 			}
 			catch ( AlgorithmeException e )
 			{
@@ -132,7 +129,7 @@ public class Controleur
 	 */
 	public void attend ()
 	{
-		//this.aff.afficher();
+		this.aff.afficher();
 
 		if ( !this.prog.getMain().estEnTrainDeReset() )
 			etapes.add( this.prog.getCurrent().getLigneCourrante() );

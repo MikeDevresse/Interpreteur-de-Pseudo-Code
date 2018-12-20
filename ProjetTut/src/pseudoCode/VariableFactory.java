@@ -24,55 +24,53 @@ public class VariableFactory {
 		
 
 		// tableau de variables
-		String tabDelimiteur = "tableau de ".trim();
-		if (type.indexOf(tabDelimiteur) != -1) {
-			String tabType = type.substring(type.indexOf(tabDelimiteur) + tabDelimiteur.length());
+		if (type.matches("tableau[\\[[.]+\\]]+ de [\\wéîè]+")) {
+			String tabType = type.replaceAll("tableau[\\[[.]+\\]]+ de ([\\wéîè]+)","$1");
 
 			switch (tabType) {
-
-			case "entier":
-				return new Variable<Integer[]>(nom, type, constante,algo);
-			case "booleen":
-			case "booléen":
-				return new Variable<Boolean[]>(nom, type, constante,algo);
-			case "chaine" :
-			case "chaîne" :
-			case "chaîne de caractère":
-				return new Variable<String[]>(nom, type, constante,algo);
-			case "réel":
-			case "reel":
-				return new Variable<Double[]>(nom, type, constante,algo);
-			case "caractere":
-			case "caractère":
-				return new Variable<Character[]>(nom, type, constante,algo);
-
-			default:
-				return null;
+    			case "entier":
+    				return new Variable<Integer[]>(nom, type, constante,algo);
+    			case "booleen":
+    			case "booléen":
+    				return new Variable<Boolean[]>(nom, type, constante,algo);
+    			case "chaine" :
+    			case "chaîne" :
+    			case "chaîne de caractère":
+    				return new Variable<String[]>(nom, type, constante,algo);
+    			case "réel":
+    			case "reel":
+    				return new Variable<Double[]>(nom, type, constante,algo);
+    			case "caractere":
+    			case "caractère":
+    				return new Variable<Character[]>(nom, type, constante,algo);
+    
+    			default:
+    				return null;
 			}
 		}
 
 		// variables simples
 		switch (type) {
 
-		case "entier":
-			return new Variable<Integer>(nom, type, constante,algo);
-		case "booléen":
-		case "booleen":
-			return new Variable<Boolean>(nom, type, constante,algo);
-		case "chaînedecaractère":
-		case "chainedecaractere":
-		case "chaine":
-		case "chaîne":
-			return new Variable<String>(nom, type, constante,algo);
-		case "réel":
-		case "reel":
-			return new Variable<Double>(nom, type, constante,algo);
-		case "caractère":
-		case "caractere":
-			return new Variable<Character>(nom, type, constante,algo);
-
-		default:
-			return null;
+    		case "entier":
+    			return new Variable<Integer>(nom, type, constante,algo);
+    		case "booléen":
+    		case "booleen":
+    			return new Variable<Boolean>(nom, type, constante,algo);
+    		case "chaînedecaractère":
+    		case "chainedecaractere":
+    		case "chaine":
+    		case "chaîne":
+    			return new Variable<String>(nom, type, constante,algo);
+    		case "réel":
+    		case "reel":
+    			return new Variable<Double>(nom, type, constante,algo);
+    		case "caractère":
+    		case "caractere":
+    			return new Variable<Character>(nom, type, constante,algo);
+    
+    		default:
+    			return null;
 		}
 	}
 
