@@ -1,5 +1,8 @@
 package main;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -34,10 +37,20 @@ public class Controleur
 	private int				   ligneRestantes = -1;
 
 	private ArrayList<Integer> etapes;
+	
+	private ArrayList<Integer> anciennesEtapes;
 
 	private static Controleur  ctrl;
 
 	private Affichage		   aff;
+	
+	private ArrayList<Integer> breakpoints;
+	
+	private boolean 		   attendBreakpoint = false;
+	
+	private int 			   revenir = -1;
+	
+	private int				   cptIteration = 0;
 
 	public static Controleur getControleur ()
 	{
@@ -50,6 +63,7 @@ public class Controleur
 	 */
 	private Controleur ()
 	{
+		this.breakpoints = new ArrayList<Integer>();
 		this.etapes = new ArrayList<Integer>();
 		Controleur.ctrl = this;
 		this.sc = new Scanner( System.in );
@@ -122,29 +136,52 @@ public class Controleur
 	{
 		this.aff.afficher();
 
-		etapes.add( this.prog.getCurrent().getLigneCourrante() );
+		if ( !this.prog.getMain().estEnTrainDeReset() )
+			etapes.add( this.prog.getCurrent().getLigneCourrante() );
+		
+		boolean estSurBreakpoint = false;
+		for ( int i = 0 ; i < breakpoints.size() ; i++ )
+		{
+			if ( this.breakpoints.get( i ) == this.prog.getCurrent().getLigneCourrante() )
+			{
+				estSurBreakpoint = true;
+				break;
+			}
+		}
 
 		if ( this.ligneRestantes > 0 )
 		{
 			ligneRestantes--;
 		}
+		else if ( revenir != -1 && this.anciennesEtapes.size() > revenir )
+		{
+			if ( this.anciennesEtapes.get( 0 ) == this.prog.getCurrent().getLigneCourrante() )
+				this.anciennesEtapes.remove( 0 );
+		}
 		else if ( ligneAAttendre != -1 && ligneAAttendre > prog.getCurrent().getLigneCourrante() )
 		{
 
 		}
+		else if ( attendBreakpoint && !estSurBreakpoint)
+		{
+			
+		}
 		else
 		{
+			revenir = -1;
 			ligneRestantes = -1;
 			ligneAAttendre = -1;
+			this.attendBreakpoint = false;
 			String commande = this.sc.nextLine();
 			if ( !commande.equals( "" ))
-				this.prog.traceExec += "a:";
+				this.prog.traceExec += "a:"+commande+"\n";
 			/*
 			 * Gestion des commandes
 			 */
 			if ( commande.equalsIgnoreCase( "b" ) )
 			{
 				retour();
+				this.prog.traceExec += "a:"+commande+"\n";
 			}
 			else if ( commande.matches( "[\\+\\-] var [\\w]+" ) )
 			{
@@ -168,6 +205,7 @@ public class Controleur
 					}
 				}
 				reste();
+				this.prog.traceExec += "a:"+commande+"\n";
 			}
 			else if ( commande.matches( "[Ll][0-9]+" ) )
 			{
@@ -176,23 +214,76 @@ public class Controleur
 				this.etapes = new ArrayList<Integer>();
 				this.prog.reset();
 			}
-			
-			if ( !commande.equals( "" ))
-				this.prog.traceExec += "\n";
+			else if ( commande.matches( "cp var [[\\w]+[ ]*]+" ))
+			{
+				ArrayList<String> vars = new ArrayList<String>();
+				for ( int i=2 ; i < commande.split( " " ).length ; i++ )
+					vars.add( commande.split( " " )[i] );
+				StringSelection selection = new StringSelection( prog.getTraceVar(vars) );
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(selection, selection);
+				this.reste();
+				this.prog.traceExec += "a:"+commande+"\n";
+			}
+			else if ( commande.matches( "[\\+-][ ]*bk" ))
+			{
+				this.setBreakPoint( this.prog.getCurrent().getLigneCourrante() );
+				reste();
+				this.prog.traceExec += "a:"+commande+"\n";
+			}
+			else if ( commande.equals( "go bk" ))
+			{
+				if ( this.breakpoints.size() != 0 )
+				{
+					this.attendBreakpoint = true;
+				}
+				else
+				{
+					reste();
+					this.prog.traceExec += "a:Pas de breakpoint défini\n";
+				}
+			}
+			else if ( commande.equals( "quit" ))
+			{
+				System.exit( 0 );
+			}
 		}
+	}
+	
+	public ArrayList<Integer> getBreakpoints ()
+	{
+		return this.breakpoints;
+	}
+	
+	private void setBreakPoint ( int ligne )
+	{
+		for ( int i = 0 ; i < this.breakpoints.size() ; i++ )
+		{
+			if ( this.breakpoints.get( i ) == ligne)
+			{
+				this.breakpoints.remove( i );
+				return;
+			}
+		}
+		
+		this.breakpoints.add( ligne );
 	}
 	
 	private void reste ()
 	{
-		this.ligneAAttendre = this.etapes.get( this.etapes.indexOf( prog.getCurrent().getLigneCourrante() ) );
-		this.prog.reset();
-		this.etapes = new ArrayList<Integer>();
+		this.revenir( 0 );
 	}
 
 	private void retour ()
 	{
-		this.ligneAAttendre = this.etapes.get( this.etapes.indexOf( prog.getCurrent().getLigneCourrante() ) - 1 );
-		this.etapes = new ArrayList<Integer>();
+		this.revenir( 1 );
+	}
+	
+	private void revenir ( int i )
+	{
+		this.revenir = i+1;
+		anciennesEtapes = etapes;
+		etapes = new ArrayList<Integer>();
 		this.prog.reset();
 	}
 

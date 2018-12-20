@@ -43,6 +43,8 @@ public class Algorithme {
 	private int ligneDebut;
 
 	private Programme prog;
+	
+	private boolean reset = false;
 
 	/**
 	 * Instanciation de algorithme.
@@ -94,6 +96,8 @@ public class Algorithme {
 
 					for (String var : current.split("<--")[0].split(","))
 						ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const")));
+						this.setValeur( var.trim(), valeur );
+					
 				}
 			}
 			current = fichier[ligneCourrante++];
@@ -109,6 +113,12 @@ public class Algorithme {
 	 * @throws AlgorithmeException
 	 */
 	public boolean ligneSuivante() throws AlgorithmeException {
+		if ( this.reset )
+		{
+			this.ligneCourrante = this.ligneDebutAlgorithme;
+			this.reset = false;
+		}
+		
 		if (this.ligneCourrante == this.fichier.length) {
 			this.fin = true;
 			return false;
@@ -269,7 +279,7 @@ public class Algorithme {
 			}
 
 		} else { // condition invalide
-			for (int i = ligneDebut; i < ligneFin; i++)
+			for (int i = ligneDebut; i <= ligneFin; i++)
 				this.prog.ajouterLigneFausse(i);
 
 			Controleur.getControleur().attend();
@@ -321,9 +331,10 @@ public class Algorithme {
 		}
 
 		// indication que la condition est fausse
-		for (int i = ligneDebut; i < ligneFin; i++)
+		for (int i = ligneDebut; i <= ligneFin; i++)
 			this.prog.ajouterLigneFausse(i);
 
+		this.ligneCourrante = ligneDebut; 
 		Controleur.getControleur().attend();
 		this.prog.resetLigneFausse();
 
@@ -444,7 +455,13 @@ public class Algorithme {
 	}
 
 	public void reset() {
+		this.reset = true;
 		this.ligneCourrante = this.ligneDebutAlgorithme;
 
+	}
+
+	public boolean estEnTrainDeReset ()
+	{
+		return reset;
 	}
 }

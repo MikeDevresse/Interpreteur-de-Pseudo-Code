@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.fusesource.jansi.AnsiConsole;
 
+import main.Controleur;
 import pseudoCode.Programme;
 import pseudoCode.Variable;
 
@@ -29,6 +30,8 @@ public class Affichage {
 	private static final String ANSI_CYAN_BACKGROUND   = "\u001B[46m";
 	private static final String ANSI_WHITE_BACKGROUND  = "\u001B[47m";
 	
+	private static final String ANSI_BACK = ANSI_RESET+ANSI_BLACK_BACKGROUND;
+	
 	private String[] code;
 	private HashMap<String, String> syntaxes;
 	
@@ -38,6 +41,7 @@ public class Affichage {
 	
 	
 	private ArrayList<Integer> ensLigneRouge;
+	private ArrayList<Integer> ensPArret;
 	
 	/**
 	 * Constructeur
@@ -55,7 +59,7 @@ public class Affichage {
 		syntaxes.put("sinon",      ANSI_BLUE);
 		syntaxes.put("fsi",        ANSI_BLUE);
 		syntaxes.put("alors",      ANSI_BLUE);
-		syntaxes.put("fq",         ANSI_BLUE);
+		syntaxes.put("tq",         ANSI_BLUE);
 		syntaxes.put("ftq",        ANSI_BLUE);
 		
 		syntaxes.put("fonction",   ANSI_CYAN);
@@ -87,6 +91,11 @@ public class Affichage {
 	 * @param exec trace d'exécution de l'algorithme
 	 */
 	public void afficher() {
+		System.out.print("\033[H\033[2J");  
+	    System.out.flush(); 
+	    
+	    this.ensPArret = Controleur.getControleur().getBreakpoints();
+		
 		String affichage = "";
 		affichage += entete();
 		
@@ -94,49 +103,61 @@ public class Affichage {
 		int ligneC = prog.getCurrent().getLigneCourrante();
 		
 		int cptVar = 0;
+		String[] vars = prog.traceVariable.split("\n");
 		
-		int ligneHaut = ligneC-20;
-		int ligneBas  = ligneC+20;
+		int ligneHaut = ligneC-15;
+		int ligneBas  = ligneC+15;
 		
-		if(ligneC>code.length-20) {ligneBas=code.length;ligneHaut=ligneBas-40;}
-		if(ligneHaut<0) {ligneHaut=0; ligneBas = 40;}
+		if(ligneC>code.length-15) {ligneBas=code.length;ligneHaut=ligneBas-30;}
+		if(ligneHaut<0) {ligneHaut=0; ligneBas = 30;}
 		
-		System.out.println( prog.traceVariable );
 		int cpt = ligneHaut;
-		
 		for(int i=ligneHaut; i<ligneBas; i++) {
 			try {
 				String str = code[i];
 				str = str.replace("\t", "  ");
+				
 				cpt++;
 				
-				str = redistribuer(str);
-				
-				String[] strTab = str.split("\\|");
-				for(String str2 : strTab) {
-					if(cpt==ligneC+1) {
-						if ( prog.getLignesFausses().contains( ligneC ))
-							affichage += ANSI_RED_BACKGROUND;
-						else
-							affichage += ANSI_GREEN_BACKGROUND;
-						affichage += ANSI_BLACK;
-						affichage += String.format("|%2d %-76.76s|", cpt, str2);
-						affichage += ANSI_RESET;
-					}else if(ensLigneRouge.contains((Integer)cpt)){
+				if(cpt==ligneC+1) {
+					if ( prog.getLignesFausses().contains( ligneC ))
 						affichage += ANSI_RED_BACKGROUND;
-						affichage += ANSI_BLACK;
-						affichage += String.format("|%2d %-76.76s|", cpt, str2);
-						affichage += ANSI_RESET;
-					}else {
-						str2 = String.format("|%2d %-76.76s|",cpt, str2);
-						affichage += colorer(str2);
-					}
-					
-					cptVar++;
-					
-					affichage += "\n";
+					else
+						affichage += ANSI_GREEN_BACKGROUND;
+					affichage += ANSI_BLACK;
+					affichage += String.format("|%2d %-76.76s|", cpt, str);
+					affichage += ANSI_BACK;
+				}else if(ensLigneRouge.contains((Integer)cpt)){
+					affichage += ANSI_RED_BACKGROUND;
+					affichage += ANSI_BLACK;
+					affichage += String.format("|%2d %-76.76s|", cpt, str);
+					affichage += ANSI_BACK;
+				}else if(ensPArret.contains((Integer)cpt-1)) {
+					str = String.format("|%2s %-76.76s|",ANSI_RED+cpt+ANSI_BACK, str);
+					affichage += colorer(str);
+				}else if(str != null){
+					str = String.format("|%2d %-76.76s|",cpt, str);
+					affichage += colorer(str);
 				}
-			}catch(Exception e) {}
+			}catch(Exception e) {
+				affichage += String.format("|%-79.79s|", " ");
+			}
+				
+			try {
+				ligneHaut = vars.length-30;
+				
+				if(ligneHaut < 0)ligneHaut = 0;
+				
+				if(cptVar == 0)
+					affichage += String.format("%-37s", vars[cptVar]);
+				else if(cptVar < vars.length-ligneHaut)
+					affichage +=String.format("%-37s", vars[cptVar+ligneHaut]);
+				else
+					affichage +=String.format("%-37s|", " ");
+				
+				affichage += "\n";
+				cptVar++;
+			}catch(Exception e) {System.out.println(e);}
 		}
 		
 		affichage += console(exec);
@@ -164,19 +185,6 @@ public class Affichage {
 		for(int i=0; i<119;i++)
 			ret += "-";
 		ret+="\n";
-		
-		return ret;
-	}
-	
-	private String ecrireVar(int cptVar, Variable[] vars) {
-		String ret="";
-		
-		if(cptVar==0)
-			ret+="    NOM     |    TYPE   |   VALEUR   |";
-		else if(cptVar <= vars.length)
-			ret+=String.format("%-37s|", vars[cptVar-1]);
-		else
-			ret+=String.format("%-37s|", " ");
 		
 		return ret;
 	}
@@ -221,13 +229,13 @@ public class Affichage {
 		
 		switch (prefix) {
 			case 'l' :
-				ret += ANSI_YELLOW+str+ANSI_RESET;
+				ret += ANSI_YELLOW+str+ANSI_BACK;
 				break;
 			case 'e' :
-				ret += ANSI_PURPLE+str+ANSI_RESET;
+				ret += ANSI_PURPLE+str+ANSI_BACK;
 				break;
 			case 'a' :
-				ret += ANSI_BLUE+str+ANSI_RESET;
+				ret += ANSI_BLUE+str+ANSI_BACK;
 				break;
 			default :
 				ret += str;
@@ -243,15 +251,15 @@ public class Affichage {
 		boolean grif = false;
 		
 		if(str.matches("(.*)(//.*)\\|")) {
-			commentaire = str.replaceAll("(.*)(//.*)\\|", syntaxes.get("commentaire")+"$2"+ANSI_RESET+"| ");
+			commentaire = str.replaceAll("(.*)(//.*)\\|", syntaxes.get("commentaire")+"$2"+ANSI_BACK+"| ");
 			str = str.replaceAll("(.*)(//.*)\\|", "$1");
 		}
 		
-		String copy=str;
+		String copy=str.toString();
 		
-		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
-		
-		copy = copy.replaceAll("(\".*\")", syntaxes.get("griffe")+"$1"+ANSI_RESET);
+		copy = copy.replaceAll("(\".*\")", syntaxes.get("griffe")+"$1"+ANSI_BACK);
+
+		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_BACK+"(");
 		
 		str = recupAnnotation(copy, str);
 		
@@ -265,7 +273,7 @@ public class Affichage {
 				grif = !grif;
 			
 			if(syntaxes.containsKey(mots[i]) && !comm && !grif) {
-				mots[i] = syntaxes.get(mots[i])+mots[i]+ANSI_RESET;
+				mots[i] = syntaxes.get(mots[i])+mots[i]+ANSI_BACK;
 			}
 			ret+=mots[i]+" ";
 		}
@@ -276,12 +284,13 @@ public class Affichage {
 	
 	private String recupAnnotation(String recup, String dest) {
 		String ret="";
+		
 		String[] annotations = recup.split("\"");
-		String[] change      = recup.split("\"");
+		String[] change      = dest.split("\"");
 		
 		for(int i=0; i<annotations.length; i++) {
 			if(i%2!=0)
-				ret += syntaxes.get("griffe")+"\""+annotations[i]+"\""+ANSI_RESET;
+				ret += syntaxes.get("griffe")+"\""+annotations[i]+"\""+ANSI_BACK;
 			else
 				ret += change[i];
 		}
