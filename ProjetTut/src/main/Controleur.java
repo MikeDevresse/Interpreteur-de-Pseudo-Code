@@ -49,6 +49,8 @@ public class Controleur
 	private boolean 		   attendBreakpoint = false;
 	
 	private int 			   revenir = -1;
+	
+	private int				   cptIteration = 0;
 
 	public static Controleur getControleur ()
 	{
@@ -169,15 +171,17 @@ public class Controleur
 			revenir = -1;
 			ligneRestantes = -1;
 			ligneAAttendre = -1;
+			this.attendBreakpoint = false;
 			String commande = this.sc.nextLine();
 			if ( !commande.equals( "" ))
-				this.prog.traceExec += "a:";
+				this.prog.traceExec += "a:"+commande+"\n";
 			/*
 			 * Gestion des commandes
 			 */
 			if ( commande.equalsIgnoreCase( "b" ) )
 			{
 				retour();
+				this.prog.traceExec += "a:"+commande+"\n";
 			}
 			else if ( commande.matches( "[\\+\\-] var [\\w]+" ) )
 			{
@@ -201,6 +205,7 @@ public class Controleur
 					}
 				}
 				reste();
+				this.prog.traceExec += "a:"+commande+"\n";
 			}
 			else if ( commande.matches( "[Ll][0-9]+" ) )
 			{
@@ -218,19 +223,30 @@ public class Controleur
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				clipboard.setContents(selection, selection);
 				this.reste();
+				this.prog.traceExec += "a:"+commande+"\n";
 			}
-			else if ( commande.matches( "[\\+-] bk" ))
+			else if ( commande.matches( "[\\+-][ ]*bk" ))
 			{
 				this.setBreakPoint( this.prog.getCurrent().getLigneCourrante() );
 				reste();
+				this.prog.traceExec += "a:"+commande+"\n";
 			}
 			else if ( commande.equals( "go bk" ))
 			{
-				this.attendBreakpoint = true;
+				if ( this.breakpoints.size() != 0 )
+				{
+					this.attendBreakpoint = true;
+				}
+				else
+				{
+					reste();
+					this.prog.traceExec += "a:Pas de breakpoint défini\n";
+				}
 			}
-			
-			if ( !commande.equals( "" ))
-				this.prog.traceExec += "\n";
+			else if ( commande.equals( "quit" ))
+			{
+				System.exit( 0 );
+			}
 		}
 	}
 	
