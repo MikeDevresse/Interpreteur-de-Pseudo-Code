@@ -214,13 +214,6 @@ public class Affichage {
 		return ret;
 	}
 	
-	private String redistribuer(String str) {
-		if(str.length() > 76) {
-			str = str.substring(0, 75)+"|"+str.substring(75);
-		}
-		return str;
-	}
-	
 	private String colorerConsole(String str) {
 		String ret="";
 		

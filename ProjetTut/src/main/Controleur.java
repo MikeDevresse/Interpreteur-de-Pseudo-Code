@@ -129,7 +129,7 @@ public class Controleur
 	 */
 	public void attend ()
 	{
-		//this.aff.afficher();
+		this.aff.afficher();
 
 		if ( !this.prog.getMain().estEnTrainDeReset() )
 			etapes.add( this.prog.getCurrent().getLigneCourrante() );
