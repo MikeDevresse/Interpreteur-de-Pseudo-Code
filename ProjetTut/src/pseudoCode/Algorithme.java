@@ -76,7 +76,7 @@ public class Algorithme {
 				if (current.matches("[[\\w*],*]*[ ]*\\w*:[ ]*\\w*")) {
 					String type = current.split(":")[1].trim();
 					for (String var : current.split(":")[0].split(",")) {
-						ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const")));
+						ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const"),this));
 					}
 
 				}
@@ -94,11 +94,11 @@ public class Algorithme {
 					else if (valeur.equals("true") || valeur.equals("false"))
 						type = "booleen";
 
-					for (String var : current.split("<--")[0].split(",")) {
-						ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const")));
+					for (String var : current.split("<--")[0].split(","))
+					{
+						ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const"),this));
 						this.setValeur( var.trim(), valeur );
 					}
-					
 				}
 			}
 			current = fichier[ligneCourrante++];
@@ -241,8 +241,7 @@ public class Algorithme {
 		if (mots[0].equals("FIN"))
 			this.fin = true;
 
-		//Controleur.getControleur().attend();
-
+		Controleur.getControleur().attend();
 		return true;
 	}
 
