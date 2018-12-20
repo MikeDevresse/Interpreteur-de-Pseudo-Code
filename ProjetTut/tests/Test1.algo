@@ -9,11 +9,13 @@ variable:
 	d : chainedecaractere
 	
 DEBUT
-	a <-- 0
+	lire(a)
+	ecrire(a)
 	b <-- 0
 	c <-- 2+2
 	
-	d <-- ord('A')
+	d <-- enChaine(2)
 	ecrire(d)
+	ecrire(ord('A'))
 	
 FIN 
