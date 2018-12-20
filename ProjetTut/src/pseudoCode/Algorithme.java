@@ -94,9 +94,10 @@ public class Algorithme {
 					else if (valeur.equals("true") || valeur.equals("false"))
 						type = "booleen";
 
-					for (String var : current.split("<--")[0].split(","))
+					for (String var : current.split("<--")[0].split(",")) {
 						ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const")));
 						this.setValeur( var.trim(), valeur );
+					}
 					
 				}
 			}
