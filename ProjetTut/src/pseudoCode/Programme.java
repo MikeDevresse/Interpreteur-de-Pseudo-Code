@@ -143,12 +143,12 @@ public class Programme {
 		this.ensVars.remove( v );
 	}
 	
-	public String getTraceVar ( String var )
+	public String getTraceVar ( ArrayList<String> vars )
 	{
 		String sRet = this.traceVariable.split( "\n" )[0] + "\n";
 		for ( String s : this.traceVariable.split( "\n" ))
 		{
-			if ( s.replaceAll( " ", "" ).split("|")[0].equals( var ))
+			if ( vars.contains( s.replaceAll( " ", "" ).split("|")[0] ) )
 			{
 				sRet += s + "\n";
 			}
