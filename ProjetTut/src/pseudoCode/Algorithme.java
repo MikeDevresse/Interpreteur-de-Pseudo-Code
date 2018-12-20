@@ -92,7 +92,10 @@ public class Algorithme {
 						type = "booleen";
 
 					for (String var : current.split("<--")[0].split(","))
+					{
 						ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const")));
+						this.setValeur( var.trim(), valeur );
+					}
 				}
 			}
 			current = fichier[ligneCourrante++];
@@ -221,7 +224,6 @@ public class Algorithme {
 			this.fin = true;
 
 		Controleur.getControleur().attend();
-
 		return true;
 	}
 
@@ -388,7 +390,6 @@ public class Algorithme {
 		Interpreter interpreter = this.getInterpreteur();
 
 		valeur = Variable.traduire(valeur);
-
 		try {
 			this.getVariable(nomVar).setValeur(interpreter.eval(valeur));
 			interpreter.eval(nomVar + " = " + this.getVariable(nomVar).getValeur());
