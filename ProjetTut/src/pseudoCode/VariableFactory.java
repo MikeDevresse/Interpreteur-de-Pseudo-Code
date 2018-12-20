@@ -57,12 +57,18 @@ public class VariableFactory {
 		case "entier":
 			return new Variable<Integer>(nom, type, constante,algo);
 		case "booléen":
+		case "booleen":
 			return new Variable<Boolean>(nom, type, constante,algo);
 		case "chaînedecaractère":
+		case "chainedecaractere":
+		case "chaine":
+		case "chaîne":
 			return new Variable<String>(nom, type, constante,algo);
 		case "réel":
+		case "reel":
 			return new Variable<Double>(nom, type, constante,algo);
 		case "caractère":
+		case "caractere":
 			return new Variable<Character>(nom, type, constante,algo);
 
 		default:

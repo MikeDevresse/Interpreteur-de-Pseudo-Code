@@ -241,7 +241,7 @@ public class Algorithme {
 		if (mots[0].equals("FIN"))
 			this.fin = true;
 
-		Controleur.getControleur().attend();
+		//Controleur.getControleur().attend();
 		return true;
 	}
 
