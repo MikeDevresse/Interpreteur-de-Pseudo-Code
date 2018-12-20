@@ -61,11 +61,15 @@ public class VariableFactory {
 		case "chaînedecaractère":
 			return new Variable<String>(nom, type, constante);
 		case "réel":
+		case "reel":
 			return new Variable<Double>(nom, type, constante);
 		case "caractère":
+		case "caractere":
+			System.out.println("prouhgaorigharieg");
 			return new Variable<Character>(nom, type, constante);
 
 		default:
+			System.out.println("nope");
 			return null;
 		}
 	}

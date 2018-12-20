@@ -60,6 +60,9 @@ public class Algorithme {
 	}
 
 	public void initialiser() {
+		
+		Fonctions.initFonctions(this.interpreteur);
+		
 		String current = fichier[ligneCourrante++];
 		String[] mots = current.split(" ");
 		do {
@@ -139,8 +142,11 @@ public class Algorithme {
 			/*
 			 * Gestion des fonctions
 			 */
-			if (current.matches(".+\\(.*\\)"))
+			if (current.matches(".+\\(.*\\)")) {
+				System.out.println("Fonction détectée : " + this.fichier[ligneCourrante-1]);
 				Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
+			}
+				
 
 			/*
 			 * Gestion des conditions
@@ -212,7 +218,7 @@ public class Algorithme {
 		if (mots[0].equals("FIN"))
 			this.fin = true;
 
-		Controleur.getControleur().attend();
+		//Controleur.getControleur().attend();
 
 		return true;
 	}
@@ -379,6 +385,10 @@ public class Algorithme {
 		Interpreter interpreter = this.getInterpreteur();
 
 		valeur = Variable.traduire(valeur);
+		
+		// évite l'interprétation du caractère
+		if (this.getVariable(nomVar).getType().equals("caractere"))
+			valeur = "\"" + valeur + "\"";
 
 		try {
 			this.getVariable(nomVar).setValeur(interpreter.eval(valeur));
