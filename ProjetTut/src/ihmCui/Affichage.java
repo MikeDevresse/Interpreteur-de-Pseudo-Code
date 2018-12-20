@@ -29,6 +29,8 @@ public class Affichage {
 	private static final String ANSI_CYAN_BACKGROUND   = "\u001B[46m";
 	private static final String ANSI_WHITE_BACKGROUND  = "\u001B[47m";
 	
+	private static final String ANSI_BACK = ANSI_RESET+ANSI_BLACK_BACKGROUND;
+	
 	private String[] code;
 	private HashMap<String, String> syntaxes;
 	
@@ -87,6 +89,9 @@ public class Affichage {
 	 * @param exec trace d'exécution de l'algorithme
 	 */
 	public void afficher() {
+		System.out.print("\033[H\033[2J");  
+	    System.out.flush(); 
+		
 		String affichage = "";
 		affichage += entete();
 		
@@ -117,12 +122,12 @@ public class Affichage {
 						affichage += ANSI_GREEN_BACKGROUND;
 					affichage += ANSI_BLACK;
 					affichage += String.format("|%2d %-76.76s|", cpt, str);
-					affichage += ANSI_RESET;
+					affichage += ANSI_BACK;
 				}else if(ensLigneRouge.contains((Integer)cpt)){
 					affichage += ANSI_RED_BACKGROUND;
 					affichage += ANSI_BLACK;
 					affichage += String.format("|%2d %-76.76s|", cpt, str);
-					affichage += ANSI_RESET;
+					affichage += ANSI_BACK;
 				}else if(str != null){
 					str = String.format("|%2d %-76.76s|",cpt, str);
 					affichage += colorer(str);
@@ -224,13 +229,13 @@ public class Affichage {
 		
 		switch (prefix) {
 			case 'l' :
-				ret += ANSI_YELLOW+str+ANSI_RESET;
+				ret += ANSI_YELLOW+str+ANSI_BACK;
 				break;
 			case 'e' :
-				ret += ANSI_PURPLE+str+ANSI_RESET;
+				ret += ANSI_PURPLE+str+ANSI_BACK;
 				break;
 			case 'a' :
-				ret += ANSI_BLUE+str+ANSI_RESET;
+				ret += ANSI_BLUE+str+ANSI_BACK;
 				break;
 			default :
 				ret += str;
@@ -246,15 +251,15 @@ public class Affichage {
 		boolean grif = false;
 		
 		if(str.matches("(.*)(//.*)\\|")) {
-			commentaire = str.replaceAll("(.*)(//.*)\\|", syntaxes.get("commentaire")+"$2"+ANSI_RESET+"| ");
+			commentaire = str.replaceAll("(.*)(//.*)\\|", syntaxes.get("commentaire")+"$2"+ANSI_BACK+"| ");
 			str = str.replaceAll("(.*)(//.*)\\|", "$1");
 		}
 		
 		String copy=str.toString();
 		
-		copy = copy.replaceAll("(\".*\")", syntaxes.get("griffe")+"$1"+ANSI_RESET);
+		copy = copy.replaceAll("(\".*\")", syntaxes.get("griffe")+"$1"+ANSI_BACK);
 
-		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
+		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_BACK+"(");
 		
 		str = recupAnnotation(copy, str);
 		
@@ -268,7 +273,7 @@ public class Affichage {
 				grif = !grif;
 			
 			if(syntaxes.containsKey(mots[i]) && !comm && !grif) {
-				mots[i] = syntaxes.get(mots[i])+mots[i]+ANSI_RESET;
+				mots[i] = syntaxes.get(mots[i])+mots[i]+ANSI_BACK;
 			}
 			ret+=mots[i]+" ";
 		}
@@ -285,7 +290,7 @@ public class Affichage {
 		
 		for(int i=0; i<annotations.length; i++) {
 			if(i%2!=0)
-				ret += syntaxes.get("griffe")+"\""+annotations[i]+"\""+ANSI_RESET;
+				ret += syntaxes.get("griffe")+"\""+annotations[i]+"\""+ANSI_BACK;
 			else
 				ret += change[i];
 		}
