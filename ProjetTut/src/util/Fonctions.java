@@ -68,43 +68,43 @@ public class Fonctions {
 			/*
 			 * Transforme une chaîne de caractère en entier
 			 */
-			i.eval("private static String enEntier(String s) {\n" + "		s = s.replace(\"\\\"\", \"\"); \n"
-					+ "		return (\"\" + s);\n" + "	}");
+			i.eval("private static int enEntier(String s) {\n" + "		s = s.replace(\"\\\"\", \"\"); \n"
+					+ "		return Integer.parseInt(s);\n" + "	}");
 
 			/*
 			 * Transforme un réel en entier
 			 */
-			i.eval("private static String enEntier(double d) {\n" + "		return (\"\" + (int)d);\n" + "	}");
+			i.eval("private static int enEntier(double d) {\n" + "		return (int)d;\n" + "	}");
 
 			/*
 			 * Transforme un entier en réel
 			 */
-			i.eval("public static String enReel(int i) {\n" + "		return \"\" + (double)(i);\n" + "	}");
+			i.eval("public static double enReel(int i) {\n" + "		return (double)(i);\n" + "	}");
 
 			/*
 			 * Transforme un entier en caractère
 			 */
-			i.eval("private static String car(int codeCar) {\n" + "		return \"\" + (char) codeCar;\n" + "	}");
+			i.eval("private static char car(int codeCar) {\n" + "		return (char) codeCar;\n" + "	}");
 
 			/*
 			 * Retourne le code ASCII d'un caractère.
 			 */
-			i.eval("private static String ord(char c) {\n" + "		return \"\" + (int) c;\n" + "	}");
+			i.eval("private static int ord(char c) {\n" + "		return (int) c;\n" + "	}");
 
 			/*
 			 * Arrondi à l'entier inférieur.
 			 */
-			i.eval("private static String plancher(double d) {\n" + "		return \"\" + Math.floor(d);\n" + "	}");
+			i.eval("private static double plancher(double d) {\n" + "		return Math.floor(d);\n" + "	}");
 
 			/*
 			 * Arrondi à l'entier supérieur.
 			 */
-			i.eval("private static String plafond(double d) {\n" + "		return \"\" + Math.ceil(d);\n" + "	}");
+			i.eval("private static double plafond(double d) {\n" + "		return Math.ceil(d);\n" + "	}");
 
 			/*
 			 * Arrondi naturel
 			 */
-			i.eval("private static String arrondi(double d) {\n" + "		return \"\" + Math.round(d);\n" + "	}");
+			i.eval("private static double arrondi(double d) {\n" + "		return Math.round(d);\n" + "	}");
 
 			/*
 			 * Retourne la date actuelle sous forme dd/mm/yyyy.

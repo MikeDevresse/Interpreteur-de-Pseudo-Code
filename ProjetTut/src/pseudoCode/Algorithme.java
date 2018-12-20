@@ -155,10 +155,19 @@ public class Algorithme {
 			 */
 			if (current.matches(".+\\(.*\\)")) {
 				System.out.println("Fonction détectée : " + this.fichier[ligneCourrante-1]);
-				if (current.split("\\(|\\)").length == 2)
+				
+				String[] parts = current.split("\\(|\\)");
+				String toInterpret = parts[parts.length-1];
+				for (int i = parts.length-2; i >= 0; i--) {
+					toInterpret = parts[i] + "(" + toInterpret + ")";
+					System.out.println("toInterpret : " + toInterpret);
 					Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
-				else
-					Fonctions.evaluer(current.split("\\(|\\)")[0], "", this);
+				}
+				
+//				if (current.split("\\(|\\)").length == 2)
+//					Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
+//				else
+//					Fonctions.evaluer(current.split("\\(|\\)")[0], "", this);
 			}
 				
 

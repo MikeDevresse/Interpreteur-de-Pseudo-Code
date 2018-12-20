@@ -13,8 +13,7 @@ DEBUT
 	b <-- 0
 	c <-- 2+2
 	
-	
-	d <-- aujourdhui()
+	d <-- ord('A')
 	ecrire(d)
 	
 FIN 
