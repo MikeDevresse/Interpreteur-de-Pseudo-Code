@@ -398,13 +398,25 @@ public class Algorithme {
 
 		valeur = Variable.traduire(valeur);
 		
+
 		// évite l'interprétation du caractère
 		if (this.getVariable(nomVar).getType().equals("caractere"))
 			valeur = "\"" + valeur + "\"";
+		
 
 		try {
 			this.getVariable(nomVar).setValeur(interpreter.eval(valeur));
-			interpreter.eval(nomVar + " = " + this.getVariable(nomVar).getValeur());
+			
+			//évite l'interprétation de la chaîne de caractère
+			Object interpretValeur;
+			if (this.getVariable(nomVar).getType().equals("chainedecaractere"))
+				interpretValeur = "\"" + this.getVariable(nomVar).getValeur() + "\"";
+			else
+				interpretValeur = this.getVariable(nomVar).getValeur();
+			
+			interpreter.eval(nomVar + " = " + interpretValeur);
+			
+			
 			if (prog.getVariableATracer().contains(this.getVariable(nomVar)))
 				prog.traceVariable += this.getVariable(nomVar).toString() + "\n";
 		} catch (EvalError e) {

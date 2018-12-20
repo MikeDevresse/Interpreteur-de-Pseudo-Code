@@ -57,8 +57,10 @@ public class VariableFactory {
 		case "entier":
 			return new Variable<Integer>(nom, type, constante);
 		case "booléen":
+		case "booleen":
 			return new Variable<Boolean>(nom, type, constante);
 		case "chaînedecaractère":
+		case "chainedecaractere":
 			return new Variable<String>(nom, type, constante);
 		case "réel":
 		case "reel":

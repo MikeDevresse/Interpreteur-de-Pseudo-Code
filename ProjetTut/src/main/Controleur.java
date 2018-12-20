@@ -79,15 +79,13 @@ public class Controleur
 		getVariableATracer();
 		this.aff = new Affichage( lecture.getTexteParLigne(), prog );
 
-		this.aff.afficher();
-
 		while ( !prog.getMain().estTerminer() )
 		{
 			try
 			{
 				if ( prog.getCurrent().ligneSuivante() )
 				{
-					this.aff.afficher();
+					//this.aff.afficher();
 				}
 			}
 			catch ( AlgorithmeException e )
@@ -134,7 +132,7 @@ public class Controleur
 	 */
 	public void attend ()
 	{
-		this.aff.afficher();
+		//this.aff.afficher();
 
 		if ( !this.prog.getMain().estEnTrainDeReset() )
 			etapes.add( this.prog.getCurrent().getLigneCourrante() );
