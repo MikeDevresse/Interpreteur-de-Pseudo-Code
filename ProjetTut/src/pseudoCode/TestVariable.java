@@ -11,16 +11,10 @@ public class TestVariable {
 	public static void main(String[] args) {
 
 		
-		Interpreter inter = new Interpreter();
-		Fonctions.initFonctions(inter);
-
-		String s = "ecrire(enChaine(enReel(2)))";
+		String s2 = "cas \"jamil le bo\" :";
 		
-		Pattern pattern = Pattern.compile("\\(.*\\)");
-		Matcher matcher = pattern.matcher(s);
-		if (matcher.find())
-		{
-		    System.out.println(matcher.group(0).substring(1, matcher.group(0).length()-1));
-		}
+		System.out.println(s2.split("cas |[ ]*:")[1]);
+		
+		//System.out.println(s2.split("\\[|\\]")[2]);
 	}
 }
