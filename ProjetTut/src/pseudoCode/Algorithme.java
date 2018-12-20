@@ -155,7 +155,10 @@ public class Algorithme {
 			 */
 			if (current.matches(".+\\(.*\\)")) {
 				System.out.println("Fonction détectée : " + this.fichier[ligneCourrante-1]);
-				Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
+				if (current.split("\\(|\\)").length == 2)
+					Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
+				else
+					Fonctions.evaluer(current.split("\\(|\\)")[0], "", this);
 			}
 				
 
