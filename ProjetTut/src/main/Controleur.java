@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import ihmCui.Affichage;
+import ihmCui.Affichage2;
 import pseudoCode.Algorithme;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Programme;
@@ -42,7 +43,7 @@ public class Controleur
 
 	private static Controleur  ctrl;
 
-	private Affichage		   aff;
+	private Affichage2		   aff;
 	
 	private ArrayList<Integer> breakpoints;
 	
@@ -77,7 +78,7 @@ public class Controleur
 			e.printStackTrace();
 		}
 		getVariableATracer();
-		this.aff = new Affichage( lecture.getTexteParLigne(), prog );
+		this.aff = new Affichage2( lecture.getTexteParLigne(), prog );
 
 		while ( !prog.getMain().estTerminer() )
 		{

@@ -59,7 +59,9 @@ public class Affichage2 {
 		syntaxes = Syntaxe.getSyntaxes();
 
 		OSWindows = !(System.getProperty("os.name").equals("Linux"));
-
+	}
+	
+	private void maj() {
 		this.ensPArret = Controleur.getControleur().getBreakpoints();
 		this.exec = prog.traceExec;
 		this.ligneC = prog.getCurrent().getLigneCourrante();
@@ -72,6 +74,8 @@ public class Affichage2 {
 	 * @param exec trace d'exécution de l'algorithme
 	 */
 	public void afficher() {
+		maj();
+		
 		String affichage = "";
 
 		int cptVar = 0;
@@ -179,7 +183,8 @@ public class Affichage2 {
 				ligne = exec.split("\n")[i];
 				ligne = String.format("%-81.81s", ligne);
 				ret += "|" + colorerConsole(ligne) + "|\n";
-			} catch (Exception e) {
+			} 
+			catch (Exception e) {
 				ret += String.format("|%-79s|\n", " ");
 			}
 		}
@@ -254,6 +259,7 @@ public class Affichage2 {
 
 			if (syntaxes.containsKey(mots[i]) && !comm && !grif)
 				mots[i] = syntaxes.get(mots[i]) + mots[i] + ANSI_BACK;
+			
 			ret += mots[i] + " ";
 		}
 		ret = ret.trim();

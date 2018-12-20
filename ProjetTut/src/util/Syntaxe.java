@@ -16,6 +16,8 @@ public class Syntaxe {
 	private static final String ANSI_WHITE  = "\u001B[37m";
 	
 	public static HashMap<String, String> getSyntaxes(){
+		syntaxes = new HashMap<String, String>();
+		
 		syntaxes.put("si",         ANSI_BLUE);
 		syntaxes.put("sinon",      ANSI_BLUE);
 		syntaxes.put("fsi",        ANSI_BLUE);
