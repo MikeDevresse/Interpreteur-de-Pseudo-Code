@@ -55,7 +55,7 @@ public class Affichage {
 		syntaxes.put("sinon",      ANSI_BLUE);
 		syntaxes.put("fsi",        ANSI_BLUE);
 		syntaxes.put("alors",      ANSI_BLUE);
-		syntaxes.put("fq",         ANSI_BLUE);
+		syntaxes.put("tq",         ANSI_BLUE);
 		syntaxes.put("ftq",        ANSI_BLUE);
 		
 		syntaxes.put("fonction",   ANSI_CYAN);
@@ -103,7 +103,6 @@ public class Affichage {
 		if(ligneHaut<0) {ligneHaut=0; ligneBas = 30;}
 		
 		int cpt = ligneHaut;
-		
 		for(int i=ligneHaut; i<ligneBas; i++) {
 			try {
 				String str = code[i];
@@ -251,11 +250,11 @@ public class Affichage {
 			str = str.replaceAll("(.*)(//.*)\\|", "$1");
 		}
 		
-		String copy=str;
-		
-		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
+		String copy=str.toString();
 		
 		copy = copy.replaceAll("(\".*\")", syntaxes.get("griffe")+"$1"+ANSI_RESET);
+
+		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction")+"$1"+ANSI_RESET+"(");
 		
 		str = recupAnnotation(copy, str);
 		
@@ -280,8 +279,9 @@ public class Affichage {
 	
 	private String recupAnnotation(String recup, String dest) {
 		String ret="";
+		
 		String[] annotations = recup.split("\"");
-		String[] change      = recup.split("\"");
+		String[] change      = dest.split("\"");
 		
 		for(int i=0; i<annotations.length; i++) {
 			if(i%2!=0)
