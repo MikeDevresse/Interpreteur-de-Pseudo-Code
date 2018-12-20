@@ -41,6 +41,8 @@ public class Controleur
 	private static Controleur  ctrl;
 
 	private Affichage		   aff;
+	
+	private ArrayList<Integer> breakpoints;
 
 	public static Controleur getControleur ()
 	{
@@ -53,6 +55,7 @@ public class Controleur
 	 */
 	private Controleur ()
 	{
+		this.breakpoints = new ArrayList<Integer>();
 		this.etapes = new ArrayList<Integer>();
 		Controleur.ctrl = this;
 		this.sc = new Scanner( System.in );
@@ -189,10 +192,37 @@ public class Controleur
 				clipboard.setContents(selection, selection);
 				this.reste();
 			}
+			else if ( commande.matches( "[\\+-] bk" ))
+			{
+				this.setBreakPoint( this.prog.getCurrent().getLigneCourrante() );
+			}
+			else if ( commande.equals( "go bk" ))
+			{
+				
+			}
 			
 			if ( !commande.equals( "" ))
 				this.prog.traceExec += "\n";
 		}
+	}
+	
+	public ArrayList<Integer> getBreakpoints ()
+	{
+		return this.breakpoints;
+	}
+	
+	private void setBreakPoint ( int ligne )
+	{
+		for ( int i = 0 ; i < this.breakpoints.size() ; i++ )
+		{
+			if ( this.breakpoints.get( i ) == ligne)
+			{
+				this.breakpoints.remove( i );
+				return;
+			}
+		}
+		
+		this.breakpoints.add( ligne );
 	}
 	
 	private void reste ()
