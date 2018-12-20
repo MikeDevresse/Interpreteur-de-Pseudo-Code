@@ -62,6 +62,9 @@ public class Algorithme {
 	}
 
 	public void initialiser() {
+		
+		Fonctions.initFonctions(this.interpreteur);
+		
 		String current = fichier[ligneCourrante++];
 		String[] mots = current.split(" ");
 		do {
@@ -150,8 +153,14 @@ public class Algorithme {
 			/*
 			 * Gestion des fonctions
 			 */
-			if (current.matches(".+\\(.*\\)"))
-				Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
+			if (current.matches(".+\\(.*\\)")) {
+				System.out.println("Fonction détectée : " + this.fichier[ligneCourrante-1]);
+				if (current.split("\\(|\\)").length == 2)
+					Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
+				else
+					Fonctions.evaluer(current.split("\\(|\\)")[0], "", this);
+			}
+				
 
 			/*
 			 * Gestion des conditions
@@ -390,9 +399,26 @@ public class Algorithme {
 		Interpreter interpreter = this.getInterpreteur();
 
 		valeur = Variable.traduire(valeur);
+		
+
+		// évite l'interprétation du caractère
+		if (this.getVariable(nomVar).getType().equals("caractere"))
+			valeur = "\"" + valeur + "\"";
+		
+
 		try {
 			this.getVariable(nomVar).setValeur(interpreter.eval(valeur));
-			interpreter.eval(nomVar + " = " + this.getVariable(nomVar).getValeur());
+			
+			//évite l'interprétation de la chaîne de caractère
+			Object interpretValeur;
+			if (this.getVariable(nomVar).getType().equals("chainedecaractere"))
+				interpretValeur = "\"" + this.getVariable(nomVar).getValeur() + "\"";
+			else
+				interpretValeur = this.getVariable(nomVar).getValeur();
+			
+			interpreter.eval(nomVar + " = " + interpretValeur);
+			
+			
 			if (prog.getVariableATracer().contains(this.getVariable(nomVar)))
 				prog.traceVariable += this.getVariable(nomVar).toString() + "\n";
 		} catch (EvalError e) {

@@ -93,14 +93,15 @@ public class Variable<T> {
 		String[] parts = expression.split("\"");
 		for (int i = 0; i < parts.length; i++) {
 			if (i % 2 == 0) {
-				parts[i] = parts[i].replaceAll("×", "*");
-				parts[i] = parts[i].replaceAll("mod", "%");
-				parts[i] = parts[i].replaceAll("([0-9]+[ ]*)/([ ]*[0-9]+)", "$1/(double)$2");
-				parts[i] = parts[i].replaceAll("div", "/(int)");
-				parts[i] = parts[i].replaceAll("([0-9]+)\\^([0-9]+)", "Math.pow($1,$2)");
-				parts[i] = parts[i].replaceAll("\\\\/¯([0-9]+)", "Math.sqrt($1)");
-				parts[i] = parts[i].replaceAll("©", "+");
-				parts[i] = parts[i].replaceAll("([\\w]+)\\+\\+", "$1 += 1");
+				parts[i] = parts[i].replaceAll("×", "*"); //multiplication
+				parts[i] = parts[i].replaceAll("mod", "%"); //modulo
+				parts[i] = parts[i].replaceAll("([0-9]+[ ]*)/([ ]*[0-9]+)", "$1/(double)$2"); //division
+				parts[i] = parts[i].replaceAll("div", "/(int)"); //division entière
+				parts[i] = parts[i].replaceAll("([0-9]+)\\^([0-9]+)", "Math.pow($1,$2)"); //puissance
+				parts[i] = parts[i].replaceAll("\\\\/¯([0-9]+)", "Math.sqrt($1)"); //racine carrée
+				parts[i] = parts[i].replaceAll("©", "+"); //concaténation
+				parts[i] = parts[i].replaceAll("([\\w]+)\\+\\+", "$1 += 1"); //opérateur unaire
+				parts[i] = parts[i].replaceAll("([\\w]+)--", "$1 -= 1"); //opérateur unaire
 			} else {
 				parts[i] = "\"" + parts[i] + "\"";
 			}

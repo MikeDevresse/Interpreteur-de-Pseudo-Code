@@ -6,30 +6,15 @@ variable:
 	a : entier
 	b : entier
 	c : entier
+	d : chainedecaractere
 	
 DEBUT
 	a <-- 0
 	b <-- 0
 	c <-- 2+2
 	
-	ecrire("si oaig alors")
 	
-	tq a < 5 alors
-		b <-- 0
-		tq b < 5 alors
-			ecrire(a © ":" © b)
-			
-			si a < 2 
-			et b > 3 alors
-				ecrire("magie")
-			fsi
-			
-			b <-- b +1
-		ftq
-		a <-- a + 1
-	ftq
-	
-	ecrire(LOL)
-	ecrire("bgz")
+	d <-- aujourdhui()
+	ecrire(d)
 	
 FIN 
