@@ -43,6 +43,8 @@ public class Algorithme {
 	private int ligneDebut;
 
 	private Programme prog;
+	
+	private boolean reset = false;
 
 	/**
 	 * Instanciation de algorithme.
@@ -106,6 +108,12 @@ public class Algorithme {
 	 * @throws AlgorithmeException
 	 */
 	public boolean ligneSuivante() throws AlgorithmeException {
+		if ( this.reset )
+		{
+			this.ligneCourrante = this.ligneDebutAlgorithme;
+			this.reset = false;
+		}
+		
 		if (this.ligneCourrante == this.fichier.length) {
 			this.fin = true;
 			return false;
@@ -435,7 +443,13 @@ public class Algorithme {
 	}
 
 	public void reset() {
+		this.reset = true;
 		this.ligneCourrante = this.ligneDebutAlgorithme;
 
+	}
+
+	public boolean estEnTrainDeReset ()
+	{
+		return reset;
 	}
 }
