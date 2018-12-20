@@ -40,6 +40,7 @@ public class Affichage {
 	
 	
 	private ArrayList<Integer> ensLigneRouge;
+	private ArrayList<Integer> ensPArret;
 	
 	/**
 	 * Constructeur
@@ -128,6 +129,9 @@ public class Affichage {
 					affichage += ANSI_BLACK;
 					affichage += String.format("|%2d %-76.76s|", cpt, str);
 					affichage += ANSI_BACK;
+				}else if(ensPArret.contains((Integer)cpt)) {
+					str = String.format("|%2d %-76.76s|",ANSI_RED+cpt+ANSI_BACK, str);
+					affichage += colorer(str);
 				}else if(str != null){
 					str = String.format("|%2d %-76.76s|",cpt, str);
 					affichage += colorer(str);
