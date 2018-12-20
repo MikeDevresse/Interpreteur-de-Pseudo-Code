@@ -1,6 +1,8 @@
 package pseudoCode;
 
-import bsh.EvalError;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import bsh.Interpreter;
 import util.Fonctions;
 
@@ -12,20 +14,13 @@ public class TestVariable {
 		Interpreter inter = new Interpreter();
 		Fonctions.initFonctions(inter);
 
-		String s = "ecrire(enChaine(estReel(\"2.3\")))";
-		String s2 = "estReel(enReel(2))";
+		String s = "ecrire(enChaine(enReel(2)))";
 		
-		String[] parts = s.split("\\(|\\)");
-		
-		String toInterpret = parts[parts.length-1];
-		for (int i = parts.length-2; i >= 0; i--) {
-			toInterpret = parts[i] + "(" + toInterpret + ")";
-			try {
-				System.out.println(inter.eval(toInterpret));
-			} catch (EvalError e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		Pattern pattern = Pattern.compile("\\(.*\\)");
+		Matcher matcher = pattern.matcher(s);
+		if (matcher.find())
+		{
+		    System.out.println(matcher.group(0).substring(1, matcher.group(0).length()-1));
 		}
 	}
 }

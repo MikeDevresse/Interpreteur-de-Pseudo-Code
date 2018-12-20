@@ -23,7 +23,6 @@ public class Fonctions {
 	 * @param contenu     paramètre envoyés
 	 */
 	public static String evaluer(String nomFonction, String contenu, Algorithme a) {
-
 		nomFonction = nomFonction.trim();
 		switch (nomFonction.toLowerCase()) {
 		case "ecrire":
@@ -70,6 +69,9 @@ public class Fonctions {
 					+ "		return Integer.parseInt(s);\n" + "	}");
 			
 			
+			/*
+			 * Transforme un objet en chaîne de caractère
+			 */
 			i.eval("private static String enChaine(Object o) {\n"
 					+ "		return o.toString();\n" + "	}");
 
@@ -184,8 +186,6 @@ public class Fonctions {
 	private static String ecrire(String contenu, Algorithme a) {
 		Interpreter interpreter = a.getInterpreteur();
 		try {
-			System.out.println("contenu : " + contenu);
-			System.out.println(interpreter.eval(contenu.trim()));
 			a.getProgramme().traceExec += "e:" + interpreter.eval(contenu.trim()) + "\n";
 			return "" + interpreter.eval(contenu);
 		} catch (EvalError e) {

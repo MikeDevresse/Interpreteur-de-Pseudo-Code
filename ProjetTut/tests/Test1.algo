@@ -9,7 +9,8 @@ variable:
 	d : chainedecaractere
 	
 DEBUT
-	a <-- 0
+	lire(a)
+	ecrire(a)
 	b <-- 0
 	c <-- 2+2
 	

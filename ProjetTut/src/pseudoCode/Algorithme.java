@@ -3,6 +3,8 @@ package pseudoCode;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.ResourceBundle.Control;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Interprète le code d'un algorithme
@@ -153,18 +155,15 @@ public class Algorithme {
 			/*
 			 * Gestion des fonctions
 			 */
-			if (current.matches(".+\\(.*\\)")) {
-				System.out.println("Fonction détectée : " + this.fichier[ligneCourrante-1]);
-				
-				String[] parts = current.split("\\(|\\)");
-				String toInterpret = parts[parts.length-1];
-				for (int i = parts.length-2; i >= 0; i--) {
-					toInterpret = parts[i] + "(" + toInterpret + ")";
-					System.out.println("toInterpret : " + toInterpret);
-					Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(current.split("\\(|\\)")[1]), this);
+			if (current.matches(".+\\(.*\\)")) {				
+				String toInterpret;
+				Pattern pattern = Pattern.compile("\\(.*\\)");
+				Matcher matcher = pattern.matcher(current);
+				if (matcher.find())
+				{
+				    toInterpret = matcher.group(0).substring(1, matcher.group(0).length()-1);
+				    Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(toInterpret), this);
 				}
-				
-
 			}
 				
 
@@ -238,7 +237,7 @@ public class Algorithme {
 		if (mots[0].equals("FIN"))
 			this.fin = true;
 
-		Controleur.getControleur().attend();
+		//Controleur.getControleur().attend();
 		return true;
 	}
 
