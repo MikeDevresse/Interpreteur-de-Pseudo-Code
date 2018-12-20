@@ -153,8 +153,6 @@ public class Controleur
 		}
 		else if ( revenir != -1 && this.anciennesEtapes.size() > revenir )
 		{
-			System.out.println( " aaaaa : " + anciennesEtapes );
-			System.out.println( this.prog.getCurrent().getLigneCourrante() );
 			if ( this.anciennesEtapes.get( 0 ) == this.prog.getCurrent().getLigneCourrante() )
 				this.anciennesEtapes.remove( 0 );
 		}

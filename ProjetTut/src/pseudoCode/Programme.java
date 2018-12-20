@@ -121,7 +121,6 @@ public class Programme {
 	
 	public void reset ()
 	{
-		System.out.println( "RESET --------------------------------------------------------" );
 		this.traceExec = "";
 		this.traceVariable = "    NOM     |    TYPE   |   VALEUR   |\n";
 		this.main.reset();
