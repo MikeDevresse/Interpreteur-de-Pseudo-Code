@@ -9,7 +9,7 @@ import main.Controleur;
 public class Programme {
 
 	public String traceExec;
-	public String traceVariable = "    NOM     |    TYPE   |   VALEUR   |\n";
+	public String traceVariable = "LIG|   NOM    |    TYPE   |  VALEUR  |\n";
 	
 	/** fichier. */
 	private String[] fichier;
@@ -122,7 +122,7 @@ public class Programme {
 	public void reset ()
 	{
 		this.traceExec = "";
-		this.traceVariable = "    NOM     |    TYPE   |   VALEUR   |\n";
+		this.traceVariable = "LIG|   NOM    |    TYPE   |  VALEUR  |\n";
 		this.main.reset();
 		
 	}
@@ -148,7 +148,7 @@ public class Programme {
 		String sRet = this.traceVariable.split( "\n" )[0] + "\n";
 		for ( String s : this.traceVariable.split( "\n" ))
 		{
-			if ( vars.contains( s.replaceAll( " ", "" ).split("|")[0] ) )
+			if ( vars.contains( s.replaceAll( " ", "" ).split("|")[1] ) )
 			{
 				sRet += s + "\n";
 			}

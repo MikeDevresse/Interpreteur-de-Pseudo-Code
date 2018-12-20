@@ -14,7 +14,7 @@ public class VariableFactory {
 	 * @param expression pseudo-code
 	 * @return variable
 	 */
-	public static Variable<?> createVariable(String nom, String type, boolean constante) {
+	public static Variable<?> createVariable(String nom, String type, boolean constante, Algorithme algo) {
 
 		// nettoyage de l'expression
 		type = type.trim();
@@ -31,20 +31,20 @@ public class VariableFactory {
 			switch (tabType) {
 
 			case "entier":
-				return new Variable<Integer[]>(nom, type, constante);
+				return new Variable<Integer[]>(nom, type, constante,algo);
 			case "booleen":
 			case "booléen":
-				return new Variable<Boolean[]>(nom, type, constante);
+				return new Variable<Boolean[]>(nom, type, constante,algo);
 			case "chaine" :
 			case "chaîne" :
 			case "chaîne de caractère":
-				return new Variable<String[]>(nom, type, constante);
+				return new Variable<String[]>(nom, type, constante,algo);
 			case "réel":
 			case "reel":
-				return new Variable<Double[]>(nom, type, constante);
+				return new Variable<Double[]>(nom, type, constante,algo);
 			case "caractere":
 			case "caractère":
-				return new Variable<Character[]>(nom, type, constante);
+				return new Variable<Character[]>(nom, type, constante,algo);
 
 			default:
 				return null;
@@ -55,15 +55,15 @@ public class VariableFactory {
 		switch (type) {
 
 		case "entier":
-			return new Variable<Integer>(nom, type, constante);
+			return new Variable<Integer>(nom, type, constante,algo);
 		case "booléen":
-			return new Variable<Boolean>(nom, type, constante);
+			return new Variable<Boolean>(nom, type, constante,algo);
 		case "chaînedecaractère":
-			return new Variable<String>(nom, type, constante);
+			return new Variable<String>(nom, type, constante,algo);
 		case "réel":
-			return new Variable<Double>(nom, type, constante);
+			return new Variable<Double>(nom, type, constante,algo);
 		case "caractère":
-			return new Variable<Character>(nom, type, constante);
+			return new Variable<Character>(nom, type, constante,algo);
 
 		default:
 			return null;

@@ -73,7 +73,7 @@ public class Algorithme {
 				if (current.matches("[[\\w*],*]*[ ]*\\w*:[ ]*\\w*")) {
 					String type = current.split(":")[1].trim();
 					for (String var : current.split(":")[0].split(",")) {
-						ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const")));
+						ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const"),this));
 					}
 
 				}
@@ -93,7 +93,7 @@ public class Algorithme {
 
 					for (String var : current.split("<--")[0].split(","))
 					{
-						ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const")));
+						ajouterVariable(VariableFactory.createVariable(var.trim(), type, this.def.equals("const"),this));
 						this.setValeur( var.trim(), valeur );
 					}
 				}

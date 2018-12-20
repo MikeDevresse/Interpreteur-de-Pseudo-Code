@@ -14,6 +14,7 @@ public class Variable<T> {
 	private String type;
 	private T valeur;
 	private boolean constante;
+	private Algorithme algo;
 
 	/**
 	 * Crée une variable
@@ -22,10 +23,11 @@ public class Variable<T> {
 	 * @param type      type de la variable
 	 * @param constante vrai si constante
 	 */
-	public Variable(String nom, String type, boolean constante) {
+	public Variable(String nom, String type, boolean constante, Algorithme algo) {
 		this.nom = nom;
 		this.type = type;
 		this.constante = constante;
+		this.algo = algo;
 	}
 
 	/**
@@ -116,9 +118,9 @@ public class Variable<T> {
 		String s = "";
 
 		if (this.valeur != null)
-			s += String.format("%12s|%11s|%12s|", this.nom, this.type, this.valeur + "");
+			s += String.format("%3s|%10s|%11s|%10s|", algo.getLigneCourrante(), this.nom, this.type, this.valeur + "");
 		else
-			s += String.format("%12s|%11s|%12s|", this.nom, this.type, "NULL");
+			s += String.format("%3s|%10s|%11s|%10s|", algo.getLigneCourrante(), this.nom, this.type, "NULL");
 
 		return s;
 	}
