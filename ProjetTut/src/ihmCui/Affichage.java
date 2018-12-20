@@ -137,13 +137,19 @@ public class Affichage {
 			}
 				
 			try {
-				cptVar++;
-				if(cptVar <= vars.length)
-					affichage +=String.format("%-37s", vars[cptVar-1]);
+				ligneHaut = vars.length-30;
+				
+				if(ligneHaut < 0)ligneHaut = 0;
+				
+				if(cptVar == 0)
+					affichage += String.format("%-37s", vars[cptVar]);
+				else if(cptVar < vars.length-ligneHaut)
+					affichage +=String.format("%-37s", vars[cptVar+ligneHaut]);
 				else
 					affichage +=String.format("%-37s|", " ");
 				
 				affichage += "\n";
+				cptVar++;
 			}catch(Exception e) {System.out.println(e);}
 		}
 		
@@ -172,19 +178,6 @@ public class Affichage {
 		for(int i=0; i<119;i++)
 			ret += "-";
 		ret+="\n";
-		
-		return ret;
-	}
-	
-	private String ecrireVar(int cptVar, Variable[] vars) {
-		String ret="";
-		
-		if(cptVar==0)
-			ret+="    NOM     |    TYPE   |   VALEUR   |";
-		else if(cptVar <= vars.length)
-			ret+=String.format("%-37s|", vars[cptVar-1]);
-		else
-			ret+=String.format("%-37s|", " ");
 		
 		return ret;
 	}
