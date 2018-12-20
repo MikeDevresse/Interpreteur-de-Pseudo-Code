@@ -15,7 +15,7 @@ public class TestVariable {
 		String s = "ecrire(enChaine(estReel(\"2.3\")))";
 		String s2 = "estReel(enReel(2))";
 		
-		String[] parts = s2.split("\\(|\\)");
+		String[] parts = s.split("\\(|\\)");
 		
 		String toInterpret = parts[parts.length-1];
 		for (int i = parts.length-2; i >= 0; i--) {

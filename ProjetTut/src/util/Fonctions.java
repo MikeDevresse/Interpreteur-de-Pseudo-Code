@@ -31,8 +31,6 @@ public class Fonctions {
 			return Fonctions.ecrire(contenu, a);
 		case "lire":
 			return Fonctions.lire(contenu, a);
-		case "enchaine":
-			return contenu.replaceAll("\"", "");
 //		case "enreel" : return Fonctions.enReel( Integer.parseInt( contenu.replaceAll( "\"", "" )  ) );
 //		case "enentier" : return Fonctions.enEntier( Double.parseDouble( contenu.replaceAll( "\"", "" )  ) );
 //		case "car" : return Fonctions.car( Integer.parseInt( contenu.replaceAll("\"","") ) );
@@ -70,6 +68,10 @@ public class Fonctions {
 			 */
 			i.eval("private static int enEntier(String s) {\n" + "		s = s.replace(\"\\\"\", \"\"); \n"
 					+ "		return Integer.parseInt(s);\n" + "	}");
+			
+			
+			i.eval("private static String enChaine(Object o) {\n"
+					+ "		return o.toString();\n" + "	}");
 
 			/*
 			 * Transforme un réel en entier
@@ -182,6 +184,7 @@ public class Fonctions {
 	private static String ecrire(String contenu, Algorithme a) {
 		Interpreter interpreter = a.getInterpreteur();
 		try {
+			System.out.println("contenu : " + contenu);
 			System.out.println(interpreter.eval(contenu.trim()));
 			a.getProgramme().traceExec += "e:" + interpreter.eval(contenu.trim()) + "\n";
 			return "" + interpreter.eval(contenu);
