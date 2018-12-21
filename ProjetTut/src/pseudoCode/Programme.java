@@ -9,7 +9,7 @@ import main.Controleur;
 public class Programme {
 
 	public String traceExec;
-	public String traceVariable = "LIG|   NOM    |    TYPE   |  VALEUR  |\n";
+	public String traceVariable = "LIG| NOM |  TYPE   |     VALEUR      |\n";
 	
 	/** fichier. */
 	private String[] fichier;
@@ -23,7 +23,7 @@ public class Programme {
 	
 	private ArrayList<Integer> lignesFausses;
 
-	private ArrayList<Variable> ensVars;
+	private ArrayList<Donnee> ensDonneesATracer;
 
 	/**
 	 * Instanciation de programme.
@@ -32,7 +32,7 @@ public class Programme {
 	 * @throws AlgorithmeException the algorithme exception
 	 */
 	public Programme(String[] fichier) throws AlgorithmeException {
-		this.ensVars = new ArrayList<Variable>();
+		this.ensDonneesATracer = new ArrayList<Donnee>();
 		this.lignesFausses = new ArrayList<Integer>();
 		this.traceExec = "";
 
@@ -127,28 +127,28 @@ public class Programme {
 		
 	}
 	
-	public ArrayList<Variable> getVariableATracer ()
+	public ArrayList<Donnee> getDonneesATracer ()
 	{
-		return this.ensVars;
+		return this.ensDonneesATracer;
 	}
 
 	
-	public void ajouterVariableATracer ( Variable v )
+	public void ajouterDonneeATracer ( Donnee d )
 	{
-		this.ensVars.add( v );
+		this.ensDonneesATracer.add( d );
 	}
 	
-	public void enleverVariableATracer ( Variable v )
+	public void enleverDonneeATracer ( Donnee d )
 	{
-		this.ensVars.remove( v );
+		this.ensDonneesATracer.remove( d );
 	}
 	
-	public String getTraceVar ( ArrayList<String> vars )
+	public String getTraceDonnee ( ArrayList<String> donnees )
 	{
 		String sRet = this.traceVariable.split( "\n" )[0] + "\n";
 		for ( String s : this.traceVariable.split( "\n" ))
 		{
-			if ( vars.contains( s.replaceAll( " ", "" ).split("|")[1] ) )
+			if ( donnees.contains( s.replaceAll( " ", "" ).split("|")[1] ) )
 			{
 				sRet += s + "\n";
 			}
