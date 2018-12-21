@@ -2,20 +2,20 @@ ALGORITHME Test1
 constante:
 	LOL <-- 4
 variable:
-
+	arr : Tableau[3] d'entier
 	a : entier
 	b : entier
 	c : entier
 	d : chainedecaractere
 	
 DEBUT
-	lire(a)
-	ecrire(a)
-	b <-- 0
+	ecrire("Bonjour")
+	b <-- 6
 	c <-- 2+2
+	arr[2] <-- c + b
+	arr[0] <-- c + b
 	
-	d <-- enChaine(2)
-	ecrire(d)
-	ecrire(ord('A'))
+	ecrire(arr)
+	
 	
 FIN 

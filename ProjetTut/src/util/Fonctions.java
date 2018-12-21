@@ -186,6 +186,7 @@ public class Fonctions {
 	private static String ecrire(String contenu, Algorithme a) {
 		Interpreter interpreter = a.getInterpreteur();
 		try {
+			System.out.println( interpreter.eval(contenu.trim()) );
 			a.getProgramme().traceExec += "e:" + interpreter.eval(contenu.trim()) + "\n";
 			return "" + interpreter.eval(contenu);
 		} catch (EvalError e) {
