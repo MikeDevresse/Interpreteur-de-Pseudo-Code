@@ -397,10 +397,9 @@ public class Algorithme {
 			if (this.fichier[this.ligneCourrante].matches("cas .*[ ]*:")) {
 				String cas = this.fichier[this.ligneCourrante].split("cas |[ ]*:")[1].replaceAll("\"", "");
 				
-				System.out.println(v.getValeur() + " | " + cas);
 
 				// cas valide
-				if (v.getValeur().equals(cas)) {
+				if (String.valueOf(v.getValeur()).equals(cas)) {
 					ligneCourrante++;
 					do {
 						ligneSuivante();

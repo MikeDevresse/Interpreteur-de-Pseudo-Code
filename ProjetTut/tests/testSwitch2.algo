@@ -1,0 +1,19 @@
+ALGORITHME TestSwitch
+constante:
+
+variable:
+	var 	: chainedecaractere
+	
+DEBUT
+	var <-- "lol"
+	
+	selon var
+		cas "lol" :
+			écrire("nn il est moche")
+		cas 4 :
+			écrire("OUIIIIII !!!!")
+			ecrire("lol")
+		autrecas :
+			écrire("Y a un probleme")
+	fselon
+FIN
