@@ -390,16 +390,22 @@ public class Algorithme {
 
 		Variable v = this.getVariable(varName);
 
+		this.ligneCourrante--;
 		do {
 			this.ligneCourrante++;
+			
 			if (this.fichier[this.ligneCourrante].matches("cas .*[ ]*:")) {
 				String cas = this.fichier[this.ligneCourrante].split("cas |[ ]*:")[1].replaceAll("\"", "");
+				
+				System.out.println(v.getValeur() + " | " + cas);
 
 				// cas valide
 				if (v.getValeur().equals(cas)) {
 					ligneCourrante++;
 					do {
 						ligneSuivante();
+						
+						
 					} while (!this.fichier[this.ligneCourrante].matches("cas.*")
 							&& !this.fichier[this.ligneCourrante].matches("autrecas .*"));
 					ligneCourrante = ligneFselon;
