@@ -5,7 +5,7 @@ variable:
 	var 	: chainedecaractere
 	
 DEBUT
-	var <-- "jamil le bôo"
+	var <-- "jamil le bo"
 	
 	selon var
 		cas "jamil le bo" :
