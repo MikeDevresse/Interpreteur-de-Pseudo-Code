@@ -102,26 +102,17 @@ public class Affichage2 {
 				cpt++;
 
 				if (cpt == ligneC + 1) {
-
 					if (prog.getLignesFausses().contains(ligneC))
-						affichage += ANSI_RED_BACKGROUND;
+						affichage += String.format("|"+ANSI_RED_BACKGROUND+ANSI_BLACK+"%2d %-76.76s"+ANSI_BACK+"|", cpt, str);
 					else
-						affichage += ANSI_GREEN_BACKGROUND;
-
-					affichage += ANSI_BLACK;
-					affichage += String.format("|%2d %-76.76s|", cpt, str);
-					affichage += ANSI_BACK;
+						affichage += String.format("|"+ANSI_GREEN_BACKGROUND+ANSI_BLACK+"%2d %-76.76s"+ANSI_BACK+"|", cpt, str);
 				} 
 				else if (ensLigneRouge.contains((Integer) cpt)) {
-					affichage += ANSI_RED_BACKGROUND;
-					affichage += ANSI_BLACK;
-					affichage += String.format("|%2d %-76.76s|", cpt, str);
-					affichage += ANSI_BACK;
+					affichage += String.format("|"+ANSI_BLACK+ANSI_RED_BACKGROUND+"%2d %-76.76s"+ANSI_BACK+"|", cpt, str);
 				} 
 				else if (ensPArret.contains((Integer) cpt - 1)) {
 					str = String.format("|%2s %-76.76s|", ANSI_RED + cpt + ANSI_BACK, str);
 					affichage += colorer(str);
-
 				} 
 				else if (str != null) {
 					str = String.format("|%2d %-76.76s|", cpt, str);
