@@ -1,8 +1,6 @@
 package pseudoCode;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.ResourceBundle.Control;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +10,6 @@ import java.util.regex.Pattern;
 
 import bsh.EvalError;
 import bsh.Interpreter;
-import main.Controleur;
 import util.Condition;
 import util.Fonctions;
 
@@ -63,6 +60,9 @@ public class Algorithme {
 		initialiser();
 	}
 
+	/**
+	 * Initialise les données de l'algorithme
+	 */
 	public void initialiser() {
 
 		Fonctions.initFonctions(this.interpreteur);
@@ -431,6 +431,7 @@ public class Algorithme {
 		do {
 			this.ligneCourrante++;
 
+			// cas identifié
 			if (this.fichier[this.ligneCourrante].matches("cas .*[ ]*:")) {
 				String cas = this.fichier[this.ligneCourrante].split("cas |[ ]*:")[1].replaceAll("\"", "");
 
@@ -490,6 +491,11 @@ public class Algorithme {
 		return null;
 	}
 
+	/**
+	 * Retourne une variable spécifique
+	 * @param nomVariable nom de la variable
+	 * @return variable
+	 */
 	public Variable getVariable(String nomVariable) {
 		for (Donnee d : this.ensDonnees) {
 			if (d.getNom().equals(nomVariable) && d instanceof Variable) {
@@ -505,7 +511,6 @@ public class Algorithme {
 	 * @return tableau de variables
 	 */
 	public Donnee[] getDonnees() {
-
 		return ensDonnees.toArray(new Donnee[ensDonnees.size()]);
 	}
 
@@ -596,6 +601,10 @@ public class Algorithme {
 		return this.prog;
 	}
 
+	/**
+	 * Retourne le contenu de l'algorithme
+	 * @return tableau de ligne
+	 */
 	public String[] getFichier() {
 		return this.fichier;
 	}
@@ -609,24 +618,43 @@ public class Algorithme {
 		return this.fin;
 	}
 
+	/**
+	 * Retourne la ligne de début d'algorithme
+	 * @return
+	 */
 	public int getLigneDebut() {
 		return this.ligneDebut;
 	}
 
+	/**
+	 * Retourne la ligne courrante
+	 * @return
+	 */
 	public int getLigneCourrante() {
 		return this.ligneCourrante;
 	}
 
+	/**
+	 * Retourne le nom de l'algorithme
+	 * @return
+	 */
 	public String getNom() {
 		return this.nom;
 	}
 
+	/**
+	 * Reset l'algorithme
+	 */
 	public void reset() {
 		this.reset = true;
 		this.ligneCourrante = this.ligneDebutAlgorithme;
 
 	}
 
+	/**
+	 * Retourne si l'algorithme est en cours de reset
+	 * @return vrai si en cours de reset
+	 */
 	public boolean estEnTrainDeReset() {
 		return reset;
 	}
