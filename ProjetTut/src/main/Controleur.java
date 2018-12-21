@@ -6,12 +6,13 @@ import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import ihmCui.Affichage2;
+import ihmCui.Affichage;
 import pseudoCode.Algorithme;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Donnee;
 import pseudoCode.Programme;
 import pseudoCode.Tableau;
+import pseudoCode.Variable;
 
 /*
  * Retour en arriere :
@@ -43,7 +44,7 @@ public class Controleur
 
 	private static Controleur  ctrl;
 
-	private Affichage2		   aff;
+	private Affichage		   aff;
 	
 	private ArrayList<Integer> breakpoints;
 	
@@ -78,7 +79,7 @@ public class Controleur
 			e.printStackTrace();
 		}
 		getVariableATracer();
-		this.aff = new Affichage2( lecture.getTexteParLigne(), prog );
+		this.aff = new Affichage( lecture.getTexteParLigne(), prog );
 
 		while ( !prog.getMain().estTerminer() )
 		{

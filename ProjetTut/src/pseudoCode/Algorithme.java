@@ -45,7 +45,7 @@ public class Algorithme {
 	private int ligneDebut;
 
 	private Programme prog;
-	
+
 	private boolean reset = false;
 
 	/**
@@ -227,8 +227,19 @@ public class Algorithme {
 				}
 
 				this.ligneCourrante = ligneFinBoucle; // saut à la fin de la condition
-				interpreterBoucle(this.ligneCourrante, condition, ligneDebutBoucle, ligneFinBoucle); // interprétation de la boucle
+				interpreterBoucle(this.ligneCourrante, condition, ligneDebutBoucle, ligneFinBoucle); // interprétation
+																										// de la boucle
 			}
+
+			/*
+			 * Gestion des switchs
+			 */
+			if (current.matches("selon .*")) {
+				String varSelon = current.substring("selon ".length());
+				System.out.println("SWITCH : selon " + varSelon);
+				interpreterSwitch(varSelon);
+			}
+
 		}
 
 		/*
@@ -307,7 +318,8 @@ public class Algorithme {
 	 * @param condition   condition
 	 * @throws AlgorithmeException
 	 */
-	public void interpreterBoucle(int ligneBoucle, String condition, int ligneDebut, int ligneFin) throws AlgorithmeException {
+	public void interpreterBoucle(int ligneBoucle, String condition, int ligneDebut, int ligneFin)
+			throws AlgorithmeException {
 
 		/*
 		 * Identification des boucles imbriquées
@@ -348,6 +360,63 @@ public class Algorithme {
 
 		// retour au point d'origine
 		this.ligneCourrante = ligneFtq + 1;
+
+	}
+
+	/**
+	 * Interprète une structure alternative généralisée
+	 * 
+	 * @param varName nom de la variable
+	 */
+	public void interpreterSwitch(String varName) throws AlgorithmeException {
+
+		/*
+		 * Identification des switchs imbriqués
+		 */
+		int cptLigne = this.ligneCourrante;
+		int nbSelon = 0;
+		int ligneAutrecas = 0;
+		int ligneFselon = 0;
+		for (int i = cptLigne; i < this.fichier.length; i++) {
+			if (this.fichier[i].matches("selon .*"))
+				nbSelon++;
+
+			if (this.fichier[i].matches("fselon"))
+				if (nbSelon == 0) {
+					ligneFselon = i;
+					break;
+				} else if (this.fichier[i].matches("autrecas.*"))
+					ligneAutrecas = i;
+				else
+					nbSelon--;
+		}
+
+		Variable v = this.getVariable(varName);
+
+		do {
+			this.ligneCourrante++;
+			if (this.fichier[this.ligneCourrante].matches("cas .*[ ]*:")) {
+				String cas = this.fichier[this.ligneCourrante].split("cas |[ ]*:")[1].replaceAll("\"", "");
+
+				// cas valide
+				if (v.getValeur().equals(cas)) {
+					ligneCourrante++;
+					do {
+						ligneSuivante();
+					} while (!this.fichier[this.ligneCourrante].matches("cas.*")
+							&& !this.fichier[this.ligneCourrante].matches("autrecas .*"));
+					ligneCourrante = ligneFselon;
+				}
+			} else if (this.fichier[this.ligneCourrante].matches("autrecas.*")) {
+				ligneCourrante++;
+
+				do {
+					ligneSuivante();
+				} while (!this.fichier[this.ligneCourrante].matches("fselon"));
+				ligneCourrante = ligneFselon;
+			}
+
+		} while (this.ligneCourrante != ligneFselon);
 
 	}
 
