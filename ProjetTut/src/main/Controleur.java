@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import ihmCui.Affichage;
+import ihmCui.Affichage2;
 import pseudoCode.Algorithme;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Programme;
@@ -42,7 +43,7 @@ public class Controleur
 
 	private static Controleur  ctrl;
 
-	private Affichage		   aff;
+	private Affichage2		   aff;
 	
 	private ArrayList<Integer> breakpoints;
 	
@@ -77,7 +78,7 @@ public class Controleur
 			e.printStackTrace();
 		}
 		getVariableATracer();
-		this.aff = new Affichage( lecture.getTexteParLigne(), prog );
+		this.aff = new Affichage2( lecture.getTexteParLigne(), prog );
 
 		while ( !prog.getMain().estTerminer() )
 		{
@@ -129,7 +130,7 @@ public class Controleur
 	 */
 	public void attend ()
 	{
-		//this.aff.afficher();
+		this.aff.afficher();
 
 		if ( !this.prog.getMain().estEnTrainDeReset() )
 			etapes.add( this.prog.getCurrent().getLigneCourrante() );
@@ -208,6 +209,13 @@ public class Controleur
 				ligneAAttendre = ligne;
 				this.etapes = new ArrayList<Integer>();
 				this.prog.reset();
+			}
+			else if ( commande.matches( "cp tab [\\w]+" ))
+			{
+				String nomVar = commande.replaceAll( "cp tab ([\\w]+)", "$1" );
+				StringSelection selection = new StringSelection( prog.getCurrent().getDonnee(nomVar).toString() );
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(selection, selection);
 			}
 			else if ( commande.matches( "cp var [[\\w]+[ ]*]+" ))
 			{

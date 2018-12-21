@@ -482,28 +482,72 @@ public class Algorithme {
 	public void setValeur(String nomDonnee, String valeur) {
 		Interpreter interpreter = this.getInterpreteur();
 
-		valeur = Variable.traduire(valeur);
+		valeur = Donnee.traduire(valeur);
 
-		// évite l'interprétation du caractère
-		if (this.getVariable(nomDonnee).getType().equals("caractere"))
-			valeur = "\"" + valeur + "\"";
-
-		try {
-			this.getVariable(nomDonnee).setValeur(interpreter.eval(valeur));
-
-			// évite l'interprétation de la chaîne de caractère
-			Object interpretValeur;
-			if (this.getVariable(nomDonnee).getType().equals("chainedecaractere"))
-				interpretValeur = "\"" + this.getVariable(nomDonnee).getValeur() + "\"";
-			else
-				interpretValeur = this.getVariable(nomDonnee).getValeur();
-
-			interpreter.eval(nomDonnee + " = " + interpretValeur);
-
-			if (prog.getVariableATracer().contains(this.getVariable(nomDonnee)))
-				prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n";
-		} catch (EvalError e) {
-			e.printStackTrace();
+		if ( this.getDonnee( nomDonnee ) instanceof Variable )
+		{
+    		// évite l'interprétation du caractère
+    		if (this.getVariable(nomDonnee).getType().equals("caractere"))
+    			valeur = "\"" + valeur + "\"";
+    		
+    
+    		try {
+    			this.getVariable(nomDonnee).setValeur(interpreter.eval(valeur));
+    			
+    			//évite l'interprétation de la chaîne de caractère
+    			Object interpretValeur;
+    			if (this.getVariable(nomDonnee).getType().equals("chainedecaractere"))
+    				interpretValeur = "\"" + this.getVariable(nomDonnee).getValeur() + "\"";
+    			else
+    				interpretValeur = this.getVariable(nomDonnee).getValeur();
+    			
+    			interpreter.eval(nomDonnee + " = " + interpretValeur);
+    			
+    			
+    			if (prog.getVariableATracer().contains(this.getVariable(nomDonnee)))
+    				prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n";
+    		} catch (EvalError e) {
+    			e.printStackTrace();
+    		}
+		}
+		else
+		{
+			int indice = -1;
+			try
+			{
+				indice = (int) interpreteur.eval( nomDonnee.split("\\[|\\]")[1].trim() );
+			}
+			catch ( NumberFormatException | EvalError e )
+			{
+				e.printStackTrace();
+			}
+			nomDonnee = nomDonnee.split( "\\[" )[0];
+			if ( this.getDonnee( nomDonnee ) instanceof Tableau )
+			{
+				Tableau tab = (Tableau) this.getDonnee( nomDonnee );
+				tab.setValeur( indice, new Variable("","",false,this) );
+				Variable var = tab.get(indice);
+				// évite l'interprétation du caractère
+	    		if (var.getType().equals("caractere"))
+	    			valeur = "\"" + valeur + "\"";
+	    		
+	    
+	    		try {
+	    			var.setValeur(interpreter.eval(valeur));
+	    			
+	    			//évite l'interprétation de la chaîne de caractère
+	    			Object interpretValeur;
+	    			if (var.getType().equals("chainedecaractere"))
+	    				interpretValeur = "\"" + var.getValeur() + "\"";
+	    			else
+	    				interpretValeur = var.getValeur();
+	    			
+	    			interpreter.eval(nomDonnee +"["+indice+"]" + " = " + interpretValeur);
+	    			
+    			} catch (EvalError e) {
+        			e.printStackTrace();
+        		}
+			}
 		}
 	}
 

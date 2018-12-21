@@ -1,5 +1,9 @@
 package pseudoCode;
 
+import java.util.ArrayList;
+
+import bsh.EvalError;
+
 /**
  * Factory permettant de créer des variables
  * @version 1.0, 17/12/2018
@@ -22,31 +26,50 @@ public class DonneeFactory {
 		
 		type = type.toLowerCase();
 		
-
 		// tableau de variables
-		if (type.matches("tableau[\\[[.]+\\]]+ de [\\wéîè]+")) {
-			String tabType = type.replaceAll("tableau[\\[[.]+\\]]+ de ([\\wéîè]+)","$1");
-
-			switch (tabType) {
-    			case "entier":
-    				return new Variable<Integer[]>(nom, type, constante,algo);
-    			case "booleen":
-    			case "booléen":
-    				return new Variable<Boolean[]>(nom, type, constante,algo);
-    			case "chaine" :
-    			case "chaîne" :
-    			case "chaîne de caractère":
-    				return new Variable<String[]>(nom, type, constante,algo);
-    			case "réel":
-    			case "reel":
-    				return new Variable<Double[]>(nom, type, constante,algo);
-    			case "caractere":
-    			case "caractère":
-    				return new Variable<Character[]>(nom, type, constante,algo);
-    
-    			default:
-    				return null;
+		if (type.matches("tableau\\[.+\\] de .*$")) {
+			String tabType = type.replaceAll("tableau\\[.+\\] de (.*)$","$1");
+			int taille = 0;
+			String primType="";
+			try
+			{
+				taille = Integer.parseInt( type.substring(8,type.indexOf( "]" )) );
+				switch (tabType)
+				{
+		    		case "entier":
+		    			primType = "int";
+		    			break;
+		    		case "booléen":
+		    		case "booleen":
+		    			primType = "boolean";
+		    			break;
+		    		case "chaînedecaractère":
+		    		case "chainedecaractère":
+		    		case "chaînedecaractere":
+		    		case "chainedecaractere":
+		    		case "chaine":
+		    		case "chaîne":
+		    			primType = "String";
+		    			break;
+		    		case "réel":
+		    		case "reel":
+		    			primType = "double";
+		    			break;
+		    		case "caractère":
+		    		case "caractere":
+		    			primType = "char";
+		    			break;
+				}
+    			algo.getInterpreteur().eval( primType + "[] " + nom + " = new "+primType+"["+ taille +"]" );
+				return new Tableau(nom, type, constante,algo,taille,tabType);
+		    
 			}
+			catch ( NumberFormatException | EvalError e )
+			{
+				e.printStackTrace();
+			}
+			
+			/**/
 		}
 
 		// variables simples
@@ -58,6 +81,8 @@ public class DonneeFactory {
     		case "booleen":
     			return new Variable<Boolean>(nom, type, constante,algo);
     		case "chaînedecaractère":
+    		case "chainedecaractère":
+    		case "chaînedecaractere":
     		case "chainedecaractere":
     		case "chaine":
     		case "chaîne":

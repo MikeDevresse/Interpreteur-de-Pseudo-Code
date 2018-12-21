@@ -2,27 +2,23 @@ package pseudoCode;
 
 import java.util.ArrayList;
 
-public class Tableau<T> extends Donnee<T>
+public class Tableau extends Donnee
 {
-	private ArrayList<T> ensValeurs;
+	private ArrayList<Variable> ensValeurs;
 	private int taille;
 	
-	protected Tableau ( String nom, String type, boolean constante, Algorithme algo, int taille )
+	protected Tableau ( String nom, String type, boolean constante, Algorithme algo, int taille, String typeContenu )
 	{
 		super( nom, type, constante, algo );
 		this.taille = taille;
-		this.ensValeurs = new ArrayList<T>();
+		this.ensValeurs = new ArrayList<Variable>();
+		for ( int i=0 ; i<taille ; i++ )
+			ensValeurs.add( i, new Variable("",typeContenu,false,algo)  );
 	}
 	
-	public void setValeur ( int indice, T valeur )
+	public void setValeur ( int indice, Variable var )
 	{
-		if ( indice < taille )
-			ensValeurs.add( indice, valeur );
-	}
-	
-	public T getValeur ( int indice )
-	{
-		return ensValeurs.get( indice );
+		this.ensValeurs.get( indice ).setValeur( var.getValeur() );
 	}
 	
 
@@ -30,8 +26,14 @@ public class Tableau<T> extends Donnee<T>
 	public String toString() {
 		String s = "";
 
-		s += String.format("%3s|%10s|%11s|%10s|", algo.getLigneCourrante(), this.nom, this.type, "ARRAY");
+		for ( int i=0 ; i<this.ensValeurs.size() ; i++ )
+			s += i + "|" + this.ensValeurs.get( i ).getValeur() + "\n";
 
 		return s;
+	}
+
+	public Variable get ( int indice )
+	{
+		return this.ensValeurs.get( indice );
 	}
 }

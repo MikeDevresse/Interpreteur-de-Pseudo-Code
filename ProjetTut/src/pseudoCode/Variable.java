@@ -44,9 +44,9 @@ public class Variable<T> extends Donnee<T> {
 		String s = "";
 
 		if (this.valeur != null)
-			s += String.format("%3s|%10s|%11s|%10s|", algo.getLigneCourrante(), this.nom, this.type, this.valeur + "");
+			s += String.format("%3s|%10.10s|%11.11s|%10.10s|", algo.getLigneCourrante()+1, this.nom, this.type, this.valeur + "");
 		else
-			s += String.format("%3s|%10s|%11s|%10s|", algo.getLigneCourrante(), this.nom, this.type, "NULL");
+			s += String.format("%3s|%10.10s|%11.11s|%10.10s|", algo.getLigneCourrante()+1, this.nom, this.type, "NULL");
 
 		return s;
 	}
