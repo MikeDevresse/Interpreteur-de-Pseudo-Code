@@ -9,6 +9,7 @@ variable:
 	d : chainedecaractere
 	
 DEBUT
+	lire(b)
 	ecrire("Bonjour")
 	b <-- 6
 	c <-- 2+2
