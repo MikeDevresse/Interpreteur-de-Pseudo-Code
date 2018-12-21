@@ -210,6 +210,13 @@ public class Controleur
 				this.etapes = new ArrayList<Integer>();
 				this.prog.reset();
 			}
+			else if ( commande.matches( "cp tab [\\w]+" ))
+			{
+				String nomVar = commande.replaceAll( "cp tab ([\\w]+)", "$1" );
+				StringSelection selection = new StringSelection( prog.getCurrent().getDonnee(nomVar).toString() );
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(selection, selection);
+			}
 			else if ( commande.matches( "cp var [[\\w]+[ ]*]+" ))
 			{
 				ArrayList<String> vars = new ArrayList<String>();
