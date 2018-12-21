@@ -64,9 +64,9 @@ public class Algorithme {
 	}
 
 	public void initialiser() {
-		
+
 		Fonctions.initFonctions(this.interpreteur);
-		
+
 		String current = fichier[ligneCourrante++];
 		String[] mots = current.split(" ");
 		do {
@@ -78,7 +78,7 @@ public class Algorithme {
 				if (current.matches("[[\\w*],*]*[ ]*\\w*:.*")) {
 					String type = current.split(":")[1].trim();
 					for (String var : current.split(":")[0].split(",")) {
-						ajouterDonnee(DonneeFactory.createVariable(var.trim(), type, this.def.equals("const"),this));
+						ajouterDonnee(DonneeFactory.createVariable(var.trim(), type, this.def.equals("const"), this));
 					}
 
 				}
@@ -96,10 +96,9 @@ public class Algorithme {
 					else if (valeur.equals("true") || valeur.equals("false"))
 						type = "booleen";
 
-					for (String var : current.split("<--")[0].split(","))
-					{
-						ajouterDonnee(DonneeFactory.createVariable(var.trim(), type, this.def.equals("const"),this));
-						this.setValeur( var.trim(), valeur );
+					for (String var : current.split("<--")[0].split(",")) {
+						ajouterDonnee(DonneeFactory.createVariable(var.trim(), type, this.def.equals("const"), this));
+						this.setValeur(var.trim(), valeur);
 					}
 				}
 			}
@@ -116,12 +115,11 @@ public class Algorithme {
 	 * @throws AlgorithmeException
 	 */
 	public boolean ligneSuivante() throws AlgorithmeException {
-		if ( this.reset )
-		{
+		if (this.reset) {
 			this.ligneCourrante = this.ligneDebutAlgorithme;
 			this.reset = false;
 		}
-		
+
 		if (this.ligneCourrante == this.fichier.length) {
 			this.fin = true;
 			return false;
@@ -155,17 +153,15 @@ public class Algorithme {
 			/*
 			 * Gestion des fonctions
 			 */
-			if (current.matches(".+\\(.*\\)")) {				
+			if (current.matches(".+\\(.*\\)")) {
 				String toInterpret;
 				Pattern pattern = Pattern.compile("\\(.*\\)");
 				Matcher matcher = pattern.matcher(current);
-				if (matcher.find())
-				{
-				    toInterpret = matcher.group(0).substring(1, matcher.group(0).length()-1);
-				    Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(toInterpret), this);
+				if (matcher.find()) {
+					toInterpret = matcher.group(0).substring(1, matcher.group(0).length() - 1);
+					Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(toInterpret), this);
 				}
 			}
-				
 
 			/*
 			 * Gestion des conditions
@@ -214,7 +210,8 @@ public class Algorithme {
 				boolean conditionFinie = false;
 				int ligneDebutBoucle = this.ligneCourrante;
 				int ligneFinBoucle;
-				for (ligneFinBoucle = this.ligneCourrante; ligneFinBoucle < this.fichier.length && !conditionFinie; ligneFinBoucle++) {
+				for (ligneFinBoucle = this.ligneCourrante; ligneFinBoucle < this.fichier.length
+						&& !conditionFinie; ligneFinBoucle++) {
 
 					if (!this.fichier[ligneFinBoucle].trim().matches(".* alors$")) {
 						condition += this.fichier[ligneFinBoucle].trim() + " ";
@@ -248,7 +245,7 @@ public class Algorithme {
 		if (mots[0].equals("FIN"))
 			this.fin = true;
 
-		Controleur.getControleur().attend();
+		// Controleur.getControleur().attend();
 		return true;
 	}
 
@@ -354,7 +351,7 @@ public class Algorithme {
 		for (int i = ligneDebut; i <= ligneFin; i++)
 			this.prog.ajouterLigneFausse(i);
 
-		this.ligneCourrante = ligneDebut; 
+		this.ligneCourrante = ligneDebut;
 		Controleur.getControleur().attend();
 		this.prog.resetLigneFausse();
 
@@ -381,14 +378,15 @@ public class Algorithme {
 			if (this.fichier[i].matches("selon .*"))
 				nbSelon++;
 
-			if (this.fichier[i].matches("fselon"))
+			if (this.fichier[i].matches("fselon")) {
 				if (nbSelon == 0) {
 					ligneFselon = i;
 					break;
-				} else if (this.fichier[i].matches("autrecas.*"))
-					ligneAutrecas = i;
-				else
+				} else
 					nbSelon--;
+			} else if (this.fichier[i].matches("autrecas.*"))
+				ligneAutrecas = i;
+			
 		}
 
 		Variable v = this.getVariable(varName);
@@ -396,18 +394,16 @@ public class Algorithme {
 		this.ligneCourrante--;
 		do {
 			this.ligneCourrante++;
-			
+
 			if (this.fichier[this.ligneCourrante].matches("cas .*[ ]*:")) {
 				String cas = this.fichier[this.ligneCourrante].split("cas |[ ]*:")[1].replaceAll("\"", "");
-				
 
 				// cas valide
 				if (String.valueOf(v.getValeur()).equals(cas)) {
 					ligneCourrante++;
 					do {
 						ligneSuivante();
-						
-						
+
 					} while (!this.fichier[this.ligneCourrante].matches("cas.*")
 							&& !this.fichier[this.ligneCourrante].matches("autrecas .*"));
 					ligneCourrante = ligneFselon;
@@ -457,10 +453,10 @@ public class Algorithme {
 		}
 		return null;
 	}
-	
+
 	public Variable getVariable(String nomVariable) {
 		for (Donnee d : this.ensDonnees) {
-			if (d.getNom().equals(nomVariable) && d instanceof Variable ) {
+			if (d.getNom().equals(nomVariable) && d instanceof Variable) {
 				return (Variable) d;
 			}
 		}
@@ -473,7 +469,7 @@ public class Algorithme {
 	 * @return tableau de variables
 	 */
 	public Donnee[] getDonnees() {
-		
+
 		return ensDonnees.toArray(new Donnee[ensDonnees.size()]);
 	}
 
@@ -488,71 +484,61 @@ public class Algorithme {
 
 		valeur = Donnee.traduire(valeur);
 
-		if ( this.getDonnee( nomDonnee ) instanceof Variable )
-		{
-    		// évite l'interprétation du caractère
-    		if (this.getVariable(nomDonnee).getType().equals("caractere"))
-    			valeur = "\"" + valeur + "\"";
-    		
-    
-    		try {
-    			this.getVariable(nomDonnee).setValeur(interpreter.eval(valeur));
-    			
-    			//évite l'interprétation de la chaîne de caractère
-    			Object interpretValeur;
-    			if (this.getVariable(nomDonnee).getType().equals("chaine"))
-    				interpretValeur = "\"" + this.getVariable(nomDonnee).getValeur() + "\"";
-    			else
-    				interpretValeur = this.getVariable(nomDonnee).getValeur();
-    			
-    			interpreter.eval(nomDonnee + " = " + interpretValeur);
-    			
-    			
-    			if (prog.getDonneesATracer().contains(this.getVariable(nomDonnee)))
-    				prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n";
-    		} catch (EvalError e) {
-    			e.printStackTrace();
-    		}
-		}
-		else
-		{
-			int indice = -1;
-			try
-			{
-				indice = (int) interpreteur.eval( nomDonnee.split("\\[|\\]")[1].trim() );
-			}
-			catch ( NumberFormatException | EvalError e )
-			{
+		if (this.getDonnee(nomDonnee) instanceof Variable) {
+			// évite l'interprétation du caractère
+			if (this.getVariable(nomDonnee).getType().equals("caractere"))
+				valeur = "\"" + valeur + "\"";
+
+			try {
+				this.getVariable(nomDonnee).setValeur(interpreter.eval(valeur));
+
+				// évite l'interprétation de la chaîne de caractère
+				Object interpretValeur;
+				if (this.getVariable(nomDonnee).getType().equals("chaine"))
+					interpretValeur = "\"" + this.getVariable(nomDonnee).getValeur() + "\"";
+				else
+					interpretValeur = this.getVariable(nomDonnee).getValeur();
+
+				interpreter.eval(nomDonnee + " = " + interpretValeur);
+
+				if (prog.getDonneesATracer().contains(this.getVariable(nomDonnee)))
+					prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n";
+			} catch (EvalError e) {
 				e.printStackTrace();
 			}
-			nomDonnee = nomDonnee.split( "\\[" )[0];
-			if ( this.getDonnee( nomDonnee ) instanceof Tableau )
-			{
-				Tableau tab = (Tableau) this.getDonnee( nomDonnee );
-				tab.setValeur( indice, new Variable("","",false,this) );
+		} else {
+			int indice = -1;
+			try {
+				indice = (int) interpreteur.eval(nomDonnee.split("\\[|\\]")[1].trim());
+			} catch (NumberFormatException | EvalError e) {
+				e.printStackTrace();
+			}
+			nomDonnee = nomDonnee.split("\\[")[0];
+			if (this.getDonnee(nomDonnee) instanceof Tableau) {
+				Tableau tab = (Tableau) this.getDonnee(nomDonnee);
+				tab.setValeur(indice, new Variable("", "", false, this));
 				Variable var = tab.get(indice);
 				// évite l'interprétation du caractère
-	    		if (var.getType().equals("caractere"))
-	    			valeur = "\"" + valeur + "\"";
-	    		
-	    
-	    		try {
-	    			var.setValeur(interpreter.eval(valeur));
-	    			
-	    			//évite l'interprétation de la chaîne de caractère
-	    			Object interpretValeur;
-	    			if (var.getType().equals("chaine"))
-	    				interpretValeur = "\"" + var.getValeur() + "\"";
-	    			else
-	    				interpretValeur = var.getValeur();
-	    			
-	    			interpreter.eval(nomDonnee +"["+indice+"]" + " = " + interpretValeur);
+				if (var.getType().equals("caractere"))
+					valeur = "\"" + valeur + "\"";
 
-	    			if (prog.getDonneesATracer().contains(this.getDonnee(nomDonnee)))
-	    				prog.traceVariable += this.getDonnee(nomDonnee).toString() + "\n";
-    			} catch (EvalError e) {
-        			e.printStackTrace();
-        		}
+				try {
+					var.setValeur(interpreter.eval(valeur));
+
+					// évite l'interprétation de la chaîne de caractère
+					Object interpretValeur;
+					if (var.getType().equals("chaine"))
+						interpretValeur = "\"" + var.getValeur() + "\"";
+					else
+						interpretValeur = var.getValeur();
+
+					interpreter.eval(nomDonnee + "[" + indice + "]" + " = " + interpretValeur);
+
+					if (prog.getDonneesATracer().contains(this.getDonnee(nomDonnee)))
+						prog.traceVariable += this.getDonnee(nomDonnee).toString() + "\n";
+				} catch (EvalError e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -564,7 +550,6 @@ public class Algorithme {
 		}
 		return s;
 	}
-
 
 	/**
 	 * Retourne le programme
@@ -606,8 +591,7 @@ public class Algorithme {
 
 	}
 
-	public boolean estEnTrainDeReset ()
-	{
+	public boolean estEnTrainDeReset() {
 		return reset;
 	}
 }
