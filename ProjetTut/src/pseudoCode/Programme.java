@@ -1,10 +1,7 @@
 package pseudoCode;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-
-import bsh.Interpreter;
-import main.Controleur;
+import java.util.HashMap;
 
 public class Programme {
 
@@ -24,6 +21,8 @@ public class Programme {
 	private ArrayList<Integer> lignesFausses;
 
 	private ArrayList<Donnee> ensDonneesATracer;
+	
+	private HashMap<String,String> varLues;
 
 	/**
 	 * Instanciation de programme.
@@ -148,7 +147,7 @@ public class Programme {
 		String sRet = this.traceVariable.split( "\n" )[0] + "\n";
 		for ( String s : this.traceVariable.split( "\n" ))
 		{
-			if ( donnees.contains( s.replaceAll( " ", "" ).split("|")[1] ) )
+			if ( donnees.contains( s.replaceAll( " ", "" ).split("\\|")[1] ) )
 			{
 				sRet += s + "\n";
 			}

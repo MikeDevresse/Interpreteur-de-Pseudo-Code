@@ -2,6 +2,9 @@ package pseudoCode;
 
 import java.util.ArrayList;
 
+import bsh.EvalError;
+import bsh.Interpreter;
+
 public class Tableau extends Donnee
 {
 	private ArrayList<Donnee> ensDonnees;
@@ -30,20 +33,53 @@ public class Tableau extends Donnee
 		return this.ensDonnees;
 	}
 	
+	public void setValeur ( Tableau t )
+	{
+		for ( Donnee d : t.ensDonnees )
+			this.ensDonnees.add( t.ensDonnees.indexOf( d ), d );
+		setVals(this.getNom());
+	}
+	
+	public void setVals(String s)
+	{
+		System.out.println( this.ensDonnees.get( 0 ) );
+		for ( int i=0 ;i<this.taille;i++)
+		{
+			if ( this.ensDonnees.get( i ) instanceof Tableau )
+			{
+    			( (Tableau) this.get( i ) ).setVals(s + "["+i+"]");
+    		}
+			else
+			{
+				Interpreter interpreter = this.algo.getInterpreteur();
+				try
+				{
+					if ( ((Variable)(ensDonnees.get( i ))).getValeur() != null )
+						interpreter.eval( s + "[" + i + "]" + " = " + ((Variable)(ensDonnees.get( i ))).getValeur() );
+					System.out.println( s + "[" + i + "]" + " = " + ((Variable)(ensDonnees.get( i ))).getValeur() );
+					System.out.println( interpreter.eval( s+"["+i+"]" ) );
+				}
+				catch ( EvalError e )
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 	public void setValeur ( int indice, Donnee donnee )
 	{
 		if ( this.ensDonnees.get( indice ) instanceof Tableau )
 			((Tableau) (ensDonnees.get( indice ))).ensDonnees = ((Tableau)(donnee)).ensDonnees;
 		else
-			//System.out.println( "var" + this.ensDonnees.get( indice ) );
 			( (Variable) this.ensDonnees.get( indice ) ).setValeur( ( (Variable) donnee ).getValeur() );
 	}
 	
 	public String valeurToString()
 	{
 		String s = "";
-		for ( int i = 0; i<ensDonnees.size(); i++ )
-			s += ensDonnees.get( i ).valeurToString();
+		for ( int i = 0; i<taille; i++ )
+			s += String.format( "%4s", ensDonnees.get( i ).valeurToString() ) + "|";
 		
 		return s;
 	}
@@ -51,9 +87,16 @@ public class Tableau extends Donnee
 	public String toStringVertical ()
 	{
 		String s = "";
-
-		for ( int i=0 ; i<this.ensDonnees.size() ; i++ )
-			s += i + "|" + this.ensDonnees.get( i ).valeurToString() + "\n";
+		if ( this.ensDonnees.get( 0 ) instanceof Tableau )
+		{
+			s = "   |";
+			for ( int i=0 ; i<((Tableau)(this.ensDonnees.get(0))).taille ; i++ )
+				s += String.format( "%4s", i ) + "|";
+			s+= "\n";
+		}
+		
+		for ( int i=0 ; i<this.taille ; i++ )
+			s += String.format( "%3s", i ) + "|" + this.ensDonnees.get( i ).valeurToString() + "\n";
 
 		return s;
 	}

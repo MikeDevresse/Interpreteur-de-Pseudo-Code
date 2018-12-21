@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import bsh.EvalError;
 import bsh.Interpreter;
+import main.Controleur;
 import util.Condition;
 import util.Fonctions;
 
@@ -245,7 +246,7 @@ public class Algorithme {
 		if (mots[0].equals("FIN"))
 			this.fin = true;
 
-		// Controleur.getControleur().attend();
+		Controleur.getControleur().attend();
 		return true;
 	}
 
@@ -282,7 +283,7 @@ public class Algorithme {
 
 		if (Condition.condition(condition, this.getInterpreteur())) {
 			// interprétation de la condition
-			//Controleur.getControleur().attend();
+			Controleur.getControleur().attend();
 			do {
 				ligneSuivante();
 			} while (this.ligneCourrante != ligneSinon && this.ligneCourrante != ligneFsi);
@@ -298,7 +299,7 @@ public class Algorithme {
 			for (int i = ligneDebut; i <= ligneFin; i++)
 				this.prog.ajouterLigneFausse(i);
 
-			//Controleur.getControleur().attend();
+			Controleur.getControleur().attend();
 
 			this.prog.resetLigneFausse();
 
@@ -374,7 +375,7 @@ public class Algorithme {
 		 */
 		while (Condition.condition(condition, this.interpreteur)) {
 			this.ligneCourrante = ligneBoucle; // retour en haut de la boucle
-			//Controleur.getControleur().attend();
+			Controleur.getControleur().attend();
 			do {
 				ligneSuivante();
 			} while (this.ligneCourrante != ligneFtq);
@@ -385,7 +386,7 @@ public class Algorithme {
 			this.prog.ajouterLigneFausse(i);
 
 		this.ligneCourrante = ligneDebut;
-		//Controleur.getControleur().attend();
+		Controleur.getControleur().attend();
 		this.prog.resetLigneFausse();
 
 		// retour au point d'origine
@@ -523,6 +524,75 @@ public class Algorithme {
 	 */
 	public void setValeur(String nomDonnee, String valeur) {
 		Interpreter interpreter = this.getInterpreteur();
+		if ( nomDonnee.contains( "[" ) )
+		{
+			Tableau tab = ((Tableau)(this.getDonnee( nomDonnee.split( "\\[" )[0] )));
+			String[] indices = nomDonnee.split( "\\[|\\]" );
+			for ( int i=1 ; i<indices.length-1 ; i = i+2)
+			{
+				tab = ((Tableau)(tab.get( Integer.parseInt( indices[i] ) )));
+			}
+			Variable v = new Variable("",tab.get(0).getType(),false,this);
+			try
+			{
+				v.setValeur( interpreter.eval( valeur ) );
+			}
+			catch ( EvalError e )
+			{
+				e.printStackTrace();
+			}
+			tab.setValeur( Integer.parseInt( indices[indices.length-1] ), v );
+			
+			try
+			{
+				interpreter.eval( nomDonnee + " = " + valeur );
+			}
+			catch ( EvalError e )
+			{
+				e.printStackTrace();
+			}
+			
+			if (prog.getDonneesATracer().contains(this.getDonnee(nomDonnee.split( "\\[" )[0])))
+				prog.traceVariable += this.getDonnee( nomDonnee.split( "\\[" )[0] ).toString() + "\n";
+		}
+		else
+		{
+			if ( this.getDonnee( nomDonnee ) instanceof Tableau )
+			{
+				((Tableau)(this.getDonnee( nomDonnee ))).setValeur( (Tableau) this.getDonnee( valeur ) );
+				try
+				{
+					interpreteur.eval( nomDonnee + " = " + valeur );
+				}
+				catch ( EvalError e )
+				{
+					e.printStackTrace();
+				}
+			}
+			else if ( this.getDonnee( nomDonnee ) instanceof Variable )
+			{
+				try
+				{
+					((Variable)(this.getDonnee( nomDonnee ))).setValeur( interpreter.eval( valeur ) );
+					interpreter.eval( nomDonnee + " = " + interpreter.eval( valeur ) );
+					
+					if (prog.getDonneesATracer().contains(this.getVariable(nomDonnee)))
+						prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n";
+				}
+				catch ( EvalError e )
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		try
+		{
+			System.out.println( "aaaa" + interpreter.eval( "arr[0][0]" ) );
+		}
+		catch ( EvalError e )
+		{
+		}
+		/*Interpreter interpreter = this.getInterpreteur();
 
 		valeur = Donnee.traduire(valeur);
 		if (this.getDonnee(nomDonnee) instanceof Variable) {
@@ -548,78 +618,88 @@ public class Algorithme {
 				e.printStackTrace();
 			}
 		} else {
-			int indice = -1;
-			try {
-				indice = (int) interpreteur.eval(nomDonnee.split("\\[|\\]")[1].trim());
-			} catch (NumberFormatException | EvalError e) {
-				e.printStackTrace();
+			if ( nomDonnee.indexOf( "[" ) == -1 ) {
+				((Tableau)(this.getDonnee( nomDonnee ))).setValeur((Tableau)this.getDonnee( valeur ));
 			}
-			String nomVar = nomDonnee.split( "\\[" )[0];
-			if ( this.getDonnee( nomVar ) instanceof Tableau )
+			else
 			{
-				Tableau tab = (Tableau) this.getDonnee( nomVar );
-				
-
-				String[] indices = nomDonnee.split( "\\[|\\]" );
-				 
-				Donnee d = (Tableau) tab.get(Integer.parseInt( indices[1] ) );
-				for ( int i=3 ; i<indices.length ; i = i+2)
-				{
-					if ( d instanceof Tableau ) 
-					{	
-						tab = (Tableau)d;
-						d = ( (Tableau) d ).get( Integer.parseInt( indices[i] ) );
-					}
-						
-				}
-				
-
-				if ( d instanceof Variable )
-				{
-					System.out.println( "oookk" );
-					Variable var = (Variable) d;
-					// évite l'interprétation du caractère
-		    		if (var.getType().equals("caractere"))
-		    			valeur = "\"" + valeur + "\"";
-
-					tab.setValeur( indice, new Variable("","",false,this) );
-		    
-		    		try {
-		    			var.setValeur(interpreter.eval(valeur));
-		    			
-		    			//évite l'interprétation de la chaîne de caractère
-		    			Object interpretValeur;
-		    			if (var.getType().equals("chaine"))
-		    				interpretValeur = "\"" + var.getValeur() + "\"";
-		    			else
-		    				interpretValeur = var.getValeur();
-		    			
-		    			interpreter.eval(nomDonnee + " = " + interpretValeur);
-
-		    			if (prog.getDonneesATracer().contains(this.getDonnee(nomVar)))
-		    				prog.traceVariable += this.getDonnee(nomVar).toString() + "\n";
-	    			} catch (EvalError e) {
-	        			e.printStackTrace();
-	        		}
-				}
-				else
-				{
-					System.out.println( "ok" );
-					Tableau var = (Tableau) d;
-					var.setValeur( indice, getDonnee(valeur) );
-	    			try
-					{
-						interpreter.eval(nomDonnee + " = " + valeur);
-					}
-					catch ( EvalError e )
-					{
-						e.printStackTrace();
-					}
-					
-				}
-				
+    			int indice = -1;
+    			try {
+    				indice = (int) interpreteur.eval(nomDonnee.split("\\[|\\]")[1].trim());
+    			} catch (NumberFormatException | EvalError e) {
+    				e.printStackTrace();
+    			}
+    			String nomVar = nomDonnee.split( "\\[" )[0];
+    			if ( this.getDonnee( nomVar ) instanceof Tableau )
+    			{
+    				Tableau tab = (Tableau) this.getDonnee( nomVar );
+    				
+    
+    				String[] indices = nomDonnee.split( "\\[|\\]" );
+    				
+    				Donnee d = null;
+    				
+    				if ( tab.get( Integer.parseInt( indices[1] ) ) instanceof Tableau )
+    					d = (Tableau) tab.get(Integer.parseInt( indices[1] ) );
+    				else
+    					d = (Variable) tab.get(Integer.parseInt( indices[1] ) );
+    				
+    				for ( int i=3 ; i<indices.length ; i = i+2)
+    				{
+    					if ( d instanceof Tableau ) 
+    					{	
+    						tab = (Tableau)d;
+    						d = ( (Tableau) d ).get( Integer.parseInt( indices[i] ) );
+    					}
+    				}
+    				
+    
+    				if ( d instanceof Variable )
+    				{
+    					System.out.println( "oookk" );
+    					Variable var = (Variable) d;
+    					// évite l'interprétation du caractère
+    		    		if (var.getType().equals("caractere"))
+    		    			valeur = "\"" + valeur + "\"";
+    
+    					tab.setValeur( indice, new Variable("","",false,this) );
+    		    
+    		    		try {
+    		    			var.setValeur(interpreter.eval(valeur));
+    		    			System.out.println( tab.get( 0 ) );
+    		    			
+    		    			//évite l'interprétation de la chaîne de caractère
+    		    			Object interpretValeur;
+    		    			if (var.getType().equals("chaine"))
+    		    				interpretValeur = "\"" + var.getValeur() + "\"";
+    		    			else
+    		    				interpretValeur = var.getValeur();
+    		    			
+    		    			interpreter.eval(nomDonnee + " = " + interpretValeur);
+    
+    		    			if (prog.getDonneesATracer().contains(this.getDonnee(nomVar)))
+    		    				prog.traceVariable += this.getDonnee(nomVar).toString() + "\n";
+    	    			} catch (EvalError e) {
+    	        			e.printStackTrace();
+    	        		}
+    				}
+    				else
+    				{
+    					Tableau var = (Tableau) d;
+    					tab.setValeur( indice,getDonnee(valeur) );
+    	    			try
+    					{
+    						interpreter.eval(nomDonnee + " = " + valeur);
+    					}
+    					catch ( EvalError e )
+    					{
+    						e.printStackTrace();
+    					}
+    					
+    				}
+    			}
 			}
-		}
+		}*/
 	}
 
 	public String toString() {
