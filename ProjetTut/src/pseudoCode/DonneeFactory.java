@@ -59,9 +59,11 @@ public class DonneeFactory {
 		    		case "caractere":
 		    			primType = "char";
 		    			break;
+		    		default :
+		    			primType = "tableau";
 				}
     			algo.getInterpreteur().eval( primType + "[] " + nom + " = new "+primType+"["+ taille +"]" );
-				return new Tableau(nom, type, constante,algo,taille,tabType);
+				return new Tableau(nom, "tableau", constante,algo,taille,tabType);
 		    
 			}
 			catch ( NumberFormatException | EvalError e )
@@ -76,23 +78,23 @@ public class DonneeFactory {
 		switch (type) {
 
     		case "entier":
-    			return new Variable<Integer>(nom, type, constante,algo);
+    			return new Variable<Integer>(nom, "entier", constante,algo);
     		case "booléen":
     		case "booleen":
-    			return new Variable<Boolean>(nom, type, constante,algo);
+    			return new Variable<Boolean>(nom, "booleen", constante,algo);
     		case "chaînedecaractère":
     		case "chainedecaractère":
     		case "chaînedecaractere":
     		case "chainedecaractere":
     		case "chaine":
     		case "chaîne":
-    			return new Variable<String>(nom, type, constante,algo);
+    			return new Variable<String>(nom, "chaine", constante,algo);
     		case "réel":
     		case "reel":
-    			return new Variable<Double>(nom, type, constante,algo);
+    			return new Variable<Double>(nom, "reel", constante,algo);
     		case "caractère":
     		case "caractere":
-    			return new Variable<Character>(nom, type, constante,algo);
+    			return new Variable<Character>(nom, "caractere", constante,algo);
     
     		default:
     			return null;

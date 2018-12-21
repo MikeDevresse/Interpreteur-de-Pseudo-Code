@@ -21,13 +21,24 @@ public class Tableau extends Donnee
 		this.ensValeurs.get( indice ).setValeur( var.getValeur() );
 	}
 	
-
-	@Override
-	public String toString() {
+	public String toStringVertical ()
+	{
 		String s = "";
 
 		for ( int i=0 ; i<this.ensValeurs.size() ; i++ )
 			s += i + "|" + this.ensValeurs.get( i ).getValeur() + "\n";
+
+		return s;
+	}
+
+	@Override
+	public String toString() {
+		String s = "";
+		String vals = "";
+		for ( int i=0 ; i<this.ensValeurs.size()-1 ; i++ )
+			vals +=  this.ensValeurs.get( i ).getValeur() + "|";
+		vals += this.ensValeurs.get( this.ensValeurs.size()-1 ).getValeur();
+		s += String.format("%3s|%5.5s|%9.9s|%17.17s|", algo.getLigneCourrante()+1, this.nom, this.type, vals);
 
 		return s;
 	}
