@@ -282,7 +282,7 @@ public class Algorithme {
 
 		if (Condition.condition(condition, this.getInterpreteur())) {
 			// interprétation de la condition
-			Controleur.getControleur().attend();
+			//Controleur.getControleur().attend();
 			do {
 				ligneSuivante();
 			} while (this.ligneCourrante != ligneSinon && this.ligneCourrante != ligneFsi);
@@ -298,7 +298,7 @@ public class Algorithme {
 			for (int i = ligneDebut; i <= ligneFin; i++)
 				this.prog.ajouterLigneFausse(i);
 
-			Controleur.getControleur().attend();
+			//Controleur.getControleur().attend();
 
 			this.prog.resetLigneFausse();
 
@@ -317,7 +317,7 @@ public class Algorithme {
 	 */
 	public void interpreterBoucle(int ligneBoucle, String condition, int ligneDebut, int ligneFin)
 			throws AlgorithmeException {
-
+		
 		/*
 		 * Identification des boucles imbriquées
 		 */
@@ -337,11 +337,44 @@ public class Algorithme {
 		}
 
 		/*
+		 * Test de boucle infinie
+		 */
+		if (Condition.condition(condition, this.interpreteur)) {
+
+			// identification des variables de la condition
+			String[] conditions = condition.split("et|ou");
+			ArrayList<String> condVariables = new ArrayList<String>();
+
+			for (String cond : conditions) {
+				cond = cond.trim();
+
+				String[] vars = cond.split("<=|>=|<|>|=");
+				for (int i = 0; i < vars.length; i += 2)
+					condVariables.add(vars[i]);
+			}
+
+			// parcours à vide de la condition pour détecter les modifications de variable
+			boolean estInfinie = true;
+			for (int i = this.ligneCourrante; i < ligneFtq; i++) {
+				for (String var : condVariables) {
+					// si une variable de la condition est modifiée
+					if (this.fichier[i].matches(var + "[ ]*<--.*"))
+						estInfinie = false;
+				}
+			}
+			
+			if (estInfinie) {
+				System.out.println("boucle infinie");
+				System.exit(1);
+			}
+		}
+
+		/*
 		 * Interprétation de la boucle
 		 */
 		while (Condition.condition(condition, this.interpreteur)) {
 			this.ligneCourrante = ligneBoucle; // retour en haut de la boucle
-			Controleur.getControleur().attend();
+			//Controleur.getControleur().attend();
 			do {
 				ligneSuivante();
 			} while (this.ligneCourrante != ligneFtq);
@@ -352,7 +385,7 @@ public class Algorithme {
 			this.prog.ajouterLigneFausse(i);
 
 		this.ligneCourrante = ligneDebut;
-		Controleur.getControleur().attend();
+		//Controleur.getControleur().attend();
 		this.prog.resetLigneFausse();
 
 		// retour au point d'origine
@@ -386,7 +419,7 @@ public class Algorithme {
 					nbSelon--;
 			} else if (this.fichier[i].matches("autrecas.*"))
 				ligneAutrecas = i;
-			
+
 		}
 
 		Variable v = this.getVariable(varName);
