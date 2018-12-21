@@ -348,7 +348,7 @@ public class Algorithme {
 			for (String cond : conditions) {
 				cond = cond.trim();
 
-				String[] vars = cond.split("<=|>=|<|>|=");
+				String[] vars = cond.split("<=|>=|<|>|=|/=");
 				for (int i = 0; i < vars.length; i += 2)
 					condVariables.add(vars[i]);
 			}
