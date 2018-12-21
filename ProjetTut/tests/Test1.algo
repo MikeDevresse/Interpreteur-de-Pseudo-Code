@@ -17,5 +17,7 @@ DEBUT
 	
 	ecrire(arr)
 	
+	d <-- "bonjour toi"
+	ecrire(d)
 	
 FIN 
