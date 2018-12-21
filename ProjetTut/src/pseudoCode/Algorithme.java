@@ -398,13 +398,9 @@ public class Algorithme {
 	 * 
 	 * @return tableau de variables
 	 */
-	public Variable[] getVariables() {
-		ArrayList<Variable> ensVariables = new ArrayList<Variable>();
-		for ( Donnee d : ensDonnees )
-			if ( d instanceof Variable )
-				ensVariables.add( (Variable) d );
+	public Donnee[] getDonnees() {
 		
-		return ensVariables.toArray(new Variable[ensVariables.size()]);
+		return ensDonnees.toArray(new Donnee[ensDonnees.size()]);
 	}
 
 	/**
@@ -430,7 +426,7 @@ public class Algorithme {
     			
     			//évite l'interprétation de la chaîne de caractère
     			Object interpretValeur;
-    			if (this.getVariable(nomDonnee).getType().equals("chainedecaractere"))
+    			if (this.getVariable(nomDonnee).getType().equals("chaine"))
     				interpretValeur = "\"" + this.getVariable(nomDonnee).getValeur() + "\"";
     			else
     				interpretValeur = this.getVariable(nomDonnee).getValeur();
@@ -438,7 +434,7 @@ public class Algorithme {
     			interpreter.eval(nomDonnee + " = " + interpretValeur);
     			
     			
-    			if (prog.getVariableATracer().contains(this.getVariable(nomDonnee)))
+    			if (prog.getDonneesATracer().contains(this.getVariable(nomDonnee)))
     				prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n";
     		} catch (EvalError e) {
     			e.printStackTrace();
@@ -471,13 +467,15 @@ public class Algorithme {
 	    			
 	    			//évite l'interprétation de la chaîne de caractère
 	    			Object interpretValeur;
-	    			if (var.getType().equals("chainedecaractere"))
+	    			if (var.getType().equals("chaine"))
 	    				interpretValeur = "\"" + var.getValeur() + "\"";
 	    			else
 	    				interpretValeur = var.getValeur();
 	    			
 	    			interpreter.eval(nomDonnee +"["+indice+"]" + " = " + interpretValeur);
-	    			
+
+	    			if (prog.getDonneesATracer().contains(this.getDonnee(nomDonnee)))
+	    				prog.traceVariable += this.getDonnee(nomDonnee).toString() + "\n";
     			} catch (EvalError e) {
         			e.printStackTrace();
         		}

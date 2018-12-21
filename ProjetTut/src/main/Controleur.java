@@ -6,12 +6,12 @@ import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import ihmCui.Affichage;
 import ihmCui.Affichage2;
 import pseudoCode.Algorithme;
 import pseudoCode.AlgorithmeException;
+import pseudoCode.Donnee;
 import pseudoCode.Programme;
-import pseudoCode.Variable;
+import pseudoCode.Tableau;
 
 /*
  * Retour en arriere :
@@ -112,13 +112,13 @@ public class Controleur
 	{
 		for ( Algorithme algo : this.prog.getAlgos() )
 		{
-			for ( Variable var : algo.getVariables() )
+			for ( Donnee d : algo.getDonnees() )
 			{
-				System.out.print( "Tracer la variable \"" + var.getNom() + "\" de l'algo " + algo.getNom() + " (Y/n) : " );
+				System.out.print( "Tracer la variable \"" + d.getNom() + "\" de l'algo " + algo.getNom() + " (Y/n) : " );
 				String reponse = sc.nextLine();
 				if ( reponse.trim().equalsIgnoreCase( "Y" ) || reponse.trim().equals( "" ) )
 				{
-					prog.ajouterVariableATracer( var );
+					prog.ajouterDonneeATracer( d );
 				}
 			}
 		}
@@ -185,17 +185,17 @@ public class Controleur
 				boolean ajouter = commande.replaceAll( "([\\+\\-]) var [\\w]+", "$1" ).equals( "+" );
 				for ( Algorithme algo : this.prog.getAlgos() )
 				{
-					for ( Variable var : algo.getVariables() )
+					for ( Donnee d : algo.getDonnees() )
 					{
-						if ( var.getNom().equals( varATracer ))
+						if ( d.getNom().equals( varATracer ))
 						{
 							if ( ajouter )
 							{
-								prog.ajouterVariableATracer( var );
+								prog.ajouterDonneeATracer( d );
 							}
 							else
 							{
-								prog.enleverVariableATracer( var );
+								prog.enleverDonneeATracer( d );
 							}
 						}
 					}
@@ -213,7 +213,8 @@ public class Controleur
 			else if ( commande.matches( "cp tab [\\w]+" ))
 			{
 				String nomVar = commande.replaceAll( "cp tab ([\\w]+)", "$1" );
-				StringSelection selection = new StringSelection( prog.getCurrent().getDonnee(nomVar).toString() );
+				Tableau t = (Tableau) prog.getCurrent().getDonnee( "nomVar" );
+				StringSelection selection = new StringSelection( t.toStringVertical() );
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				clipboard.setContents(selection, selection);
 			}
@@ -222,7 +223,7 @@ public class Controleur
 				ArrayList<String> vars = new ArrayList<String>();
 				for ( int i=2 ; i < commande.split( " " ).length ; i++ )
 					vars.add( commande.split( " " )[i] );
-				StringSelection selection = new StringSelection( prog.getTraceVar(vars) );
+				StringSelection selection = new StringSelection( prog.getTraceDonnee(vars) );
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				clipboard.setContents(selection, selection);
 				this.reste();
