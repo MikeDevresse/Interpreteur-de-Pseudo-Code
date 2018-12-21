@@ -341,7 +341,7 @@ public class Algorithme {
 		 */
 		if (Condition.condition(condition, this.interpreteur)) {
 
-			String[] conditions = condition.split("et|ou");
+			String[] conditions = condition.split("et|ou|xou|non");
 			ArrayList<String> condVariables = new ArrayList<String>();
 			
 			// découpage de la condition et identification des variables impliquées
