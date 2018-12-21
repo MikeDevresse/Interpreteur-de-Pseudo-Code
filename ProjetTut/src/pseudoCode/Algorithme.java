@@ -446,6 +446,7 @@ public class Algorithme {
 					ligneCourrante = ligneFselon;
 				}
 			} else if (this.fichier[this.ligneCourrante].matches("autrecas.*")) {
+				// gestion des autres cas
 				ligneCourrante++;
 
 				do {
