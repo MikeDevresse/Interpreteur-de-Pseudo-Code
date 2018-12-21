@@ -38,15 +38,20 @@ public class Variable<T> extends Donnee<T> {
 	public void setValeur(T valeur) {
 		this.valeur = valeur;
 	}
+	
+	public String valeurToString()
+	{
+		if ( this.valeur == null )
+			return "NULL";
+		else
+			return this.valeur.toString();
+	}
 
 	@Override
 	public String toString() {
 		String s = "";
 
-		if (this.valeur != null)
-			s += String.format("%3s|%5.5s|%9.9s|%17.17s|", algo.getLigneCourrante()+1, this.nom, this.type, this.valeur + "");
-		else
-			s += String.format("%3s|%5.5s|%9.9s|%17.17s|", algo.getLigneCourrante()+1, this.nom, this.type, "NULL");
+		s += String.format("%3s|%5.5s|%9.9s|%17.17s|", algo.getLigneCourrante()+1, this.nom, this.type, valeurToString());
 
 		return s;
 	}

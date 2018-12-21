@@ -482,7 +482,6 @@ public class Algorithme {
 		Interpreter interpreter = this.getInterpreteur();
 
 		valeur = Donnee.traduire(valeur);
-
 		if ( this.getDonnee( nomDonnee ) instanceof Variable )
 		{
     		// évite l'interprétation du caractère
@@ -520,34 +519,70 @@ public class Algorithme {
 			{
 				e.printStackTrace();
 			}
-			nomDonnee = nomDonnee.split( "\\[" )[0];
-			if ( this.getDonnee( nomDonnee ) instanceof Tableau )
+			String nomVar = nomDonnee.split( "\\[" )[0];
+			if ( this.getDonnee( nomVar ) instanceof Tableau )
 			{
-				Tableau tab = (Tableau) this.getDonnee( nomDonnee );
-				tab.setValeur( indice, new Variable("","",false,this) );
-				Variable var = tab.get(indice);
-				// évite l'interprétation du caractère
-	    		if (var.getType().equals("caractere"))
-	    			valeur = "\"" + valeur + "\"";
-	    		
-	    
-	    		try {
-	    			var.setValeur(interpreter.eval(valeur));
-	    			
-	    			//évite l'interprétation de la chaîne de caractère
-	    			Object interpretValeur;
-	    			if (var.getType().equals("chaine"))
-	    				interpretValeur = "\"" + var.getValeur() + "\"";
-	    			else
-	    				interpretValeur = var.getValeur();
-	    			
-	    			interpreter.eval(nomDonnee +"["+indice+"]" + " = " + interpretValeur);
+				Tableau tab = (Tableau) this.getDonnee( nomVar );
+				
 
-	    			if (prog.getDonneesATracer().contains(this.getDonnee(nomDonnee)))
-	    				prog.traceVariable += this.getDonnee(nomDonnee).toString() + "\n";
-    			} catch (EvalError e) {
-        			e.printStackTrace();
-        		}
+				String[] indices = nomDonnee.split( "\\[|\\]" );
+				 
+				Donnee d = (Tableau) tab.get(Integer.parseInt( indices[1] ) );
+				for ( int i=3 ; i<indices.length ; i = i+2)
+				{
+					if ( d instanceof Tableau ) 
+					{	
+						tab = (Tableau)d;
+						d = ( (Tableau) d ).get( Integer.parseInt( indices[i] ) );
+					}
+						
+				}
+				
+
+				if ( d instanceof Variable )
+				{
+					System.out.println( "oookk" );
+					Variable var = (Variable) d;
+					// évite l'interprétation du caractère
+		    		if (var.getType().equals("caractere"))
+		    			valeur = "\"" + valeur + "\"";
+
+					tab.setValeur( indice, new Variable("","",false,this) );
+		    
+		    		try {
+		    			var.setValeur(interpreter.eval(valeur));
+		    			
+		    			//évite l'interprétation de la chaîne de caractère
+		    			Object interpretValeur;
+		    			if (var.getType().equals("chaine"))
+		    				interpretValeur = "\"" + var.getValeur() + "\"";
+		    			else
+		    				interpretValeur = var.getValeur();
+		    			
+		    			interpreter.eval(nomDonnee + " = " + interpretValeur);
+
+		    			if (prog.getDonneesATracer().contains(this.getDonnee(nomVar)))
+		    				prog.traceVariable += this.getDonnee(nomVar).toString() + "\n";
+	    			} catch (EvalError e) {
+	        			e.printStackTrace();
+	        		}
+				}
+				else
+				{
+					System.out.println( "ok" );
+					Tableau var = (Tableau) d;
+					var.setValeur( indice, getDonnee(valeur) );
+	    			try
+					{
+						interpreter.eval(nomDonnee + " = " + valeur);
+					}
+					catch ( EvalError e )
+					{
+						e.printStackTrace();
+					}
+					
+				}
+				
 			}
 		}
 	}

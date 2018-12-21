@@ -85,6 +85,7 @@ public abstract class Donnee<T>
 		return sRet;
 	}
 	
+	
 
 	@Override
 	public String toString() {
@@ -93,6 +94,11 @@ public abstract class Donnee<T>
 		s += String.format("%3s|%10s|%11s|%10s|", algo.getLigneCourrante(), this.nom, this.type);
 		
 		return s;
+	}
+
+	public String valeurToString ()
+	{
+		return "";
 	}
 
 }

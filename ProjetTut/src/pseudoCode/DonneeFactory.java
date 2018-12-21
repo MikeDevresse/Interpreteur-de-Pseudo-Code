@@ -31,40 +31,68 @@ public class DonneeFactory {
 			String tabType = type.replaceAll("tableau\\[.+\\] de (.*)$","$1");
 			int taille = 0;
 			String primType="";
+			String[] indices = type.split( "\\[|\\]" );
+			Tableau previousTab = null;
+			
 			try
 			{
-				taille = Integer.parseInt( type.substring(8,type.indexOf( "]" )) );
-				switch (tabType)
+				for ( int i=indices.length-2 ; i>=0 ; i = i-2 )
 				{
-		    		case "entier":
-		    			primType = "int";
-		    			break;
-		    		case "booléen":
-		    		case "booleen":
-		    			primType = "boolean";
-		    			break;
-		    		case "chaînedecaractère":
-		    		case "chainedecaractère":
-		    		case "chaînedecaractere":
-		    		case "chainedecaractere":
-		    		case "chaine":
-		    		case "chaîne":
-		    			primType = "String";
-		    			break;
-		    		case "réel":
-		    		case "reel":
-		    			primType = "double";
-		    			break;
-		    		case "caractère":
-		    		case "caractere":
-		    			primType = "char";
-		    			break;
-		    		default :
-		    			primType = "tableau";
+					taille = Integer.parseInt( indices[i] );
+					if ( i == indices.length-2 )
+					{
+						switch (tabType)
+						{
+				    		case "entier":
+				    			primType = "int";
+				    			break;
+				    		case "booléen":
+				    		case "booleen":
+				    			primType = "boolean";
+				    			break;
+				    		case "chaînedecaractère":
+				    		case "chainedecaractère":
+				    		case "chaînedecaractere":
+				    		case "chainedecaractere":
+				    		case "chaine":
+				    		case "chaîne":
+				    			primType = "String";
+				    			break;
+				    		case "réel":
+				    		case "reel":
+				    			primType = "double";
+				    			break;
+				    		case "caractère":
+				    		case "caractere":
+				    			primType = "char";
+				    			break;
+				    		default :
+				    			primType = "tableau";
+						}
+						if ( i==1 )
+							previousTab = new Tableau(nom,"tableau",false,algo,taille,primType);
+						else
+							previousTab = new Tableau("","tableau",false,algo,taille,primType);
+					}
+					else
+					{
+						Tableau t;
+						if ( i == 1 )
+							t = new Tableau(nom,"tableau",false,algo,taille,"tableau de " + previousTab.type);
+						else
+							t = new Tableau("","tableau",false,algo,taille,"tableau de " + previousTab.type);
+						t.initialiser( previousTab );
+						previousTab = t;
+					}
 				}
-    			algo.getInterpreteur().eval( primType + "[] " + nom + " = new "+primType+"["+ taille +"]" );
-				return new Tableau(nom, "tableau", constante,algo,taille,tabType);
-		    
+				String s = primType;
+				for ( int i =1 ; i<indices.length ; i = i+2 )
+					s+="[]";
+				s+= " " + nom + " = new " + primType;
+				for ( int i =1 ; i<indices.length ; i = i+2 )
+					s+="[" + indices[i] + "]";
+				algo.getInterpreteur().eval( s );
+				return previousTab;
 			}
 			catch ( NumberFormatException | EvalError e )
 			{

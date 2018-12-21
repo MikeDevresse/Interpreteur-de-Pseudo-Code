@@ -2,7 +2,7 @@ ALGORITHME Test1
 constante:
 	LOL <-- 4
 variable:
-	arr : Tableau[3] d'entier
+	arr : Tableau[3][4][5] d'entier
 	a : entier
 	b : entier
 	c : entier
