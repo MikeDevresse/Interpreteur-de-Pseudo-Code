@@ -214,10 +214,15 @@ public class Controleur
 			else if ( commande.matches( "cp tab [\\w]+" ))
 			{
 				String nomVar = commande.replaceAll( "cp tab ([\\w]+)", "$1" );
-				Tableau t = (Tableau) prog.getCurrent().getDonnee( "nomVar" );
-				StringSelection selection = new StringSelection( t.toStringVertical() );
-				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-				clipboard.setContents(selection, selection);
+				Tableau t = (Tableau) prog.getCurrent().getDonnee( nomVar );
+				if ( t != null)
+				{
+    				StringSelection selection = new StringSelection( t.toStringVertical() );
+    				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+    				clipboard.setContents(selection, selection);
+				}
+				reste();
+				this.prog.traceExec += "a:"+commande+"\n";
 			}
 			else if ( commande.matches( "cp var [[\\w]+[ ]*]+" ))
 			{
