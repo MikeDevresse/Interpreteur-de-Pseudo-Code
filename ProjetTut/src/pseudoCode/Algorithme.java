@@ -341,10 +341,10 @@ public class Algorithme {
 		 */
 		if (Condition.condition(condition, this.interpreteur)) {
 
-			// identification des variables de la condition
 			String[] conditions = condition.split("et|ou");
 			ArrayList<String> condVariables = new ArrayList<String>();
-
+			
+			// découpage de la condition et identification des variables impliquées
 			for (String cond : conditions) {
 				cond = cond.trim();
 
@@ -424,6 +424,9 @@ public class Algorithme {
 
 		Variable v = this.getVariable(varName);
 
+		/*
+		 * Interprétation du switch
+		 */
 		this.ligneCourrante--;
 		do {
 			this.ligneCourrante++;
