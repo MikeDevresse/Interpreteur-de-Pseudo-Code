@@ -25,17 +25,17 @@ public class Programme {
 	private HashMap<String,String> varLues;
 
 	/**
-	 * Instanciation de programme.
+	 * Constructeur du programme.
 	 *
-	 * @param fichier the fichier
+	 * @param ensLignes ensemble des lignes du fichier
 	 * @throws AlgorithmeException the algorithme exception
 	 */
-	public Programme(String[] fichier) throws AlgorithmeException {
+	public Programme(String[] ensLignes) throws AlgorithmeException {
 		this.ensDonneesATracer = new ArrayList<Donnee>();
 		this.lignesFausses = new ArrayList<Integer>();
 		this.traceExec = "";
 
-		this.fichier = fichier;
+		this.fichier = ensLignes;
 
 		this.algos = new ArrayList<Algorithme>();
 
@@ -43,10 +43,10 @@ public class Programme {
 		boolean main = false;
 		int debut = 0;
 		ArrayList<String> lignes = null;
-		for (int i = 0; i < fichier.length; i++) {
-			fichier[i] = fichier[i].replaceAll( "\t", "" );
-			String[] mots = fichier[i].split(" ");
-			if ( mots[0].equals("ALGORITHME") || i == fichier.length - 1) {
+		for (int i = 0; i < ensLignes.length; i++) {
+			ensLignes[i] = ensLignes[i].replaceAll( "\t", "" ); //suppression de l'identation
+			String[] mots = ensLignes[i].split(" ");
+			if ( mots[0].equals("ALGORITHME") || i == ensLignes.length - 1) {
 				if (lignes != null) {
 					Algorithme a = new Algorithme(nom, debut, lignes.toArray(new String[lignes.size()]), this);
 					algos.add(a);
@@ -69,7 +69,7 @@ public class Programme {
 
 			} else {
 				if (lignes != null)
-					lignes.add(fichier[i]);
+					lignes.add(ensLignes[i]);
 			}
 		}
 	}

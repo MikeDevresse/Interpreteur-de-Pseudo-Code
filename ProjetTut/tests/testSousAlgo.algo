@@ -1,0 +1,9 @@
+ALGORITHME testSousAlgo
+constante:
+
+variable:
+	a : entier
+	
+DEBUT
+	a <-- appel sousProg1()
+FIN 

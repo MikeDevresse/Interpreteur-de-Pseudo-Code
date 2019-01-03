@@ -9,7 +9,7 @@ public class LectureFichier
 	private String fichier;
 	
 	/**
-	 * instanciation du lecteur de fichier
+	 * Constructeur du lecteur de fichier
 	 *
 	 * @param fichier nom du fichier
 	 */
@@ -19,9 +19,9 @@ public class LectureFichier
 	}
 	
 	/**
-	 * Recupere le texte de chaque ligne
+	 * Retourne l'ensemble des lignes du fichier
 	 *
-	 * @return texte chaque ligne de texte
+	 * @return liste de ligne
 	 */
 	public String[] getTexteParLigne()
 	{
