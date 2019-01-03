@@ -2,8 +2,22 @@ ALGORITHME testSousAlgo
 constante:
 
 variable:
-	a : entier
+	a : reel
 	
 DEBUT
 	a <-- appel sousProg1()
-FIN 
+	ecrire(a)
+FIN
+
+ALGORITHME sousProg1()
+constante:
+
+variable:
+	b : entier
+	
+DEBUT
+	b <-- 5
+	ecrire(b)
+	
+	retourne 2.6
+FIN

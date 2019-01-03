@@ -46,6 +46,8 @@ public class Algorithme {
 
 	private boolean reset = false;
 
+	private String returnValue;
+
 	/**
 	 * Instanciation de algorithme.
 	 *
@@ -151,13 +153,54 @@ public class Algorithme {
 		if (this.def.equals("algo")) {
 
 			/*
+			 * Gestion des sous programmes
+			 */
+			if (current.matches(".*appel.*\\(.*\\)")) {
+				String nomSousProg = current.replaceAll(".*<-- appel (.*)\\(.*\\)", "$1");
+				System.out.println("Appel à un sous-programme " + nomSousProg);
+
+				Algorithme sousAlgo = null;
+				for (Algorithme a : this.prog.getAlgos())
+					if (a.getNom().equals(nomSousProg))
+						sousAlgo = a;
+
+				// si le sous-algorithme existe
+				if (sousAlgo != null) {
+					String returnValue;
+
+					// interprétation et récupération de la valeur de retour
+					do {
+						returnValue = sousAlgo.returnValue;
+						sousAlgo.ligneSuivante();
+					} while (returnValue == null && !sousAlgo.fin);
+
+					// remplacement de l'appel au sous algo par sa valeur de retour
+					current = current.replaceAll("appel.*\\(.*\\)", returnValue);
+				}
+			}
+
+			/*
 			 * Affectation des variables
 			 */
-			if (current.matches(".*<-- appel .*\\(.*\\)")) { //gestion des sous-programmes
-				System.out.println("Appel à un sous-programme");
-			} else if (current.matches(".*<--.*")) { //gestion des affectations simples
+			if (current.matches(".*<--.*")) { // gestion des affectations simples
 				String[] parties = current.split("<--");
 				setValeur(parties[0].trim(), parties[1].trim());
+			}
+
+			/*
+			 * Gestion des return
+			 */
+			if (current.matches("retourne .*")) {
+				try {
+					Object val = this.interpreteur.eval(current.replaceAll("retourne (.*)", "$1"));
+					if (val instanceof String)
+						this.returnValue = "\"" + val + "\"";
+					else
+						this.returnValue = val.toString();
+
+				} catch (EvalError e) {
+					e.printStackTrace();
+				}
 			}
 
 			/*
@@ -566,8 +609,7 @@ public class Algorithme {
 				}
 			} else if (this.getDonnee(nomDonnee) instanceof Variable) {
 				try {
-					((Variable) (this.getDonnee(nomDonnee))).setValeur(interpreter.eval(valeur));
-					interpreter.eval(nomDonnee + " = " + interpreter.eval(valeur));
+					interpreter.eval(nomDonnee + " = " + valeur);
 
 					if (prog.getDonneesATracer().contains(this.getVariable(nomDonnee)))
 						prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n";
@@ -576,10 +618,7 @@ public class Algorithme {
 				}
 			}
 		}
-		try {
-			System.out.println("aaaa" + interpreter.eval("arr[0][0]"));
-		} catch (EvalError e) {
-		}
+
 		/*
 		 * Interpreter interpreter = this.getInterpreteur();
 		 * 
@@ -724,5 +763,9 @@ public class Algorithme {
 	 */
 	public boolean estEnTrainDeReset() {
 		return reset;
+	}
+
+	public String getReturnValue() {
+		return this.returnValue;
 	}
 }
