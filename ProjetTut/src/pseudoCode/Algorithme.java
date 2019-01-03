@@ -197,7 +197,6 @@ public class Algorithme {
 						this.returnValue = "\"" + val + "\"";
 					else
 						this.returnValue = val.toString();
-
 				} catch (EvalError e) {
 					e.printStackTrace();
 				}

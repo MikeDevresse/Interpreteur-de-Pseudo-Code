@@ -20,7 +20,7 @@ import pseudoCode.Variable;
  */
 
 public class Controleur {
-	
+
 	public static boolean DEBUG = true;
 
 	/** nom du fichier */
@@ -128,7 +128,7 @@ public class Controleur {
 	public void attend() {
 		if (Controleur.DEBUG)
 			return;
-		
+
 		this.aff.afficher();
 
 		if (!this.prog.getMain().estEnTrainDeReset())
@@ -224,6 +224,7 @@ public class Controleur {
 
 	/**
 	 * Retourne les points d'arrêt
+	 * 
 	 * @return Liste de breakpoints
 	 */
 	public ArrayList<Integer> getBreakpoints() {
@@ -232,6 +233,7 @@ public class Controleur {
 
 	/**
 	 * Défini un point d'arrêt
+	 * 
 	 * @param ligne numéro de la ligne
 	 */
 	private void setBreakPoint(int ligne) {
