@@ -49,9 +49,11 @@ public class Algorithme {
 	private String returnValue;
 
 	/**
-	 * Instanciation de algorithme.
-	 *
-	 * @param nom nom
+	 * Constructeur de l'algorithme
+	 * @param nom nom de l'algorithme
+	 * @param ligneDebut ligne du début de l'algorithme
+	 * @param fichier ensemble de lignes de l'algo
+	 * @param p programme contenant l'algo
 	 */
 	public Algorithme(String nom, int ligneDebut, String[] fichier, Programme p) {
 		this.prog = p;
