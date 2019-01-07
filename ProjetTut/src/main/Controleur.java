@@ -27,6 +27,7 @@ public class Controleur {
 
 	/** nom du fichier */
 	private String input;
+	private String configFile;
 
 	/** objet programme */
 	private Programme prog;
@@ -67,7 +68,7 @@ public class Controleur {
 
 	public static Controleur getControleur() {
 		if (Controleur.ctrl == null)
-			return new Controleur("");
+			return new Controleur("", "");
 		else
 			return Controleur.ctrl;
 	}
@@ -75,8 +76,8 @@ public class Controleur {
 	/**
 	 * Constructeur du controleur.
 	 */
-	private Controleur(String fichier) {
-		lancerConfig();
+	private Controleur(String fichier, String configFile) {
+		
 		this.varsALire = new ArrayList<String>();
 		this.varsLu = new ArrayList<String>();
 		this.input = fichier;
@@ -85,6 +86,8 @@ public class Controleur {
 		Controleur.ctrl = this;
 		this.sc = new Scanner(System.in);
 		this.lecture = new LectureFichier(input);
+		this.configFile = configFile;
+		lancerConfig();
 
 		// création du programme
 		try {
@@ -117,7 +120,7 @@ public class Controleur {
 		try
 		{
     		String s = "";
-    		BufferedReader reader = new BufferedReader( new FileReader( "config.txt" ) );
+    		BufferedReader reader = new BufferedReader( new FileReader( this.configFile ) );
     		
     		while ( ( s = reader.readLine() ) != null )
     		{
@@ -376,10 +379,10 @@ public class Controleur {
 	 * Fonction main.
 	 */
 	public static void main(String[] a) {
-		if (a.length != 1) {
-			System.out.println("ERREUR : veuillez spécifier le chemin du fichier à interpréter");
+		if (a.length != 2) {
+			System.out.println("ERREUR : veuillez spécifier le chemin du fichier à interpréter et le chemin du fichier de configuration");
 			System.exit(1);
 		} else
-			new Controleur(a[0]);
+			new Controleur(a[0], a[1]);
 	}
 }
