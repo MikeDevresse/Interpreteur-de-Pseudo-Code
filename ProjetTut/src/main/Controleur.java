@@ -337,6 +337,11 @@ public class Controleur {
 
 		this.breakpoints.add(ligne);
 	}
+	
+	public HashMap<Integer,String> getComms ()
+	{
+		return this.comms;
+	}
 
 	private void reste() {
 		this.revenir(0);
