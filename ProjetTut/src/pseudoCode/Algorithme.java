@@ -672,7 +672,7 @@ public class Algorithme {
 	}
 
 		/*
-		 * Interpreter interpreter = this.getInterpreteur();
+		 * Interpreter interpreter = this.getInterpreteur(); 
 		 * 
 		 * valeur = Donnee.traduire(valeur); if (this.getDonnee(nomDonnee) instanceof
 		 * Variable) { // évite l'interprétation du caractère if
