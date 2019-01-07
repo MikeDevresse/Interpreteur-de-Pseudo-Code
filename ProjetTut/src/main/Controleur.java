@@ -51,6 +51,10 @@ public class Controleur {
 	private boolean attendBreakpoint = false;
 
 	private int revenir = -1;
+	
+	private ArrayList<String> varsALire;
+	
+	private ArrayList<String> varsLu;
 
 	public static Controleur getControleur() {
 		if (Controleur.ctrl == null)
@@ -63,6 +67,8 @@ public class Controleur {
 	 * Constructeur du controleur.
 	 */
 	private Controleur(String fichier) {
+		this.varsALire = new ArrayList<String>();
+		this.varsLu = new ArrayList<String>();
 		this.input = fichier;
 		this.breakpoints = new ArrayList<Integer>();
 		this.etapes = new ArrayList<Integer>();
@@ -100,8 +106,18 @@ public class Controleur {
 	 * @param nomVar nom de la variable
 	 */
 	public void lireVariable(String nomVar) {
-		System.out.print("Entrez la valeur de " + nomVar + " : ");
-		String valeur = this.sc.nextLine();
+		String valeur = "";
+		System.out.println( varsALire.toString() );
+		if ( this.varsALire.isEmpty())
+		{
+    		System.out.print("Entrez la valeur de " + nomVar + " : ");
+    		valeur = this.sc.nextLine();
+		}
+		else
+		{
+			valeur = varsALire.remove( 0 );
+		}
+		this.varsLu.add( valeur );
 		this.prog.traceExec += "l:" + valeur + "\n";
 		this.prog.getCurrent().setValeur(nomVar, valeur);
 	}
@@ -256,12 +272,14 @@ public class Controleur {
 	}
 
 	private void revenir(int i) {
+		this.varsALire = (ArrayList<String>) varsLu.clone();
+		this.varsLu = new ArrayList<String>();
 		this.revenir = i + 1;
 		anciennesEtapes = etapes;
 		etapes = new ArrayList<Integer>();
 		this.prog.reset();
 	}
-
+	
 	/**
 	 * Fonction main.
 	 */

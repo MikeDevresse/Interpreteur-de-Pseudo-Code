@@ -8,8 +8,6 @@ public class Programme {
 	public String traceExec;
 	public String traceVariable = "LIG| NOM |  TYPE   |     VALEUR      |\n";
 
-	/** fichier. */
-	private String[] fichier;
 
 	/** algo. */
 	private ArrayList<Algorithme> algos;
@@ -22,7 +20,6 @@ public class Programme {
 
 	private ArrayList<Donnee> ensDonneesATracer;
 
-	private HashMap<String, String> varLues;
 
 	/**
 	 * Constructeur du programme.
@@ -35,7 +32,6 @@ public class Programme {
 		this.lignesFausses = new ArrayList<Integer>();
 		this.traceExec = "";
 
-		this.fichier = ensLignes;
 
 		this.algos = new ArrayList<Algorithme>();
 
