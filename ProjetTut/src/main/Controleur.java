@@ -21,7 +21,7 @@ import pseudoCode.Variable;
 
 public class Controleur {
 
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 
 	/** nom du fichier */
 	private String input;

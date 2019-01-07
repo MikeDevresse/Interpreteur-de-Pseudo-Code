@@ -199,6 +199,8 @@ public class Affichage {
 			break;
 		case 'a': ret += ANSI_BLUE + str + ANSI_BACK;
 			break;
+		case 'r': ret += ANSI_RED + str + ANSI_BACK;
+			break;
 		default:  ret += str;
 			break;
 		}
