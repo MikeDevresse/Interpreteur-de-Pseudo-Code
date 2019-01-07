@@ -235,6 +235,7 @@ public class Affichage {
 		copy = copy.replaceAll("(\".*\")", syntaxes.get("griffe") + "$1" + ANSI_BACK);
 
 		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction") + "$1" + ANSI_BACK + "(");
+		str = str.replaceAll(".+:(.)*", syntaxes.get("type") + "$1" + ANSI_BACK );
 
 		str = recupAnnotation(copy, str);
 
