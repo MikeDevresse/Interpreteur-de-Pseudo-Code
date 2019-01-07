@@ -45,13 +45,16 @@ public class Affichage {
 
 	private ArrayList<Integer> ensLigneRouge;
 	private ArrayList<Integer> ensPArret;
-
+	
+	private HashMap<Integer,String> comms;
 	/**
 	 * Constructeur
 	 * @param code pseudo-code
 	 */
 	public Affichage(String[] code, Programme prog) {
 		this.prog = prog;
+		
+		comms = Controleur.getControleur().getComms();
 
 		this.ensLigneRouge = new ArrayList<Integer>();
 
@@ -144,7 +147,25 @@ public class Affichage {
 			}
 		}
 
-		affichage += console(exec);
+		String[] lignesComm = new String[3];
+		lignesComm[0]="";
+		lignesComm[1]="";
+		lignesComm[2]="";
+		if(comms.containsKey(ligneC+1)) {
+			try{lignesComm[0]=comms.get(ligneC+1).substring( 0, 57);}
+			catch(Exception e) {lignesComm[0]=comms.get(ligneC+1).substring(0);}
+			
+			if ( comms.get(ligneC+1).length() > 57 )
+				try{lignesComm[1]=comms.get(ligneC+1).substring(57, 57*2);}
+				catch(Exception e) {lignesComm[1]=comms.get(ligneC+1).substring(57);}
+
+			
+			if ( comms.get(ligneC+1).length() > 57*2 )
+				try{lignesComm[2]=comms.get(ligneC+1).substring(57*2);}
+				catch(Exception e) {lignesComm[2]=comms.get(ligneC+1).substring(57*2);}
+		}
+		
+		affichage += console(exec, lignesComm);
 
 		if (OSWindows) {
 			AnsiConsole.systemInstall();
@@ -163,26 +184,28 @@ public class Affichage {
 		ensLigneRouge.add((Integer) ligne);
 	}
 
-	private String console(String exec) {
+	private String console(String exec, String[] lignesComm) {
 		String ret = "";
 		String ligne = "";
 		for (int i = 0; i < 119; i++)
 			ret += "-";
 		ret += "\n\n";
-		ret += "+---------+\n";
-		ret += "| CONSOLE |\n";
-		ret += "+---------+---------------------------------------------------------------------+\n";
+		ret += String.format("+---------+%49s+---------+\n", "");
+		ret += String.format("| CONSOLE |%49s| COMMENT |\n", "");
+		ret += "+---------+-------------------------------------------------+---------+-----------------------------------------------+\n";
+		int j=0;
 		for (int i = exec.split("\n").length - 3; i < exec.split("\n").length; i++) {
+			j++;
 			try {
 				ligne = exec.split("\n")[i];
-				ligne = String.format("%-81.81s", ligne);
-				ret += "|" + colorerConsole(ligne) + "|\n";
+				ligne = String.format("%-61.61s", ligne);
+				ret += "|" + colorerConsole(ligne) + "|"+String.format("%-57.57s|", lignesComm[j-1])+"\n";
 			} 
 			catch (Exception e) {
-				ret += String.format("|%-79s|\n", " ");
+				ret += String.format("|%-59s|%-57.57s|\n", " ", lignesComm[j-1]);
 			}
 		}
-		for (int i = 0; i < 81; i++)
+		for (int i = 0; i < 119; i++)
 			ret += "-";
 		ret += "\n";
 
@@ -196,7 +219,7 @@ public class Affichage {
 		str = str.substring(2);
 
 		switch (prefix) {
-		case 'l': ret += ANSI_YELLOW + str + ANSI_BACK;
+		case 'l': ret += ANSI_YELLOW + str + ANSI_BACK;   
 			break;
 		case 'e': ret += ANSI_PURPLE + str + ANSI_BACK;
 			break;

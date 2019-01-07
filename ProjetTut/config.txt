@@ -1,3 +1,10 @@
+Syntaxe 
+Obligatoire | Marche auto (oui/non) : ???		| Défini si la marche auto est active ou non
+			| Temp globale : durée en seconde	| Défini le temps entre 2 lignes par défaut
+Facultatif	| Temp l(ligne) : durée en seconde	| Défini le temps entre 2 ligne à une ligne précise
+			| Comm l(ligne) : commentaire		| Ajoute un commentaire à la ligne renseigner
+			
+
 Marche auto (oui/non) : oui
 Temp globale : 1
 Temp l10 : 10
