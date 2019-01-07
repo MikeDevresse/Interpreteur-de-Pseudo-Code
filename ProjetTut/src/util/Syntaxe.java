@@ -41,11 +41,7 @@ public class Syntaxe {
 		
 		syntaxes.put("griffe",     ANSI_BLUE);
 		
-		syntaxes.put("entier",     ANSI_GREEN);
-		syntaxes.put("double",     ANSI_GREEN);
-		syntaxes.put("chaine",     ANSI_GREEN);
-		syntaxes.put("booleen",    ANSI_GREEN);
-		syntaxes.put("caractere",  ANSI_GREEN);
+		syntaxes.put("type",       ANSI_GREEN);
 		
 		syntaxes.put("ALGORITHME", ANSI_PURPLE);
 		syntaxes.put("variable",   ANSI_PURPLE);
