@@ -1,12 +1,16 @@
 package ihmGui;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.util.HashMap;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
+import pseudoCode.Programme;
 import util.Syntaxe;
 
 public class CodePan extends JPanel {
@@ -20,18 +24,21 @@ public class CodePan extends JPanel {
 
 	private HashMap<String, String> syntaxes;
 	
-	public CodePan(String code) {
+	public CodePan(String code, Programme prog) {
 		syntaxes = Syntaxe.getSyntaxesHTML();
+		this.setLayout(new BorderLayout());
 		this.code = code;
-		this.code = this.code.replaceAll("\\t", "&emsp;&emsp;");
+		this.code = this.code.replaceAll("\\t", " &emsp;&emsp; ");
 		this.code = this.code.replaceAll("<", "&lt;");
 		txt = new JLabel();
+		
 		
 		txt.setText("<html>");
 		for(String str : this.code.split("\n")) {
 			txt.setText(txt.getText() + "<p>" + colorier(str) + "</p>");
 		}
 		txt.setText(txt.getText() + "</html>");
+		txt.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		this.add(txt);
 	}
@@ -56,8 +63,8 @@ public class CodePan extends JPanel {
 		str = recupAnnotation(copy, str);
 
 		str += commentaire;
-
-		String[] mots = str.split(" ");
+		
+		String[] mots = str.split("\\s");
 		for (int i = 0; i < mots.length; i++) {
 			if (mots[i].contains("//"))
 				comm = true;
