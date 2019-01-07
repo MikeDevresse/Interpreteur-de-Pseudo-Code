@@ -419,6 +419,7 @@ public class Algorithme {
 
 			if (estInfinie) {
 				this.prog.traceExec += "/!\\ boucle infinie";
+				Controleur.getControleur().attend();
 				System.exit(1);
 			}
 		}

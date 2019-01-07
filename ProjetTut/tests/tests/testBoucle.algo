@@ -1,0 +1,12 @@
+ALGORITHME TestBoucle
+constante:
+variable:
+	i 	: entier
+	
+DEBUT
+	i <-- 0
+	tq i < 6 alors
+		écrire(i)
+		i <-- i +1
+	ftq
+FIN
