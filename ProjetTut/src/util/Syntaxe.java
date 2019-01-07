@@ -15,6 +15,16 @@ public class Syntaxe {
 	private static final String ANSI_CYAN   = "\u001B[36m";
 	private static final String ANSI_WHITE  = "\u001B[37m";
 	
+	private static final String ANSI_RESET_HTML  = "</span>";
+	private static final String ANSI_BLACK_HTML  = "<spanB>";
+	private static final String ANSI_RED_HTML    = "<spanR>";
+	private static final String ANSI_GREEN_HTML  = "<spanG>";
+	private static final String ANSI_YELLOW_HTML = "<spanY>";
+	private static final String ANSI_BLUE_HTML   = "<spanb>";
+	private static final String ANSI_PURPLE_HTML = "<spanP>";
+	private static final String ANSI_CYAN_HTML   = "<spanC>";
+	private static final String ANSI_WHITE_HTML  = "<spanW>";
+	
 	public static HashMap<String, String> getSyntaxes(){
 		syntaxes = new HashMap<String, String>();
 		
@@ -31,7 +41,11 @@ public class Syntaxe {
 		
 		syntaxes.put("griffe",     ANSI_BLUE);
 		
-		syntaxes.put("type",       ANSI_GREEN);
+		syntaxes.put("entier",     ANSI_GREEN);
+		syntaxes.put("double",     ANSI_GREEN);
+		syntaxes.put("chaine",     ANSI_GREEN);
+		syntaxes.put("booleen",    ANSI_GREEN);
+		syntaxes.put("caractere",  ANSI_GREEN);
 		
 		syntaxes.put("ALGORITHME", ANSI_PURPLE);
 		syntaxes.put("variable",   ANSI_PURPLE);
@@ -47,32 +61,32 @@ public class Syntaxe {
 	public static HashMap<String, String> getSyntaxesHTML(){
 		syntaxes = new HashMap<String, String>();
 		
-		syntaxes.put("si",         "<span style=\"blue\">");
-		syntaxes.put("sinon",      "<span style=\"blue\">");
-		syntaxes.put("fsi",        "<span style=\"blue\">");
-		syntaxes.put("alors",      "<span style=\"blue\">");
-		syntaxes.put("tq",         "<span style=\"blue\">");
-		syntaxes.put("ftq",        "<span style=\"blue\">");
+		syntaxes.put("si",         ANSI_BLUE_HTML);
+		syntaxes.put("sinon",      ANSI_BLUE_HTML);
+		syntaxes.put("fsi",        ANSI_BLUE_HTML);
+		syntaxes.put("alors",      ANSI_BLUE_HTML);
+		syntaxes.put("tq",         ANSI_BLUE_HTML);
+		syntaxes.put("ftq",        ANSI_BLUE_HTML);
 		
-		syntaxes.put("fonction",   "<span style=\"cyan\">");
+		syntaxes.put("fonction",   ANSI_CYAN_HTML);
 		
-		syntaxes.put("commentaire","<span style=\"yellow\">");
+		syntaxes.put("commentaire",ANSI_YELLOW_HTML);
 		
-		syntaxes.put("griffe",     "<span style=\"blue\">");
+		syntaxes.put("griffe",     ANSI_BLUE_HTML);
 		
-		syntaxes.put("entier",     "<span style=\"green\">");
-		syntaxes.put("double",     "<span style=\"green\">");
-		syntaxes.put("chaine",     "<span style=\"green\">");
-		syntaxes.put("booleen",    "<span style=\"green\">");
-		syntaxes.put("caractere",  "<span style=\"green\">");
+		syntaxes.put("entier",     ANSI_GREEN_HTML);
+		syntaxes.put("double",     ANSI_GREEN_HTML);
+		syntaxes.put("chaine",     ANSI_GREEN_HTML);
+		syntaxes.put("booleen",    ANSI_GREEN_HTML);
+		syntaxes.put("caractere",  ANSI_GREEN_HTML);
 		
-		syntaxes.put("ALGORITHME", "<span style=\"purple\">");
-		syntaxes.put("variable",   "<span style=\"purple\">");
-		syntaxes.put("constante",  "<span style=\"purple\">");
-		syntaxes.put("variable:",  "<span style=\"purple\">");
-		syntaxes.put("constante:", "<span style=\"purple\">");
-		syntaxes.put("DEBUT",      "<span style=\"purple\">");
-		syntaxes.put("FIN",        "<span style=\"purple\">");
+		syntaxes.put("ALGORITHME", ANSI_PURPLE_HTML);
+		syntaxes.put("variable",   ANSI_PURPLE_HTML);
+		syntaxes.put("constante",  ANSI_PURPLE_HTML);
+		syntaxes.put("variable:",  ANSI_PURPLE_HTML);
+		syntaxes.put("constante:", ANSI_PURPLE_HTML);
+		syntaxes.put("DEBUT",      ANSI_PURPLE_HTML);
+		syntaxes.put("FIN",        ANSI_PURPLE_HTML);
 		
 		return Syntaxe.syntaxes;
 	}
