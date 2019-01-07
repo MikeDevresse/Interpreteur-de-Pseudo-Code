@@ -25,6 +25,18 @@ public abstract class Donnee<T>
 	public String getNom() {
 		return nom;
 	}
+	
+	/**
+	 * Retourne l'algorithme possédant la variable
+	 * @return algorithme
+	 */
+	public Algorithme getAlgo() {
+		return this.algo;
+	}
+	
+	public void setAlgo(Algorithme a) {
+		this.algo = a;
+	}
 
 	
 	/**

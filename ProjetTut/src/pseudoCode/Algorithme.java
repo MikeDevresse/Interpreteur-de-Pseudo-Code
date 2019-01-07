@@ -140,6 +140,20 @@ public class Algorithme {
 
 		if (this.ligneCourrante == this.fichier.length) {
 			this.fin = true;
+			
+			
+			if (params != null) {
+				for (String[] param : this.params) {
+					if (param[0].equals("s")) {
+						Variable v = ((Variable)getDonnee(param[1]));
+						
+						v.getAlgo().setValeur(param[2], v.getValeur().toString());
+					}
+				}
+					
+						
+			}
+			
 			return false;
 		}
 
@@ -177,6 +191,8 @@ public class Algorithme {
 
 				// si le sous-algorithme existe
 				if (sousAlgo != null) {
+					
+					
 
 					// envoi des paramètres au sous algorithme
 					String params[] = current.replaceAll(".*appel .*\\((.*)\\)", "$1").split(",");
@@ -184,7 +200,13 @@ public class Algorithme {
 					if (sousAlgo.params != null) {
 						for (int i = 0; i < params.length; i++)
 							if (sousAlgo.getDonnee(sousAlgo.params.get(i)[1]) instanceof Variable) {
-								sousAlgo.setValeur(sousAlgo.params.get(i)[1], params[i]);
+								if (sousAlgo.params.get(i)[0].equals("e"))
+									sousAlgo.setValeur(sousAlgo.params.get(i)[1], params[i]);
+								if (sousAlgo.params.get(i)[0].equals("s")) {
+									sousAlgo.getDonnee(sousAlgo.params.get(i)[1]).setAlgo(this);
+									sousAlgo.params.get(i)[2] = params[i].trim();
+								}
+									
 							}
 					}
 
@@ -198,6 +220,7 @@ public class Algorithme {
 						returnValue = sousAlgo.returnValue;
 						sousAlgo.ligneSuivante();
 					} while (returnValue == null && !sousAlgo.fin);
+					
 
 					// remplacement de l'appel au sous algo par sa valeur de retour
 					if (returnValue != null)
@@ -317,17 +340,9 @@ public class Algorithme {
 			 */
 			if (current.matches("selon .*")) {
 				String varSelon = current.substring("selon ".length());
-				System.out.println("SWITCH : selon " + varSelon);
 				interpreterSwitch(varSelon);
 			}
 
-		}
-
-		/*
-		 * Fin de la l'algorithme
-		 */
-		if (mots[0].equals("FIN")) {
-			this.fin = true;
 		}
 			
 
@@ -602,14 +617,17 @@ public class Algorithme {
 	public Donnee[] getDonnees() {
 		return ensDonnees.toArray(new Donnee[ensDonnees.size()]);
 	}
-
+	
 	/**
-	 * Défini la valeur d'une variable
-	 * 
-	 * @param nomVar nom de la variable
-	 * @param valeur valeur de la variable
+	 * Défini la valeur d'une donnée
+	 * @param nomDonnee nom de la donnée
+	 * @param valeur valeur de la donnée
 	 */
 	public void setValeur(String nomDonnee, String valeur) {
+		setValeur(nomDonnee, valeur, this);
+	}
+	
+	public void setValeur(String nomDonnee, String valeur, Algorithme source) {
 		Interpreter interpreter = this.getInterpreteur();
 		if (nomDonnee.contains("[")) {
 			Tableau tab = ((Tableau) (this.getDonnee(nomDonnee.split("\\[")[0])));
@@ -617,7 +635,7 @@ public class Algorithme {
 			for (int i = 1; i < indices.length - 1; i = i + 2) {
 				tab = ((Tableau) (tab.get(Integer.parseInt(indices[i]))));
 			}
-			Variable v = new Variable("", tab.get(0).getType(), false, this);
+			Variable v = new Variable("", tab.get(0).getType(), false, source);
 			try {
 				v.setValeur(interpreter.eval(valeur));
 			} catch (EvalError e) {
@@ -651,7 +669,7 @@ public class Algorithme {
 					e.printStackTrace();
 				}
 			}
-		}
+	}
 
 		/*
 		 * Interpreter interpreter = this.getInterpreteur();
@@ -722,7 +740,7 @@ public class Algorithme {
 	public String toString() {
 		String s = "Algorithme : " + this.nom + "\n";
 		for (Donnee d : this.ensDonnees) {
-			s += d + "\n";
+			s += d + "\t" + d.getAlgo().getNom() + "\n";
 		}
 		return s;
 	}

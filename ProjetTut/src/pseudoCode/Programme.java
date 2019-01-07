@@ -40,6 +40,46 @@ public class Programme {
 		int debut = 0;
 		ArrayList<String> lignes = null;
 
+//		int i = 0;
+//		while (i < ensLignes.length) {
+//			ensLignes[i] = ensLignes[i].replaceAll("\t", ""); // suppression de l'identation
+//			String[] mots = ensLignes[i].split(" ");
+//
+//			if (mots[0].equals("ALGORITHME")) {
+//
+//				debut = i;
+//
+//				if (mots[1].matches("\\w*")) { // Algorithme principal
+//					main = true;
+//					nom = mots[1];
+//				} else { // Sous algorithme
+//					nom = ensLignes[i].replaceAll("ALGORITHME (\\w*)\\(.*\\)", "$1");
+//					main = false;
+//				}
+//
+//				ArrayList<String> lignes = new ArrayList<String>();
+//
+//				System.out.println(nom);
+//				while (i <= ensLignes.length-1 && !ensLignes[i].equals("FIN")) {
+//					lignes.add(ensLignes[i]);
+//					i++;
+//				}				
+//				
+//				Algorithme a = new Algorithme(nom, debut, lignes.toArray(new String[lignes.size()]), this);
+//				algos.add(a);
+//				
+//				if (main) {
+//					this.main = a;
+//					setCurrent(this.main);
+//				}
+//					
+//			}
+//		}
+//		
+//		System.out.println("nb algos : " + algos.size());
+//		for (Algorithme a : algos)
+//			System.out.println("Algo : " + a);
+
 		for (int i = 0; i < ensLignes.length; i++) {
 			ensLignes[i] = ensLignes[i].replaceAll("\t", ""); // suppression de l'identation
 			String[] mots = ensLignes[i].split(" ");
@@ -100,6 +140,7 @@ public class Programme {
 					lignes.add(ensLignes[i]);
 			}
 		}
+
 	}
 
 	public Algorithme getMain() {
