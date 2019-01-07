@@ -47,6 +47,8 @@ public class Algorithme {
 	private boolean reset = false;
 
 	private String returnValue;
+	
+	
 
 	/**
 	 * Constructeur de l'algorithme
