@@ -64,7 +64,7 @@ public class Affichage {
 	private void maj() {
 		this.ensPArret = Controleur.getControleur().getBreakpoints();
 		this.exec = prog.traceExec;
-		this.ligneC = prog.getCurrent().getLigneCourrante();
+		this.ligneC = prog.getCurrent().getLigneCourrante() + prog.getCurrent().getLigneDebut();
 		this.vars = prog.traceVariable.split("\n");
 	}
 
