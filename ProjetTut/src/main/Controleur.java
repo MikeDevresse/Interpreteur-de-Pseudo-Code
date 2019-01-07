@@ -3,7 +3,10 @@ package main;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import ihmCui.Affichage;
@@ -12,7 +15,6 @@ import pseudoCode.AlgorithmeException;
 import pseudoCode.Donnee;
 import pseudoCode.Programme;
 import pseudoCode.Tableau;
-import pseudoCode.Variable;
 
 /*
  * Retour en arriere :
@@ -21,7 +23,7 @@ import pseudoCode.Variable;
 
 public class Controleur {
 
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 
 	/** nom du fichier */
 	private String input;
@@ -51,6 +53,17 @@ public class Controleur {
 	private boolean attendBreakpoint = false;
 
 	private int revenir = -1;
+	
+	private ArrayList<String> varsALire;
+	
+	private ArrayList<String> varsLu;
+	
+	private boolean marcheAuto;
+	
+	private double tempDefaut;
+	
+	private HashMap<Integer,Double> temps;
+	private HashMap<Integer,String> comms;
 
 	public static Controleur getControleur() {
 		if (Controleur.ctrl == null)
@@ -63,6 +76,9 @@ public class Controleur {
 	 * Constructeur du controleur.
 	 */
 	private Controleur(String fichier) {
+		lancerConfig();
+		this.varsALire = new ArrayList<String>();
+		this.varsLu = new ArrayList<String>();
 		this.input = fichier;
 		this.breakpoints = new ArrayList<Integer>();
 		this.etapes = new ArrayList<Integer>();
@@ -93,6 +109,49 @@ public class Controleur {
 		}
 
 	}
+	
+	public void lancerConfig ()
+	{
+		temps = new HashMap<Integer,Double>();
+		comms = new HashMap<Integer,String>();
+		try
+		{
+    		String s = "";
+    		BufferedReader reader = new BufferedReader( new FileReader( "config.txt" ) );
+    		
+    		while ( ( s = reader.readLine() ) != null )
+    		{
+    			String nom    = s.split( ":" )[0].trim().toLowerCase();
+    			String valeur = s.split( ":" )[1].trim().toLowerCase();
+    			
+    			if ( nom.matches( "marche auto.*" ))
+    			{
+    				marcheAuto = valeur.equals( "oui" );
+    			}
+    			if ( nom.matches("temp.*"))
+    			{
+    				if ( nom.matches( "temp globale.*" ) )
+    				{
+    					this.tempDefaut = Double.parseDouble( valeur );
+    				}
+    				if ( nom.matches( "temp l[0-9]+.*" ))
+    				{
+    					int ligne = Integer.parseInt( nom.replaceAll( "temp l([0-9]+).*", "$1" ) );
+    					temps.put( ligne, Double.parseDouble( valeur ) );
+    				}
+    			}
+    			if ( nom.matches( "comm l[0-9]+.*" ))
+    			{
+					int ligne = Integer.parseInt( nom.replaceAll( "comm l([0-9]+).*", "$1" ) );
+					comms.put( ligne, valeur );
+    			}
+    		}
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Permet à l'utilisateur de renseigner la valeur d'une variable
@@ -100,8 +159,17 @@ public class Controleur {
 	 * @param nomVar nom de la variable
 	 */
 	public void lireVariable(String nomVar) {
-		System.out.print("Entrez la valeur de " + nomVar + " : ");
-		String valeur = this.sc.nextLine();
+		String valeur = "";
+		if ( this.varsALire.isEmpty())
+		{
+    		System.out.print("Entrez la valeur de " + nomVar + " : ");
+    		valeur = this.sc.nextLine();
+		}
+		else
+		{
+			valeur = varsALire.remove( 0 );
+		}
+		this.varsLu.add( valeur );
 		this.prog.traceExec += "l:" + valeur + "\n";
 		this.prog.getCurrent().setValeur(nomVar, valeur);
 	}
@@ -151,7 +219,7 @@ public class Controleur {
 
 		} else if (attendBreakpoint && !estSurBreakpoint) {
 
-		} else {
+		} else if ( !marcheAuto ){
 			revenir = -1;
 			ligneRestantes = -1;
 			ligneAAttendre = -1;
@@ -183,9 +251,7 @@ public class Controleur {
 				this.prog.traceExec += "a:" + commande + "\n";
 			} else if (commande.matches("[Ll][0-9]+")) {
 				int ligne = Integer.parseInt(commande.replaceAll("[Ll]([0-9]+)", "$1")) - 1;
-				ligneAAttendre = ligne;
-				this.etapes = new ArrayList<Integer>();
-				this.prog.reset();
+				allerA(ligne);
 			} else if (commande.matches("cp tab [\\w]+")) {
 				String nomVar = commande.replaceAll("cp tab ([\\w]+)", "$1");
 				Tableau t = (Tableau) prog.getCurrent().getDonnee(nomVar);
@@ -219,6 +285,31 @@ public class Controleur {
 			} else if (commande.equals("quit")) {
 				System.exit(0);
 			}
+		}
+		else
+		{
+			int ligneCourrante = this.prog.getCurrent().getLigneCourrante() + this.prog.getCurrent().getLigneDebut() + 1;
+			if ( this.temps.containsKey( ligneCourrante ) )
+			{
+				try {
+					Thread.sleep( (long)( this.temps.get( ligneCourrante )*1000) );
+				}
+				catch ( Exception e )
+				{
+					e.printStackTrace();
+				}
+			}
+			else
+			{
+				try {
+					Thread.sleep( (long)( tempDefaut*1000 ));
+				}
+				catch ( Exception e )
+				{
+					e.printStackTrace();
+				}
+			}
+			
 		}
 	}
 
@@ -256,12 +347,25 @@ public class Controleur {
 	}
 
 	private void revenir(int i) {
+		this.varsALire = (ArrayList<String>) varsLu.clone();
+		this.varsLu = new ArrayList<String>();
 		this.revenir = i + 1;
 		anciennesEtapes = etapes;
 		etapes = new ArrayList<Integer>();
 		this.prog.reset();
 	}
+	
 
+	public Programme getProgramme() {
+		return this.prog;
+	}
+	
+	public void allerA(int ligne) {
+		ligneAAttendre = ligne;
+		this.etapes = new ArrayList<Integer>();
+		this.prog.reset();
+	}
+	
 	/**
 	 * Fonction main.
 	 */
@@ -271,9 +375,5 @@ public class Controleur {
 			System.exit(1);
 		} else
 			new Controleur(a[0]);
-	}
-
-	public Programme getProgramme() {
-		return this.prog;
 	}
 }

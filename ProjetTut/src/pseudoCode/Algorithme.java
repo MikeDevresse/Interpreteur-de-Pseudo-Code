@@ -47,6 +47,8 @@ public class Algorithme {
 	private boolean reset = false;
 
 	private String returnValue;
+	
+	
 
 	/**
 	 * Constructeur de l'algorithme
@@ -159,7 +161,6 @@ public class Algorithme {
 			 */
 			if (current.matches(".*appel.*\\(.*\\)")) {
 				String nomSousProg = current.replaceAll(".*<-- appel (.*)\\(.*\\)", "$1");
-				System.out.println("Appel à un sous-programme " + nomSousProg);
 
 				Algorithme sousAlgo = null;
 				for (Algorithme a : this.prog.getAlgos())
@@ -168,6 +169,7 @@ public class Algorithme {
 
 				// si le sous-algorithme existe
 				if (sousAlgo != null) {
+					this.prog.setCurrent(sousAlgo);
 					String returnValue;
 
 					// interprétation et récupération de la valeur de retour
@@ -178,6 +180,8 @@ public class Algorithme {
 
 					// remplacement de l'appel au sous algo par sa valeur de retour
 					current = current.replaceAll("appel.*\\(.*\\)", returnValue);
+					
+					this.prog.setCurrent(this);
 				}
 			}
 
@@ -418,7 +422,8 @@ public class Algorithme {
 			}
 
 			if (estInfinie) {
-				this.prog.traceExec += "/!\\ boucle infinie";
+				this.prog.traceExec += "r:/!\\ boucle infinie";
+				Controleur.getControleur().attend();
 				System.exit(1);
 			}
 		}
@@ -611,7 +616,7 @@ public class Algorithme {
 			} else if (this.getDonnee(nomDonnee) instanceof Variable) {
 				try {
 					interpreter.eval(nomDonnee + " = " + valeur);
-
+					((Variable)(this.getDonnee( nomDonnee ))).setValeur( interpreter.eval( valeur ) );
 					if (prog.getDonneesATracer().contains(this.getVariable(nomDonnee)))
 						prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n";
 				} catch (EvalError e) {

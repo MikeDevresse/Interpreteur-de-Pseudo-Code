@@ -8,21 +8,19 @@ public class Programme {
 	public String traceExec;
 	public String traceVariable = "LIG| NOM |  TYPE   |     VALEUR      |\n";
 
-	/** fichier. */
-	private String[] fichier;
 
 	/** algo. */
 	private ArrayList<Algorithme> algos;
 
 	private Algorithme main;
 
+	private Algorithme last;
 	private Algorithme current;
 
 	private ArrayList<Integer> lignesFausses;
 
 	private ArrayList<Donnee> ensDonneesATracer;
 
-	private HashMap<String, String> varLues;
 
 	/**
 	 * Constructeur du programme.
@@ -35,7 +33,6 @@ public class Programme {
 		this.lignesFausses = new ArrayList<Integer>();
 		this.traceExec = "";
 
-		this.fichier = ensLignes;
 
 		this.algos = new ArrayList<Algorithme>();
 
@@ -51,7 +48,8 @@ public class Programme {
 					Algorithme a = new Algorithme(nom, debut, lignes.toArray(new String[lignes.size()]), this);
 					algos.add(a);
 					if (main) {
-						this.current = this.main = a;
+						this.main = a;
+						setCurrent(this.main);
 					}
 				}
 				if (mots[0].equals("ALGORITHME")) {
@@ -78,8 +76,17 @@ public class Programme {
 		return this.main;
 	}
 
+	public Algorithme getLast() {
+		return this.last;
+	}
+	
 	public Algorithme getCurrent() {
 		return this.current;
+	}
+	
+	public void setCurrent(Algorithme a) {
+		this.last = this.current;
+		this.current = a;
 	}
 
 	public ArrayList<Algorithme> getAlgos() {

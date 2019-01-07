@@ -17,8 +17,17 @@ variable:
 	b : entier
 	
 DEBUT
-	b <-- 5
-	ecrire(b)
+	b <-- appel sousProg2()
+	retourne b
+FIN
+
+ALGORITHME sousProg2()
+constante:
+
+variable:
+	c : entier
 	
-	retourne 2.6
+DEBUT
+	c <-- 8	
+	retourne c
 FIN

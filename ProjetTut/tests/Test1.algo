@@ -16,7 +16,7 @@ DEBUT
 	arr[2] <-- c + b
 	arr[0] <-- c + b
 	
-	ecrire(arr)
+	//ecrire(arr)
 	
 	d <-- "bonjour toi"
 	ecrire(d)

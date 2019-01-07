@@ -64,7 +64,13 @@ public class Affichage {
 	private void maj() {
 		this.ensPArret = Controleur.getControleur().getBreakpoints();
 		this.exec = prog.traceExec;
-		this.ligneC = prog.getCurrent().getLigneCourrante();
+		if (this.prog.getLast() != null) {
+			this.ligneC = prog.getCurrent().getLigneCourrante() + prog.getCurrent().getLigneDebut();
+			System.out.println("jump algo");
+		}
+			
+		else
+			this.ligneC = prog.getCurrent().getLigneCourrante();
 		this.vars = prog.traceVariable.split("\n");
 	}
 
@@ -198,6 +204,8 @@ public class Affichage {
 		case 'e': ret += ANSI_PURPLE + str + ANSI_BACK;
 			break;
 		case 'a': ret += ANSI_BLUE + str + ANSI_BACK;
+			break;
+		case 'r': ret += ANSI_RED + str + ANSI_BACK;
 			break;
 		default:  ret += str;
 			break;
