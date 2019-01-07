@@ -3,7 +3,10 @@ package main;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import ihmCui.Affichage;
@@ -12,7 +15,6 @@ import pseudoCode.AlgorithmeException;
 import pseudoCode.Donnee;
 import pseudoCode.Programme;
 import pseudoCode.Tableau;
-import pseudoCode.Variable;
 
 /*
  * Retour en arriere :
@@ -55,6 +57,13 @@ public class Controleur {
 	private ArrayList<String> varsALire;
 	
 	private ArrayList<String> varsLu;
+	
+	private boolean marcheAuto;
+	
+	private double tempDefaut;
+	
+	private HashMap<Integer,Double> temps;
+	private HashMap<Integer,String> comms;
 
 	public static Controleur getControleur() {
 		if (Controleur.ctrl == null)
@@ -67,6 +76,7 @@ public class Controleur {
 	 * Constructeur du controleur.
 	 */
 	private Controleur(String fichier) {
+		lancerConfig();
 		this.varsALire = new ArrayList<String>();
 		this.varsLu = new ArrayList<String>();
 		this.input = fichier;
@@ -98,6 +108,49 @@ public class Controleur {
 			}
 		}
 
+	}
+	
+	public void lancerConfig ()
+	{
+		temps = new HashMap<Integer,Double>();
+		comms = new HashMap<Integer,String>();
+		try
+		{
+    		String s = "";
+    		BufferedReader reader = new BufferedReader( new FileReader( "config.txt" ) );
+    		
+    		while ( ( s = reader.readLine() ) != null )
+    		{
+    			String nom    = s.split( ":" )[0].trim().toLowerCase();
+    			String valeur = s.split( ":" )[1].trim().toLowerCase();
+    			
+    			if ( nom.matches( "marche auto.*" ))
+    			{
+    				marcheAuto = valeur.equals( "oui" );
+    			}
+    			if ( nom.matches("temp.*"))
+    			{
+    				if ( nom.matches( "temp globale.*" ) )
+    				{
+    					this.tempDefaut = Double.parseDouble( valeur );
+    				}
+    				if ( nom.matches( "temp l[0-9]+.*" ))
+    				{
+    					int ligne = Integer.parseInt( nom.replaceAll( "temp l([0-9]+).*", "$1" ) );
+    					temps.put( ligne, Double.parseDouble( valeur ) );
+    				}
+    			}
+    			if ( nom.matches( "comm l[0-9]+.*" ))
+    			{
+					int ligne = Integer.parseInt( nom.replaceAll( "comm l([0-9]+).*", "$1" ) );
+					comms.put( ligne, valeur );
+    			}
+    		}
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -168,7 +221,7 @@ public class Controleur {
 
 		} else if (attendBreakpoint && !estSurBreakpoint) {
 
-		} else {
+		} else if ( !marcheAuto ){
 			revenir = -1;
 			ligneRestantes = -1;
 			ligneAAttendre = -1;
@@ -234,6 +287,31 @@ public class Controleur {
 			} else if (commande.equals("quit")) {
 				System.exit(0);
 			}
+		}
+		else
+		{
+			int ligneCourrante = this.prog.getCurrent().getLigneCourrante() + this.prog.getCurrent().getLigneDebut() + 1;
+			if ( this.temps.containsKey( ligneCourrante ) )
+			{
+				try {
+					Thread.sleep( (long)( this.temps.get( ligneCourrante )*1000) );
+				}
+				catch ( Exception e )
+				{
+					e.printStackTrace();
+				}
+			}
+			else
+			{
+				try {
+					Thread.sleep( (long)( tempDefaut*1000 ));
+				}
+				catch ( Exception e )
+				{
+					e.printStackTrace();
+				}
+			}
+			
 		}
 	}
 

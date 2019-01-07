@@ -15,6 +15,16 @@ public class Syntaxe {
 	private static final String ANSI_CYAN   = "\u001B[36m";
 	private static final String ANSI_WHITE  = "\u001B[37m";
 	
+	private static final String ANSI_RESET_HTML  = "</span>";
+	private static final String ANSI_BLACK_HTML  = "<spanB>";
+	private static final String ANSI_RED_HTML    = "<spanR>";
+	private static final String ANSI_GREEN_HTML  = "<spanG>";
+	private static final String ANSI_YELLOW_HTML = "<spanY>";
+	private static final String ANSI_BLUE_HTML   = "<spanb>";
+	private static final String ANSI_PURPLE_HTML = "<spanP>";
+	private static final String ANSI_CYAN_HTML   = "<spanC>";
+	private static final String ANSI_WHITE_HTML  = "<spanW>";
+	
 	public static HashMap<String, String> getSyntaxes(){
 		syntaxes = new HashMap<String, String>();
 		
@@ -44,6 +54,39 @@ public class Syntaxe {
 		syntaxes.put("constante:", ANSI_PURPLE);
 		syntaxes.put("DEBUT",      ANSI_PURPLE);
 		syntaxes.put("FIN",        ANSI_PURPLE);
+		
+		return Syntaxe.syntaxes;
+	}
+	
+	public static HashMap<String, String> getSyntaxesHTML(){
+		syntaxes = new HashMap<String, String>();
+		
+		syntaxes.put("si",         ANSI_BLUE_HTML);
+		syntaxes.put("sinon",      ANSI_BLUE_HTML);
+		syntaxes.put("fsi",        ANSI_BLUE_HTML);
+		syntaxes.put("alors",      ANSI_BLUE_HTML);
+		syntaxes.put("tq",         ANSI_BLUE_HTML);
+		syntaxes.put("ftq",        ANSI_BLUE_HTML);
+		
+		syntaxes.put("fonction",   ANSI_CYAN_HTML);
+		
+		syntaxes.put("commentaire",ANSI_YELLOW_HTML);
+		
+		syntaxes.put("griffe",     ANSI_BLUE_HTML);
+		
+		syntaxes.put("entier",     ANSI_GREEN_HTML);
+		syntaxes.put("double",     ANSI_GREEN_HTML);
+		syntaxes.put("chaine",     ANSI_GREEN_HTML);
+		syntaxes.put("booleen",    ANSI_GREEN_HTML);
+		syntaxes.put("caractere",  ANSI_GREEN_HTML);
+		
+		syntaxes.put("ALGORITHME", ANSI_PURPLE_HTML);
+		syntaxes.put("variable",   ANSI_PURPLE_HTML);
+		syntaxes.put("constante",  ANSI_PURPLE_HTML);
+		syntaxes.put("variable:",  ANSI_PURPLE_HTML);
+		syntaxes.put("constante:", ANSI_PURPLE_HTML);
+		syntaxes.put("DEBUT",      ANSI_PURPLE_HTML);
+		syntaxes.put("FIN",        ANSI_PURPLE_HTML);
 		
 		return Syntaxe.syntaxes;
 	}

@@ -1,0 +1,5 @@
+Marche auto (oui/non) : oui
+Temp globale : 1
+Temp l10 : 10
+Temp l8 : 5
+Comm l10 : Salut tout le monde c'est david lafarge pokemon
