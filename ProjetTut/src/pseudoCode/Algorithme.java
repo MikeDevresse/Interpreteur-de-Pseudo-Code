@@ -47,8 +47,6 @@ public class Algorithme {
 	private boolean reset = false;
 
 	private String returnValue;
-	
-	
 
 	/*
 	 * Attributs pour les sous-algos
@@ -138,22 +136,25 @@ public class Algorithme {
 			this.reset = false;
 		}
 
+		/*
+		 * Traitement de la fin de l'algorithme
+		 */
 		if (this.ligneCourrante == this.fichier.length) {
 			this.fin = true;
-			
-			
+
+			/*
+			 * Si l'algorithme est un sous algorithme et qu'une variable est passée par
+			 * référence
+			 */
 			if (params != null) {
 				for (String[] param : this.params) {
 					if (param[0].equals("s")) {
-						Variable v = ((Variable)getDonnee(param[1]));
-						
+						Variable v = ((Variable) getDonnee(param[1]));
 						v.getAlgo().setValeur(param[2], v.getValeur().toString());
 					}
 				}
-					
-						
 			}
-			
+
 			return false;
 		}
 
@@ -191,8 +192,6 @@ public class Algorithme {
 
 				// si le sous-algorithme existe
 				if (sousAlgo != null) {
-					
-					
 
 					// envoi des paramètres au sous algorithme
 					String params[] = current.replaceAll(".*appel .*\\((.*)\\)", "$1").split(",");
@@ -200,19 +199,18 @@ public class Algorithme {
 					if (sousAlgo.params != null) {
 						for (int i = 0; i < params.length; i++)
 							if (sousAlgo.getDonnee(sousAlgo.params.get(i)[1]) instanceof Variable) {
-								if (sousAlgo.params.get(i)[0].equals("e"))
+								if (sousAlgo.params.get(i)[0].equals("e")) // passage par valeur
 									sousAlgo.setValeur(sousAlgo.params.get(i)[1], params[i]);
-								if (sousAlgo.params.get(i)[0].equals("s")) {
+								if (sousAlgo.params.get(i)[0].equals("s")) { // passage pas référence
 									sousAlgo.getDonnee(sousAlgo.params.get(i)[1]).setAlgo(this);
 									sousAlgo.params.get(i)[2] = params[i].trim();
 								}
-									
+
 							}
 					}
 
 					// définition du sous algo comme algo courant
-					this.prog.setCurrent(sousAlgo); 
-					
+					this.prog.setCurrent(sousAlgo);
 
 					// interprétation et récupération de la valeur de retour
 					String returnValue;
@@ -220,7 +218,6 @@ public class Algorithme {
 						returnValue = sousAlgo.returnValue;
 						sousAlgo.ligneSuivante();
 					} while (returnValue == null && !sousAlgo.fin);
-					
 
 					// remplacement de l'appel au sous algo par sa valeur de retour
 					if (returnValue != null)
@@ -344,7 +341,6 @@ public class Algorithme {
 			}
 
 		}
-			
 
 		Controleur.getControleur().attend();
 		return true;
@@ -617,16 +613,24 @@ public class Algorithme {
 	public Donnee[] getDonnees() {
 		return ensDonnees.toArray(new Donnee[ensDonnees.size()]);
 	}
-	
+
 	/**
 	 * Défini la valeur d'une donnée
+	 * 
 	 * @param nomDonnee nom de la donnée
-	 * @param valeur valeur de la donnée
+	 * @param valeur    valeur de la donnée
 	 */
 	public void setValeur(String nomDonnee, String valeur) {
 		setValeur(nomDonnee, valeur, this);
 	}
-	
+
+	/**
+	 * Défini la valeur d'une donnée
+	 * 
+	 * @param nomDonnee nom de la donnée
+	 * @param valeur    valeur de la donnée
+	 * @param source    algorithme possédant la donnée
+	 */
 	public void setValeur(String nomDonnee, String valeur, Algorithme source) {
 		Interpreter interpreter = this.getInterpreteur();
 		if (nomDonnee.contains("[")) {
@@ -669,72 +673,7 @@ public class Algorithme {
 					e.printStackTrace();
 				}
 			}
-	}
-
-		/*
-		 * Interpreter interpreter = this.getInterpreteur(); 
-		 * 
-		 * valeur = Donnee.traduire(valeur); if (this.getDonnee(nomDonnee) instanceof
-		 * Variable) { // évite l'interprétation du caractère if
-		 * (this.getVariable(nomDonnee).getType().equals("caractere")) valeur = "\"" +
-		 * valeur + "\"";
-		 * 
-		 * try { this.getVariable(nomDonnee).setValeur(interpreter.eval(valeur));
-		 * 
-		 * // évite l'interprétation de la chaîne de caractère Object interpretValeur;
-		 * if (this.getVariable(nomDonnee).getType().equals("chaine")) interpretValeur =
-		 * "\"" + this.getVariable(nomDonnee).getValeur() + "\""; else interpretValeur =
-		 * this.getVariable(nomDonnee).getValeur();
-		 * 
-		 * interpreter.eval(nomDonnee + " = " + interpretValeur);
-		 * 
-		 * if (prog.getDonneesATracer().contains(this.getVariable(nomDonnee)))
-		 * prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n"; } catch
-		 * (EvalError e) { e.printStackTrace(); } } else { if ( nomDonnee.indexOf( "[" )
-		 * == -1 ) { ((Tableau)(this.getDonnee( nomDonnee
-		 * ))).setValeur((Tableau)this.getDonnee( valeur )); } else { int indice = -1;
-		 * try { indice = (int) interpreteur.eval(nomDonnee.split("\\[|\\]")[1].trim());
-		 * } catch (NumberFormatException | EvalError e) { e.printStackTrace(); } String
-		 * nomVar = nomDonnee.split( "\\[" )[0]; if ( this.getDonnee( nomVar )
-		 * instanceof Tableau ) { Tableau tab = (Tableau) this.getDonnee( nomVar );
-		 * 
-		 * 
-		 * String[] indices = nomDonnee.split( "\\[|\\]" );
-		 * 
-		 * Donnee d = null;
-		 * 
-		 * if ( tab.get( Integer.parseInt( indices[1] ) ) instanceof Tableau ) d =
-		 * (Tableau) tab.get(Integer.parseInt( indices[1] ) ); else d = (Variable)
-		 * tab.get(Integer.parseInt( indices[1] ) );
-		 * 
-		 * for ( int i=3 ; i<indices.length ; i = i+2) { if ( d instanceof Tableau ) {
-		 * tab = (Tableau)d; d = ( (Tableau) d ).get( Integer.parseInt( indices[i] ) );
-		 * } }
-		 * 
-		 * 
-		 * if ( d instanceof Variable ) { System.out.println( "oookk" ); Variable var =
-		 * (Variable) d; // évite l'interprétation du caractère if
-		 * (var.getType().equals("caractere")) valeur = "\"" + valeur + "\"";
-		 * 
-		 * tab.setValeur( indice, new Variable("","",false,this) );
-		 * 
-		 * try { var.setValeur(interpreter.eval(valeur)); System.out.println( tab.get( 0
-		 * ) );
-		 * 
-		 * //évite l'interprétation de la chaîne de caractère Object interpretValeur; if
-		 * (var.getType().equals("chaine")) interpretValeur = "\"" + var.getValeur() +
-		 * "\""; else interpretValeur = var.getValeur();
-		 * 
-		 * interpreter.eval(nomDonnee + " = " + interpretValeur);
-		 * 
-		 * if (prog.getDonneesATracer().contains(this.getDonnee(nomVar)))
-		 * prog.traceVariable += this.getDonnee(nomVar).toString() + "\n"; } catch
-		 * (EvalError e) { e.printStackTrace(); } } else { Tableau var = (Tableau) d;
-		 * tab.setValeur( indice,getDonnee(valeur) ); try { interpreter.eval(nomDonnee +
-		 * " = " + valeur); } catch ( EvalError e ) { e.printStackTrace(); }
-		 * 
-		 * } } } }
-		 */
+		}
 	}
 
 	public String toString() {

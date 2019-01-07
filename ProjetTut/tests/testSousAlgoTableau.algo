@@ -1,0 +1,21 @@
+ALGORITHME testSousAlgoTableau
+constante:
+
+variable:
+	arr : Tableau[3] d'entier
+	
+DEBUT
+	ecrire(arr)
+	appel sousProg1(arr)
+FIN
+
+
+ALGORITHME sousProg1(e tab : Tableau[3] d'entier)
+constante:
+
+variable:
+	
+	
+DEBUT
+	ecrire(tab)
+FIN
