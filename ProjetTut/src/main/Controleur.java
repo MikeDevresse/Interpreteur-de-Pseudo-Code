@@ -127,14 +127,16 @@ public class Controleur {
 	public void getVariableATracer() {
 		for (Algorithme algo : this.prog.getAlgos()) {
 			for (Donnee d : algo.getDonnees()) {
-				System.out.print("Tracer la variable \"" + d.getNom() + "\" de l'algo " + algo.getNom() + " (Y/n) : ");
-				String reponse = sc.nextLine();
-				if (reponse.trim().equalsIgnoreCase("Y") || reponse.trim().equals("")) {
-					prog.ajouterDonneeATracer(d);
+				if (d.estTracable()) {
+					System.out.print("Tracer la variable \"" + d.getNom() + "\" de l'algo " + algo.getNom() + " (Y/n) : ");
+					String reponse = sc.nextLine();
+					if (reponse.trim().equalsIgnoreCase("Y") || reponse.trim().equals("")) {
+						prog.ajouterDonneeATracer(d);
+					}
 				}
+				
 			}
 		}
-
 	}
 
 	/**
@@ -286,6 +288,10 @@ public class Controleur {
 		ligneAAttendre = ligne;
 		this.etapes = new ArrayList<Integer>();
 		this.prog.reset();
+	}
+	
+	public void refresh() {
+		this.aff.afficher();
 	}
 	
 	/**

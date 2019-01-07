@@ -48,12 +48,18 @@ public class Algorithme {
 
 	private String returnValue;
 
+	/*
+	 * Attributs pour les sous-algos
+	 */
+	private ArrayList<String[]> params;
+
 	/**
 	 * Constructeur de l'algorithme
-	 * @param nom nom de l'algorithme
+	 * 
+	 * @param nom        nom de l'algorithme
 	 * @param ligneDebut ligne du début de l'algorithme
-	 * @param fichier ensemble de lignes de l'algo
-	 * @param p programme contenant l'algo
+	 * @param fichier    ensemble de lignes de l'algo
+	 * @param p          programme contenant l'algo
 	 */
 	public Algorithme(String nom, int ligneDebut, String[] fichier, Programme p) {
 		this.prog = p;
@@ -155,10 +161,12 @@ public class Algorithme {
 		if (this.def.equals("algo")) {
 
 			/*
-			 * Gestion des sous programmes
+			 * Gestion des appels des sous algorithmes
 			 */
 			if (current.matches(".*appel.*\\(.*\\)")) {
-				String nomSousProg = current.replaceAll(".*<-- appel (.*)\\(.*\\)", "$1");
+				Controleur.getControleur().attend();
+				String nomSousProg = current.replaceAll(".*appel (.*)\\(.*\\)", "$1"); // récupération du nom du sous
+																						// algo
 
 				Algorithme sousAlgo = null;
 				for (Algorithme a : this.prog.getAlgos())
@@ -167,21 +175,39 @@ public class Algorithme {
 
 				// si le sous-algorithme existe
 				if (sousAlgo != null) {
-					this.prog.setCurrent(sousAlgo);
-					String returnValue;
+
+					// envoi des paramètres au sous algorithme
+					String params[] = current.replaceAll(".*appel .*\\((.*)\\)", "$1").split(",");
+
+					if (sousAlgo.params != null) {
+						for (int i = 0; i < params.length; i++)
+							if (sousAlgo.getDonnee(sousAlgo.params.get(i)[1]) instanceof Variable) {
+								sousAlgo.setValeur(sousAlgo.params.get(i)[1], params[i]);
+							}
+					}
+
+					// définition du sous algo comme algo courant
+					this.prog.setCurrent(sousAlgo); 
+					
 
 					// interprétation et récupération de la valeur de retour
+					String returnValue;
 					do {
 						returnValue = sousAlgo.returnValue;
 						sousAlgo.ligneSuivante();
 					} while (returnValue == null && !sousAlgo.fin);
 
 					// remplacement de l'appel au sous algo par sa valeur de retour
-					current = current.replaceAll("appel.*\\(.*\\)", returnValue);
-					
-					this.prog.setCurrent(this);
+					if (returnValue != null)
+						current = current.replaceAll("appel.*\\(.*\\)", returnValue);
+
+					this.prog.setCurrent(this); // retour à l'algo appelant
 				}
 			}
+
+			/*
+			 * Gestion des déclarations de sous algorithmes
+			 */
 
 			/*
 			 * Affectation des variables
@@ -298,8 +324,10 @@ public class Algorithme {
 		/*
 		 * Fin de la l'algorithme
 		 */
-		if (mots[0].equals("FIN"))
+		if (mots[0].equals("FIN")) {
 			this.fin = true;
+		}
+			
 
 		Controleur.getControleur().attend();
 		return true;
@@ -614,7 +642,7 @@ public class Algorithme {
 			} else if (this.getDonnee(nomDonnee) instanceof Variable) {
 				try {
 					interpreter.eval(nomDonnee + " = " + valeur);
-					((Variable)(this.getDonnee( nomDonnee ))).setValeur( interpreter.eval( valeur ) );
+					((Variable) (this.getDonnee(nomDonnee))).setValeur(interpreter.eval(valeur));
 					if (prog.getDonneesATracer().contains(this.getVariable(nomDonnee)))
 						prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n";
 				} catch (EvalError e) {
@@ -771,5 +799,9 @@ public class Algorithme {
 
 	public String getReturnValue() {
 		return this.returnValue;
+	}
+
+	public void setParams(ArrayList<String[]> params) {
+		this.params = params;
 	}
 }

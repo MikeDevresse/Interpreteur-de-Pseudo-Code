@@ -6,6 +6,7 @@ public abstract class Donnee<T>
 	protected String type;
 	protected boolean constante;
 	protected Algorithme algo;
+	protected boolean tracable;
 	
 	protected Donnee ( String nom, String type, boolean constante, Algorithme algo )
 	{
@@ -13,6 +14,7 @@ public abstract class Donnee<T>
 		this.type = type;
 		this.constante = constante;
 		this.algo = algo;
+		this.tracable = true;
 	}
 
 	/**
@@ -52,6 +54,14 @@ public abstract class Donnee<T>
 	 */
 	public void setNom(String nom) {
 		this.nom = nom;
+	}
+	
+	public void setTracable(boolean t) {
+		this.tracable = t;
+	}
+	
+	public boolean estTracable() {
+		return this.tracable;
 	}
 	
 
