@@ -19,76 +19,75 @@ import pseudoCode.Variable;
  * Tableau du projet en serialize qu'on reprend
  */
 
-public class Controleur
-{
+public class Controleur {
+
+	public static boolean DEBUG = true;
 
 	/** nom du fichier */
-	private final String	   input		  = "tests/Test1.algo";
-
+	private String input;
 
 	/** objet programme */
-	private Programme		   prog;
+	private Programme prog;
 
 	/** lecteur de fichier */
-	private LectureFichier	   lecture;
+	private LectureFichier lecture;
 
-	private Scanner			   sc;
+	private Scanner sc;
 
-	private int				   ligneAAttendre = -1;
+	private int ligneAAttendre = -1;
 
-	private int				   ligneRestantes = -1;
+	private int ligneRestantes = -1;
 
 	private ArrayList<Integer> etapes;
-	
+
 	private ArrayList<Integer> anciennesEtapes;
 
-	private static Controleur  ctrl;
+	private static Controleur ctrl;
 
-	private Affichage		   aff;
-	
+	private Affichage aff;
+
 	private ArrayList<Integer> breakpoints;
-	
-	private boolean 		   attendBreakpoint = false;
-	
-	private int 			   revenir = -1;
-	
-	private int				   cptIteration = 0;
 
-	public static Controleur getControleur ()
-	{
-		if ( Controleur.ctrl == null ) return new Controleur();
-		else return Controleur.ctrl;
+	private boolean attendBreakpoint = false;
+
+	private int revenir = -1;
+
+	public static Controleur getControleur() {
+		if (Controleur.ctrl == null)
+			return new Controleur("");
+		else
+			return Controleur.ctrl;
 	}
 
 	/**
 	 * Constructeur du controleur.
 	 */
-	private Controleur ()
-	{
+	private Controleur(String fichier) {
+		this.input = fichier;
 		this.breakpoints = new ArrayList<Integer>();
 		this.etapes = new ArrayList<Integer>();
 		Controleur.ctrl = this;
-		this.sc = new Scanner( System.in );
-		this.lecture = new LectureFichier( input );
-		try
-		{
-			this.prog = new Programme( lecture.getTexteParLigne() );
-		}
-		catch ( AlgorithmeException e )
-		{
+		this.sc = new Scanner(System.in);
+		this.lecture = new LectureFichier(input);
+
+		// création du programme
+		try {
+			this.prog = new Programme(lecture.getTexteParLigne());
+		} catch (AlgorithmeException e) {
 			e.printStackTrace();
 		}
-		getVariableATracer();
-		this.aff = new Affichage( lecture.getTexteParLigne(), prog );
 
-		while ( !prog.getMain().estTerminer() )
-		{
-			try
-			{
+		// Récupération des variables à tracer
+		getVariableATracer();
+
+		// création de l'IHM
+		this.aff = new Affichage(lecture.getTexteParLigne(), prog);
+
+		// exécution de l'interprétation
+		while (!prog.getMain().estTerminer()) {
+			try {
 				prog.getCurrent().ligneSuivante();
-			}
-			catch ( AlgorithmeException e )
-			{
+			} catch (AlgorithmeException e) {
 				e.printStackTrace();
 			}
 		}
@@ -98,28 +97,25 @@ public class Controleur
 	/**
 	 * Permet à l'utilisateur de renseigner la valeur d'une variable
 	 * 
-	 * @param nomVar
-	 *            nom de la variable
+	 * @param nomVar nom de la variable
 	 */
-	public void lireVariable ( String nomVar )
-	{
-		System.out.print( "Entrez la valeur de " + nomVar + " : " );
+	public void lireVariable(String nomVar) {
+		System.out.print("Entrez la valeur de " + nomVar + " : ");
 		String valeur = this.sc.nextLine();
-		this.prog.traceExec += "l:"+valeur+"\n";
-		this.prog.getCurrent().setValeur( nomVar, valeur );
+		this.prog.traceExec += "l:" + valeur + "\n";
+		this.prog.getCurrent().setValeur(nomVar, valeur);
 	}
 
-	public void getVariableATracer ()
-	{
-		for ( Algorithme algo : this.prog.getAlgos() )
-		{
-			for ( Donnee d : algo.getDonnees() )
-			{
-				System.out.print( "Tracer la variable \"" + d.getNom() + "\" de l'algo " + algo.getNom() + " (Y/n) : " );
+	/**
+	 * Demande à l'utilisateur les variables à tracer
+	 */
+	public void getVariableATracer() {
+		for (Algorithme algo : this.prog.getAlgos()) {
+			for (Donnee d : algo.getDonnees()) {
+				System.out.print("Tracer la variable \"" + d.getNom() + "\" de l'algo " + algo.getNom() + " (Y/n) : ");
 				String reponse = sc.nextLine();
-				if ( reponse.trim().equalsIgnoreCase( "Y" ) || reponse.trim().equals( "" ) )
-				{
-					prog.ajouterDonneeATracer( d );
+				if (reponse.trim().equalsIgnoreCase("Y") || reponse.trim().equals("")) {
+					prog.ajouterDonneeATracer(d);
 				}
 			}
 		}
@@ -129,169 +125,138 @@ public class Controleur
 	/**
 	 * Attend une action de l'utilisateur
 	 */
-	public void attend ()
-	{
+	public void attend() {
+		if (Controleur.DEBUG)
+			return;
+
 		this.aff.afficher();
 
-		if ( !this.prog.getMain().estEnTrainDeReset() )
-			etapes.add( this.prog.getCurrent().getLigneCourrante() );
-		
+		if (!this.prog.getMain().estEnTrainDeReset())
+			etapes.add(this.prog.getCurrent().getLigneCourrante());
+
 		boolean estSurBreakpoint = false;
-		for ( int i = 0 ; i < breakpoints.size() ; i++ )
-		{
-			if ( this.breakpoints.get( i ) == this.prog.getCurrent().getLigneCourrante() )
-			{
+		for (int i = 0; i < breakpoints.size(); i++) {
+			if (this.breakpoints.get(i) == this.prog.getCurrent().getLigneCourrante()) {
 				estSurBreakpoint = true;
 				break;
 			}
 		}
 
-		if ( this.ligneRestantes > 0 )
-		{
+		if (this.ligneRestantes > 0) {
 			ligneRestantes--;
-		}
-		else if ( revenir != -1 && this.anciennesEtapes.size() > revenir )
-		{
-			if ( this.anciennesEtapes.get( 0 ) == this.prog.getCurrent().getLigneCourrante() )
-				this.anciennesEtapes.remove( 0 );
-		}
-		else if ( ligneAAttendre != -1 && ligneAAttendre > prog.getCurrent().getLigneCourrante() )
-		{
+		} else if (revenir != -1 && this.anciennesEtapes.size() > revenir) {
+			if (this.anciennesEtapes.get(0) == this.prog.getCurrent().getLigneCourrante())
+				this.anciennesEtapes.remove(0);
+		} else if (ligneAAttendre != -1 && ligneAAttendre > prog.getCurrent().getLigneCourrante()) {
 
-		}
-		else if ( attendBreakpoint && !estSurBreakpoint)
-		{
-			
-		}
-		else
-		{
+		} else if (attendBreakpoint && !estSurBreakpoint) {
+
+		} else {
 			revenir = -1;
 			ligneRestantes = -1;
 			ligneAAttendre = -1;
 			this.attendBreakpoint = false;
 			String commande = this.sc.nextLine();
-			if ( !commande.equals( "" ))
-				this.prog.traceExec += "a:"+commande+"\n";
+			if (!commande.equals(""))
+				this.prog.traceExec += "a:" + commande + "\n";
 			/*
 			 * Gestion des commandes
 			 */
-			if ( commande.equalsIgnoreCase( "b" ) )
-			{
+			if (commande.equalsIgnoreCase("b")) {
 				retour();
-				this.prog.traceExec += "a:"+commande+"\n";
-			}
-			else if ( commande.matches( "[\\+\\-] var [\\w]+" ) )
-			{
-				String varATracer = commande.replaceAll( "[\\+\\-] var ([\\w]+)", "$1" );
-				boolean ajouter = commande.replaceAll( "([\\+\\-]) var [\\w]+", "$1" ).equals( "+" );
-				for ( Algorithme algo : this.prog.getAlgos() )
-				{
-					for ( Donnee d : algo.getDonnees() )
-					{
-						if ( d.getNom().equals( varATracer ))
-						{
-							if ( ajouter )
-							{
-								prog.ajouterDonneeATracer( d );
-							}
-							else
-							{
-								prog.enleverDonneeATracer( d );
+				this.prog.traceExec += "a:" + commande + "\n";
+			} else if (commande.matches("[\\+\\-] var [\\w]+")) {
+				String varATracer = commande.replaceAll("[\\+\\-] var ([\\w]+)", "$1");
+				boolean ajouter = commande.replaceAll("([\\+\\-]) var [\\w]+", "$1").equals("+");
+				for (Algorithme algo : this.prog.getAlgos()) {
+					for (Donnee d : algo.getDonnees()) {
+						if (d.getNom().equals(varATracer)) {
+							if (ajouter) {
+								prog.ajouterDonneeATracer(d);
+							} else {
+								prog.enleverDonneeATracer(d);
 							}
 						}
 					}
 				}
 				reste();
-				this.prog.traceExec += "a:"+commande+"\n";
-			}
-			else if ( commande.matches( "[Ll][0-9]+" ) )
-			{
-				int ligne = Integer.parseInt( commande.replaceAll( "[Ll]([0-9]+)", "$1" ) )-1;
+				this.prog.traceExec += "a:" + commande + "\n";
+			} else if (commande.matches("[Ll][0-9]+")) {
+				int ligne = Integer.parseInt(commande.replaceAll("[Ll]([0-9]+)", "$1")) - 1;
 				ligneAAttendre = ligne;
 				this.etapes = new ArrayList<Integer>();
 				this.prog.reset();
-			}
-			else if ( commande.matches( "cp tab [\\w]+" ))
-			{
-				String nomVar = commande.replaceAll( "cp tab ([\\w]+)", "$1" );
-				Tableau t = (Tableau) prog.getCurrent().getDonnee( nomVar );
-				if ( t != null)
-				{
-    				StringSelection selection = new StringSelection( t.toStringVertical() );
-    				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-    				clipboard.setContents(selection, selection);
+			} else if (commande.matches("cp tab [\\w]+")) {
+				String nomVar = commande.replaceAll("cp tab ([\\w]+)", "$1");
+				Tableau t = (Tableau) prog.getCurrent().getDonnee(nomVar);
+				if (t != null) {
+					StringSelection selection = new StringSelection(t.toStringVertical());
+					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+					clipboard.setContents(selection, selection);
 				}
 				reste();
-				this.prog.traceExec += "a:"+commande+"\n";
-			}
-			else if ( commande.matches( "cp var [[\\w]+[ ]*]+" ))
-			{
+				this.prog.traceExec += "a:" + commande + "\n";
+			} else if (commande.matches("cp var [[\\w]+[ ]*]+")) {
 				ArrayList<String> vars = new ArrayList<String>();
-				for ( int i=2 ; i < commande.split( " " ).length ; i++ )
-					vars.add( commande.split( " " )[i] );
-				StringSelection selection = new StringSelection( prog.getTraceDonnee(vars) );
+				for (int i = 2; i < commande.split(" ").length; i++)
+					vars.add(commande.split(" ")[i]);
+				StringSelection selection = new StringSelection(prog.getTraceDonnee(vars));
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				clipboard.setContents(selection, selection);
 				this.reste();
-				this.prog.traceExec += "a:"+commande+"\n";
-			}
-			else if ( commande.matches( "[\\+-][ ]*bk" ))
-			{
-				this.setBreakPoint( this.prog.getCurrent().getLigneCourrante() );
+				this.prog.traceExec += "a:" + commande + "\n";
+			} else if (commande.matches("[\\+-][ ]*bk")) {
+				this.setBreakPoint(this.prog.getCurrent().getLigneCourrante());
 				reste();
-				this.prog.traceExec += "a:"+commande+"\n";
-			}
-			else if ( commande.equals( "go bk" ))
-			{
-				if ( this.breakpoints.size() != 0 )
-				{
+				this.prog.traceExec += "a:" + commande + "\n";
+			} else if (commande.equals("go bk")) {
+				if (this.breakpoints.size() != 0) {
 					this.attendBreakpoint = true;
-				}
-				else
-				{
+				} else {
 					reste();
 					this.prog.traceExec += "a:Pas de breakpoint défini\n";
 				}
-			}
-			else if ( commande.equals( "quit" ))
-			{
-				System.exit( 0 );
+			} else if (commande.equals("quit")) {
+				System.exit(0);
 			}
 		}
 	}
-	
-	public ArrayList<Integer> getBreakpoints ()
-	{
+
+	/**
+	 * Retourne les points d'arrêt
+	 * 
+	 * @return Liste de breakpoints
+	 */
+	public ArrayList<Integer> getBreakpoints() {
 		return this.breakpoints;
 	}
-	
-	private void setBreakPoint ( int ligne )
-	{
-		for ( int i = 0 ; i < this.breakpoints.size() ; i++ )
-		{
-			if ( this.breakpoints.get( i ) == ligne)
-			{
-				this.breakpoints.remove( i );
+
+	/**
+	 * Défini un point d'arrêt
+	 * 
+	 * @param ligne numéro de la ligne
+	 */
+	private void setBreakPoint(int ligne) {
+		for (int i = 0; i < this.breakpoints.size(); i++) {
+			if (this.breakpoints.get(i) == ligne) {
+				this.breakpoints.remove(i);
 				return;
 			}
 		}
-		
-		this.breakpoints.add( ligne );
-	}
-	
-	private void reste ()
-	{
-		this.revenir( 0 );
+
+		this.breakpoints.add(ligne);
 	}
 
-	private void retour ()
-	{
-		this.revenir( 1 );
+	private void reste() {
+		this.revenir(0);
 	}
-	
-	private void revenir ( int i )
-	{
-		this.revenir = i+1;
+
+	private void retour() {
+		this.revenir(1);
+	}
+
+	private void revenir(int i) {
+		this.revenir = i + 1;
 		anciennesEtapes = etapes;
 		etapes = new ArrayList<Integer>();
 		this.prog.reset();
@@ -300,14 +265,15 @@ public class Controleur
 	/**
 	 * Fonction main.
 	 */
-	public static void main ( String[] a )
-	{
-		new Controleur();
+	public static void main(String[] a) {
+		if (a.length != 1) {
+			System.out.println("ERREUR : veuillez spécifier le chemin du fichier à interpréter");
+			System.exit(1);
+		} else
+			new Controleur(a[0]);
 	}
 
-	public Programme getProgramme ()
-	{
+	public Programme getProgramme() {
 		return this.prog;
-		
 	}
 }

@@ -21,6 +21,6 @@ DEBUT
 	écrire(enEntier("16.6"))
 	écrire(enRéel("16"))
 	
-	écrire(car(36)
-	écrire(ord('F')
+	écrire(car(36))
+	écrire(ord('F'))
 FIN

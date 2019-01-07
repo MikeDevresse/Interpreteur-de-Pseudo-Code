@@ -46,10 +46,14 @@ public class Algorithme {
 
 	private boolean reset = false;
 
+	private String returnValue;
+
 	/**
-	 * Instanciation de algorithme.
-	 *
-	 * @param nom nom
+	 * Constructeur de l'algorithme
+	 * @param nom nom de l'algorithme
+	 * @param ligneDebut ligne du début de l'algorithme
+	 * @param fichier ensemble de lignes de l'algo
+	 * @param p programme contenant l'algo
 	 */
 	public Algorithme(String nom, int ligneDebut, String[] fichier, Programme p) {
 		this.prog = p;
@@ -70,6 +74,10 @@ public class Algorithme {
 
 		String current = fichier[ligneCourrante++];
 		String[] mots = current.split(" ");
+
+		/*
+		 * Création des constantes et des variables
+		 */
 		do {
 			if (mots[0].replace(":", "").equals("constante")) {
 				this.def = "const";
@@ -94,7 +102,8 @@ public class Algorithme {
 						type = "entier";
 					else if (valeur.matches("[0-9]+.[0-9]*"))
 						type = "reel";
-					else if (valeur.equals("true") || valeur.equals("false"))
+					else if (valeur.equals("true") || valeur.equals("false") || valeur.equals("vrai")
+							|| valeur.equals("faux"))
 						type = "booleen";
 
 					for (String var : current.split("<--")[0].split(",")) {
@@ -126,14 +135,16 @@ public class Algorithme {
 			return false;
 		}
 
-		String current = this.fichier[ligneCourrante++];
+		String current = this.fichier[ligneCourrante++]; // ligne lue
+
+		// gestion des commentaires
 		if (current.matches(".*//.*"))
 			current = current.replaceAll("(.*)//.*", "$1");
 		current = current.trim();
 		if (current.equals(""))
 			return false;
 
-		String[] mots = current.split(" ");
+		String[] mots = current.split(" "); // découpage de la ligne en mots
 
 		if (mots[0].equals("DEBUT"))
 			this.def = "algo";
@@ -144,11 +155,53 @@ public class Algorithme {
 		if (this.def.equals("algo")) {
 
 			/*
+			 * Gestion des sous programmes
+			 */
+			if (current.matches(".*appel.*\\(.*\\)")) {
+				String nomSousProg = current.replaceAll(".*<-- appel (.*)\\(.*\\)", "$1");
+				System.out.println("Appel à un sous-programme " + nomSousProg);
+
+				Algorithme sousAlgo = null;
+				for (Algorithme a : this.prog.getAlgos())
+					if (a.getNom().equals(nomSousProg))
+						sousAlgo = a;
+
+				// si le sous-algorithme existe
+				if (sousAlgo != null) {
+					String returnValue;
+
+					// interprétation et récupération de la valeur de retour
+					do {
+						returnValue = sousAlgo.returnValue;
+						sousAlgo.ligneSuivante();
+					} while (returnValue == null && !sousAlgo.fin);
+
+					// remplacement de l'appel au sous algo par sa valeur de retour
+					current = current.replaceAll("appel.*\\(.*\\)", returnValue);
+				}
+			}
+
+			/*
 			 * Affectation des variables
 			 */
-			if (current.matches(".*<--.*")) {
+			if (current.matches(".*<--.*")) { // gestion des affectations simples
 				String[] parties = current.split("<--");
 				setValeur(parties[0].trim(), parties[1].trim());
+			}
+
+			/*
+			 * Gestion des return
+			 */
+			if (current.matches("retourne .*")) {
+				try {
+					Object val = this.interpreteur.eval(current.replaceAll("retourne (.*)", "$1"));
+					if (val instanceof String)
+						this.returnValue = "\"" + val + "\"";
+					else
+						this.returnValue = val.toString();
+				} catch (EvalError e) {
+					e.printStackTrace();
+				}
 			}
 
 			/*
@@ -318,7 +371,7 @@ public class Algorithme {
 	 */
 	public void interpreterBoucle(int ligneBoucle, String condition, int ligneDebut, int ligneFin)
 			throws AlgorithmeException {
-		
+
 		/*
 		 * Identification des boucles imbriquées
 		 */
@@ -344,7 +397,7 @@ public class Algorithme {
 
 			String[] conditions = condition.split("et|ou|xou|non");
 			ArrayList<String> condVariables = new ArrayList<String>();
-			
+
 			// découpage de la condition et identification des variables impliquées
 			for (String cond : conditions) {
 				cond = cond.trim();
@@ -363,9 +416,9 @@ public class Algorithme {
 						estInfinie = false;
 				}
 			}
-			
+
 			if (estInfinie) {
-				System.out.println("boucle infinie");
+				this.prog.traceExec += "/!\\ boucle infinie";
 				System.exit(1);
 			}
 		}
@@ -495,6 +548,7 @@ public class Algorithme {
 
 	/**
 	 * Retourne une variable spécifique
+	 * 
 	 * @param nomVariable nom de la variable
 	 * @return variable
 	 */
@@ -524,182 +578,112 @@ public class Algorithme {
 	 */
 	public void setValeur(String nomDonnee, String valeur) {
 		Interpreter interpreter = this.getInterpreteur();
-		if ( nomDonnee.contains( "[" ) )
-		{
-			Tableau tab = ((Tableau)(this.getDonnee( nomDonnee.split( "\\[" )[0] )));
-			String[] indices = nomDonnee.split( "\\[|\\]" );
-			for ( int i=1 ; i<indices.length-1 ; i = i+2)
-			{
-				tab = ((Tableau)(tab.get( Integer.parseInt( indices[i] ) )));
+		if (nomDonnee.contains("[")) {
+			Tableau tab = ((Tableau) (this.getDonnee(nomDonnee.split("\\[")[0])));
+			String[] indices = nomDonnee.split("\\[|\\]");
+			for (int i = 1; i < indices.length - 1; i = i + 2) {
+				tab = ((Tableau) (tab.get(Integer.parseInt(indices[i]))));
 			}
-			Variable v = new Variable("",tab.get(0).getType(),false,this);
-			try
-			{
-				v.setValeur( interpreter.eval( valeur ) );
-			}
-			catch ( EvalError e )
-			{
-				e.printStackTrace();
-			}
-			tab.setValeur( Integer.parseInt( indices[indices.length-1] ), v );
-			
-			try
-			{
-				interpreter.eval( nomDonnee + " = " + valeur );
-			}
-			catch ( EvalError e )
-			{
-				e.printStackTrace();
-			}
-			
-			if (prog.getDonneesATracer().contains(this.getDonnee(nomDonnee.split( "\\[" )[0])))
-				prog.traceVariable += this.getDonnee( nomDonnee.split( "\\[" )[0] ).toString() + "\n";
-		}
-		else
-		{
-			if ( this.getDonnee( nomDonnee ) instanceof Tableau )
-			{
-				((Tableau)(this.getDonnee( nomDonnee ))).setValeur( (Tableau) this.getDonnee( valeur ) );
-				try
-				{
-					interpreteur.eval( nomDonnee + " = " + valeur );
-				}
-				catch ( EvalError e )
-				{
-					e.printStackTrace();
-				}
-			}
-			else if ( this.getDonnee( nomDonnee ) instanceof Variable )
-			{
-				try
-				{
-					((Variable)(this.getDonnee( nomDonnee ))).setValeur( interpreter.eval( valeur ) );
-					interpreter.eval( nomDonnee + " = " + interpreter.eval( valeur ) );
-					
-					if (prog.getDonneesATracer().contains(this.getVariable(nomDonnee)))
-						prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n";
-				}
-				catch ( EvalError e )
-				{
-					e.printStackTrace();
-				}
-			}
-		}
-		try
-		{
-			System.out.println( "aaaa" + interpreter.eval( "arr[0][0]" ) );
-		}
-		catch ( EvalError e )
-		{
-		}
-		/*Interpreter interpreter = this.getInterpreteur();
-
-		valeur = Donnee.traduire(valeur);
-		if (this.getDonnee(nomDonnee) instanceof Variable) {
-			// évite l'interprétation du caractère
-			if (this.getVariable(nomDonnee).getType().equals("caractere"))
-				valeur = "\"" + valeur + "\"";
-
+			Variable v = new Variable("", tab.get(0).getType(), false, this);
 			try {
-				this.getVariable(nomDonnee).setValeur(interpreter.eval(valeur));
-
-				// évite l'interprétation de la chaîne de caractère
-				Object interpretValeur;
-				if (this.getVariable(nomDonnee).getType().equals("chaine"))
-					interpretValeur = "\"" + this.getVariable(nomDonnee).getValeur() + "\"";
-				else
-					interpretValeur = this.getVariable(nomDonnee).getValeur();
-
-				interpreter.eval(nomDonnee + " = " + interpretValeur);
-
-				if (prog.getDonneesATracer().contains(this.getVariable(nomDonnee)))
-					prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n";
+				v.setValeur(interpreter.eval(valeur));
 			} catch (EvalError e) {
 				e.printStackTrace();
 			}
+			tab.setValeur(Integer.parseInt(indices[indices.length - 1]), v);
+
+			try {
+				interpreter.eval(nomDonnee + " = " + valeur);
+			} catch (EvalError e) {
+				e.printStackTrace();
+			}
+
+			if (prog.getDonneesATracer().contains(this.getDonnee(nomDonnee.split("\\[")[0])))
+				prog.traceVariable += this.getDonnee(nomDonnee.split("\\[")[0]).toString() + "\n";
 		} else {
-			if ( nomDonnee.indexOf( "[" ) == -1 ) {
-				((Tableau)(this.getDonnee( nomDonnee ))).setValeur((Tableau)this.getDonnee( valeur ));
+			if (this.getDonnee(nomDonnee) instanceof Tableau) {
+				((Tableau) (this.getDonnee(nomDonnee))).setValeur((Tableau) this.getDonnee(valeur));
+				try {
+					interpreteur.eval(nomDonnee + " = " + valeur);
+				} catch (EvalError e) {
+					e.printStackTrace();
+				}
+			} else if (this.getDonnee(nomDonnee) instanceof Variable) {
+				try {
+					interpreter.eval(nomDonnee + " = " + valeur);
+
+					if (prog.getDonneesATracer().contains(this.getVariable(nomDonnee)))
+						prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n";
+				} catch (EvalError e) {
+					e.printStackTrace();
+				}
 			}
-			else
-			{
-    			int indice = -1;
-    			try {
-    				indice = (int) interpreteur.eval(nomDonnee.split("\\[|\\]")[1].trim());
-    			} catch (NumberFormatException | EvalError e) {
-    				e.printStackTrace();
-    			}
-    			String nomVar = nomDonnee.split( "\\[" )[0];
-    			if ( this.getDonnee( nomVar ) instanceof Tableau )
-    			{
-    				Tableau tab = (Tableau) this.getDonnee( nomVar );
-    				
-    
-    				String[] indices = nomDonnee.split( "\\[|\\]" );
-    				
-    				Donnee d = null;
-    				
-    				if ( tab.get( Integer.parseInt( indices[1] ) ) instanceof Tableau )
-    					d = (Tableau) tab.get(Integer.parseInt( indices[1] ) );
-    				else
-    					d = (Variable) tab.get(Integer.parseInt( indices[1] ) );
-    				
-    				for ( int i=3 ; i<indices.length ; i = i+2)
-    				{
-    					if ( d instanceof Tableau ) 
-    					{	
-    						tab = (Tableau)d;
-    						d = ( (Tableau) d ).get( Integer.parseInt( indices[i] ) );
-    					}
-    				}
-    				
-    
-    				if ( d instanceof Variable )
-    				{
-    					System.out.println( "oookk" );
-    					Variable var = (Variable) d;
-    					// évite l'interprétation du caractère
-    		    		if (var.getType().equals("caractere"))
-    		    			valeur = "\"" + valeur + "\"";
-    
-    					tab.setValeur( indice, new Variable("","",false,this) );
-    		    
-    		    		try {
-    		    			var.setValeur(interpreter.eval(valeur));
-    		    			System.out.println( tab.get( 0 ) );
-    		    			
-    		    			//évite l'interprétation de la chaîne de caractère
-    		    			Object interpretValeur;
-    		    			if (var.getType().equals("chaine"))
-    		    				interpretValeur = "\"" + var.getValeur() + "\"";
-    		    			else
-    		    				interpretValeur = var.getValeur();
-    		    			
-    		    			interpreter.eval(nomDonnee + " = " + interpretValeur);
-    
-    		    			if (prog.getDonneesATracer().contains(this.getDonnee(nomVar)))
-    		    				prog.traceVariable += this.getDonnee(nomVar).toString() + "\n";
-    	    			} catch (EvalError e) {
-    	        			e.printStackTrace();
-    	        		}
-    				}
-    				else
-    				{
-    					Tableau var = (Tableau) d;
-    					tab.setValeur( indice,getDonnee(valeur) );
-    	    			try
-    					{
-    						interpreter.eval(nomDonnee + " = " + valeur);
-    					}
-    					catch ( EvalError e )
-    					{
-    						e.printStackTrace();
-    					}
-    					
-    				}
-    			}
-			}
-		}*/
+		}
+
+		/*
+		 * Interpreter interpreter = this.getInterpreteur();
+		 * 
+		 * valeur = Donnee.traduire(valeur); if (this.getDonnee(nomDonnee) instanceof
+		 * Variable) { // évite l'interprétation du caractère if
+		 * (this.getVariable(nomDonnee).getType().equals("caractere")) valeur = "\"" +
+		 * valeur + "\"";
+		 * 
+		 * try { this.getVariable(nomDonnee).setValeur(interpreter.eval(valeur));
+		 * 
+		 * // évite l'interprétation de la chaîne de caractère Object interpretValeur;
+		 * if (this.getVariable(nomDonnee).getType().equals("chaine")) interpretValeur =
+		 * "\"" + this.getVariable(nomDonnee).getValeur() + "\""; else interpretValeur =
+		 * this.getVariable(nomDonnee).getValeur();
+		 * 
+		 * interpreter.eval(nomDonnee + " = " + interpretValeur);
+		 * 
+		 * if (prog.getDonneesATracer().contains(this.getVariable(nomDonnee)))
+		 * prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n"; } catch
+		 * (EvalError e) { e.printStackTrace(); } } else { if ( nomDonnee.indexOf( "[" )
+		 * == -1 ) { ((Tableau)(this.getDonnee( nomDonnee
+		 * ))).setValeur((Tableau)this.getDonnee( valeur )); } else { int indice = -1;
+		 * try { indice = (int) interpreteur.eval(nomDonnee.split("\\[|\\]")[1].trim());
+		 * } catch (NumberFormatException | EvalError e) { e.printStackTrace(); } String
+		 * nomVar = nomDonnee.split( "\\[" )[0]; if ( this.getDonnee( nomVar )
+		 * instanceof Tableau ) { Tableau tab = (Tableau) this.getDonnee( nomVar );
+		 * 
+		 * 
+		 * String[] indices = nomDonnee.split( "\\[|\\]" );
+		 * 
+		 * Donnee d = null;
+		 * 
+		 * if ( tab.get( Integer.parseInt( indices[1] ) ) instanceof Tableau ) d =
+		 * (Tableau) tab.get(Integer.parseInt( indices[1] ) ); else d = (Variable)
+		 * tab.get(Integer.parseInt( indices[1] ) );
+		 * 
+		 * for ( int i=3 ; i<indices.length ; i = i+2) { if ( d instanceof Tableau ) {
+		 * tab = (Tableau)d; d = ( (Tableau) d ).get( Integer.parseInt( indices[i] ) );
+		 * } }
+		 * 
+		 * 
+		 * if ( d instanceof Variable ) { System.out.println( "oookk" ); Variable var =
+		 * (Variable) d; // évite l'interprétation du caractère if
+		 * (var.getType().equals("caractere")) valeur = "\"" + valeur + "\"";
+		 * 
+		 * tab.setValeur( indice, new Variable("","",false,this) );
+		 * 
+		 * try { var.setValeur(interpreter.eval(valeur)); System.out.println( tab.get( 0
+		 * ) );
+		 * 
+		 * //évite l'interprétation de la chaîne de caractère Object interpretValeur; if
+		 * (var.getType().equals("chaine")) interpretValeur = "\"" + var.getValeur() +
+		 * "\""; else interpretValeur = var.getValeur();
+		 * 
+		 * interpreter.eval(nomDonnee + " = " + interpretValeur);
+		 * 
+		 * if (prog.getDonneesATracer().contains(this.getDonnee(nomVar)))
+		 * prog.traceVariable += this.getDonnee(nomVar).toString() + "\n"; } catch
+		 * (EvalError e) { e.printStackTrace(); } } else { Tableau var = (Tableau) d;
+		 * tab.setValeur( indice,getDonnee(valeur) ); try { interpreter.eval(nomDonnee +
+		 * " = " + valeur); } catch ( EvalError e ) { e.printStackTrace(); }
+		 * 
+		 * } } } }
+		 */
 	}
 
 	public String toString() {
@@ -721,6 +705,7 @@ public class Algorithme {
 
 	/**
 	 * Retourne le contenu de l'algorithme
+	 * 
 	 * @return tableau de ligne
 	 */
 	public String[] getFichier() {
@@ -738,6 +723,7 @@ public class Algorithme {
 
 	/**
 	 * Retourne la ligne de début d'algorithme
+	 * 
 	 * @return
 	 */
 	public int getLigneDebut() {
@@ -746,6 +732,7 @@ public class Algorithme {
 
 	/**
 	 * Retourne la ligne courrante
+	 * 
 	 * @return
 	 */
 	public int getLigneCourrante() {
@@ -754,6 +741,7 @@ public class Algorithme {
 
 	/**
 	 * Retourne le nom de l'algorithme
+	 * 
 	 * @return
 	 */
 	public String getNom() {
@@ -771,9 +759,14 @@ public class Algorithme {
 
 	/**
 	 * Retourne si l'algorithme est en cours de reset
+	 * 
 	 * @return vrai si en cours de reset
 	 */
 	public boolean estEnTrainDeReset() {
 		return reset;
+	}
+
+	public String getReturnValue() {
+		return this.returnValue;
 	}
 }

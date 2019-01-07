@@ -20,15 +20,15 @@ public class Fonctions {
 	 * @param contenu     paramètre envoyés
 	 */
 	public static String evaluer(String nomFonction, String contenu, Algorithme a) {
-		try
-		{
-			System.out.println( "test " + a.getInterpreteur().eval( "arr[0][0]" ) );
-		}
-		catch ( EvalError e )
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try
+//		{
+//			System.out.println( "test " + a.getInterpreteur().eval( "arr[0][0]" ) );
+//		}
+//		catch ( EvalError e )
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		nomFonction = nomFonction.trim();
 		switch (nomFonction.toLowerCase()) {
 		case "ecrire":
