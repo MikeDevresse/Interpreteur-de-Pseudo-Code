@@ -47,6 +47,8 @@ public class Algorithme {
 	private boolean reset = false;
 
 	private String returnValue;
+	
+	private boolean jump;
 
 	/**
 	 * Constructeur de l'algorithme
@@ -159,7 +161,6 @@ public class Algorithme {
 			 */
 			if (current.matches(".*appel.*\\(.*\\)")) {
 				String nomSousProg = current.replaceAll(".*<-- appel (.*)\\(.*\\)", "$1");
-				System.out.println("Appel à un sous-programme " + nomSousProg);
 
 				Algorithme sousAlgo = null;
 				for (Algorithme a : this.prog.getAlgos())
@@ -168,6 +169,7 @@ public class Algorithme {
 
 				// si le sous-algorithme existe
 				if (sousAlgo != null) {
+					this.jump = true;
 					String returnValue;
 
 					// interprétation et récupération de la valeur de retour
@@ -178,6 +180,8 @@ public class Algorithme {
 
 					// remplacement de l'appel au sous algo par sa valeur de retour
 					current = current.replaceAll("appel.*\\(.*\\)", returnValue);
+					
+					this.jump = false;
 				}
 			}
 
@@ -296,7 +300,7 @@ public class Algorithme {
 		/*
 		 * Fin de la l'algorithme
 		 */
-		if (mots[0].equals("FIN"))
+		if (mots[0].equals("FIN") && !this.jump)
 			this.fin = true;
 
 		Controleur.getControleur().attend();

@@ -77,6 +77,10 @@ public class Programme {
 	public Algorithme getCurrent() {
 		return this.current;
 	}
+	
+	public void setCurrent(Algorithme a) {
+		this.current = a;
+	}
 
 	public ArrayList<Algorithme> getAlgos() {
 		return this.algos;
