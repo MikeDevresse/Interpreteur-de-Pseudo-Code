@@ -64,7 +64,13 @@ public class Affichage {
 	private void maj() {
 		this.ensPArret = Controleur.getControleur().getBreakpoints();
 		this.exec = prog.traceExec;
-		this.ligneC = prog.getCurrent().getLigneCourrante() + prog.getCurrent().getLigneDebut();
+		if (this.prog.getLast() != null) {
+			this.ligneC = prog.getCurrent().getLigneCourrante() + prog.getCurrent().getLigneDebut();
+			System.out.println("jump algo");
+		}
+			
+		else
+			this.ligneC = prog.getCurrent().getLigneCourrante();
 		this.vars = prog.traceVariable.split("\n");
 	}
 

@@ -160,7 +160,6 @@ public class Controleur {
 	 */
 	public void lireVariable(String nomVar) {
 		String valeur = "";
-		System.out.println( varsALire.toString() );
 		if ( this.varsALire.isEmpty())
 		{
     		System.out.print("Entrez la valeur de " + nomVar + " : ");
@@ -252,9 +251,7 @@ public class Controleur {
 				this.prog.traceExec += "a:" + commande + "\n";
 			} else if (commande.matches("[Ll][0-9]+")) {
 				int ligne = Integer.parseInt(commande.replaceAll("[Ll]([0-9]+)", "$1")) - 1;
-				ligneAAttendre = ligne;
-				this.etapes = new ArrayList<Integer>();
-				this.prog.reset();
+				allerA(ligne);
 			} else if (commande.matches("cp tab [\\w]+")) {
 				String nomVar = commande.replaceAll("cp tab ([\\w]+)", "$1");
 				Tableau t = (Tableau) prog.getCurrent().getDonnee(nomVar);
@@ -358,6 +355,17 @@ public class Controleur {
 		this.prog.reset();
 	}
 	
+
+	public Programme getProgramme() {
+		return this.prog;
+	}
+	
+	public void allerA(int ligne) {
+		ligneAAttendre = ligne;
+		this.etapes = new ArrayList<Integer>();
+		this.prog.reset();
+	}
+	
 	/**
 	 * Fonction main.
 	 */
@@ -367,9 +375,5 @@ public class Controleur {
 			System.exit(1);
 		} else
 			new Controleur(a[0]);
-	}
-
-	public Programme getProgramme() {
-		return this.prog;
 	}
 }

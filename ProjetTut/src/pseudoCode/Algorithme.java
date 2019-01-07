@@ -161,7 +161,6 @@ public class Algorithme {
 			 */
 			if (current.matches(".*appel.*\\(.*\\)")) {
 				String nomSousProg = current.replaceAll(".*<-- appel (.*)\\(.*\\)", "$1");
-				System.out.println("Appel à un sous-programme " + nomSousProg);
 
 				Algorithme sousAlgo = null;
 				for (Algorithme a : this.prog.getAlgos())
@@ -170,6 +169,7 @@ public class Algorithme {
 
 				// si le sous-algorithme existe
 				if (sousAlgo != null) {
+					this.prog.setCurrent(sousAlgo);
 					String returnValue;
 
 					// interprétation et récupération de la valeur de retour
@@ -180,6 +180,8 @@ public class Algorithme {
 
 					// remplacement de l'appel au sous algo par sa valeur de retour
 					current = current.replaceAll("appel.*\\(.*\\)", returnValue);
+					
+					this.prog.setCurrent(this);
 				}
 			}
 

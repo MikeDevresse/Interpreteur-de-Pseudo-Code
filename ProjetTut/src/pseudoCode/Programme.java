@@ -14,6 +14,7 @@ public class Programme {
 
 	private Algorithme main;
 
+	private Algorithme last;
 	private Algorithme current;
 
 	private ArrayList<Integer> lignesFausses;
@@ -47,7 +48,8 @@ public class Programme {
 					Algorithme a = new Algorithme(nom, debut, lignes.toArray(new String[lignes.size()]), this);
 					algos.add(a);
 					if (main) {
-						this.current = this.main = a;
+						this.main = a;
+						setCurrent(this.main);
 					}
 				}
 				if (mots[0].equals("ALGORITHME")) {
@@ -74,8 +76,17 @@ public class Programme {
 		return this.main;
 	}
 
+	public Algorithme getLast() {
+		return this.last;
+	}
+	
 	public Algorithme getCurrent() {
 		return this.current;
+	}
+	
+	public void setCurrent(Algorithme a) {
+		this.last = this.current;
+		this.current = a;
 	}
 
 	public ArrayList<Algorithme> getAlgos() {
