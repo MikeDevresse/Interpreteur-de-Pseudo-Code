@@ -121,6 +121,9 @@ public class Controleur {
     		
     		while ( ( s = reader.readLine() ) != null )
     		{
+    			if ( s.indexOf( ":" ) == -1 )
+    				continue;
+    			
     			String nom    = s.split( ":" )[0].trim().toLowerCase();
     			String valeur = s.split( ":" )[1].trim().toLowerCase();
     			

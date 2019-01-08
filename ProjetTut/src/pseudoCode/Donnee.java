@@ -90,7 +90,7 @@ public abstract class Donnee<T>
 	@Override
 	public String toString() {
 		String s = "";
-
+ 
 		s += String.format("%3s|%10s|%11s|%10s|", algo.getLigneCourrante(), this.nom, this.type);
 		
 		return s;
