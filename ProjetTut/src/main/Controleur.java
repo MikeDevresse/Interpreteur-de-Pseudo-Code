@@ -424,7 +424,7 @@ public class Controleur {
 			boolean gui = false;
 			int nbArgOpt = 0;
 			for (String arg : a)
-				if (arg.equals("-gui")) {
+				if (arg.toLowerCase().equals("-gui")) {
 					gui = true;
 					nbArgOpt = 1;
 				}
@@ -435,6 +435,5 @@ public class Controleur {
 			if (a.length - nbArgOpt == 2)
 				new Controleur(a[0], a[1], gui);
 		}
-
 	}
 }
