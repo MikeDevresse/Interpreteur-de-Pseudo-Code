@@ -3,47 +3,32 @@ package pseudoCode;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-/**
- * Interprète le code d'un algorithme
- */
-
 import bsh.EvalError;
 import bsh.Interpreter;
 import main.Controleur;
 import util.Condition;
 import util.Fonctions;
 
+/**
+ * Interprète le code d'un algorithme
+ */
+
 public class Algorithme {
 
 	private Interpreter interpreteur;
 
-	/** nom. */
 	private String nom;
-
-	/** ens variables. */
 	private ArrayList<Donnee> ensDonnees;
-
 	private String[] fichier;
 
-	/** fin. */
-	private boolean fin = false;
-
-	/** def. */
 	private String def = "";
-
-	/** ligne courrante. */
-	private int ligneCourrante = 0;
-
-	private int ligneDebutAlgorithme;
-
-	private int ligneDebut;
-
-	private Programme prog;
-
-	private boolean reset = false;
-
 	private String returnValue;
+	private boolean fin;
+	private boolean reset;
+	private int ligneCourrante = 0;
+	private int ligneDebutAlgorithme;
+	private int ligneDebut;
+	private Programme prog;
 
 	/*
 	 * Attributs pour les sous-algos
@@ -87,13 +72,15 @@ public class Algorithme {
 			} else if (mots[0].replace(":", "").equals("variable")) {
 				this.def = "var";
 			} else if (this.def != null || !this.def.equals("")) {
+				// déclaration de variable
 				if (current.matches("[[\\w*],*]*[ ]*\\w*:.*")) {
 					String type = current.split(":")[1].trim();
 					for (String var : current.split(":")[0].split(",")) {
 						ajouterDonnee(DonneeFactory.createVariable(var.trim(), type, this.def.equals("const"), this));
 					}
-
 				}
+
+				// déclaration de constantes
 				if (current.matches("[[\\w*],*]*[ ]*\\w*<--[ ]*\\w*")) {
 					String type = "";
 					String valeur = current.replaceAll("[[\\w*],*]*[ ]*\\w*<--[ ]*(\\w+)", "$1");
@@ -161,6 +148,8 @@ public class Algorithme {
 		if (current.matches(".*//.*"))
 			current = current.replaceAll("(.*)//.*", "$1");
 		current = current.trim();
+
+		// gestion des lignes vides
 		if (current.equals(""))
 			return false;
 
@@ -181,7 +170,7 @@ public class Algorithme {
 				Controleur.getControleur().attend();
 				String nomSousProg = current.replaceAll(".*appel (.*)\\(.*\\)", "$1"); // récupération du nom du sous
 																						// algo
-
+				// récupération du sous algorithme appelé
 				Algorithme sousAlgo = null;
 				for (Algorithme a : this.prog.getAlgos())
 					if (a.getNom().equals(nomSousProg))
@@ -225,10 +214,6 @@ public class Algorithme {
 			}
 
 			/*
-			 * Gestion des déclarations de sous algorithmes
-			 */
-
-			/*
 			 * Affectation des variables
 			 */
 			if (current.matches(".*<--.*")) { // gestion des affectations simples
@@ -259,8 +244,10 @@ public class Algorithme {
 				Pattern pattern = Pattern.compile("\\(.*\\)");
 				Matcher matcher = pattern.matcher(current);
 				if (matcher.find()) {
-					toInterpret = matcher.group(0).substring(1, matcher.group(0).length() - 1);
-					Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(toInterpret), this);
+					toInterpret = matcher.group(0).substring(1, matcher.group(0).length() - 1); // paramètres de la
+																								// fonction
+					Fonctions.evaluer(current.split("\\(|\\)")[0], Variable.traduire(toInterpret), this); // appel à la
+																											// fonction
 				}
 			}
 
@@ -340,9 +327,8 @@ public class Algorithme {
 		}
 
 		Controleur.getControleur().attend();
-		
+
 		if (mots[0].equals("FIN")) {
-			System.out.println("======== FIN");
 			this.fin = true;
 		}
 		return true;
@@ -379,14 +365,13 @@ public class Algorithme {
 					nbSi--;
 		}
 
-		if (Condition.condition(condition, this.getInterpreteur())) {
-			// interprétation de la condition
+		if (Condition.condition(condition, this.getInterpreteur())) { // condition valide
 			Controleur.getControleur().attend();
 			do {
 				ligneSuivante();
 			} while (this.ligneCourrante != ligneSinon && this.ligneCourrante != ligneFsi);
 
-			// saut jusqu'à la fin de la condition
+			// si on rencontre un "sinon", saut jusqu'à la fin de la condition
 			if (this.fichier[this.ligneCourrante].trim().equals("sinon")) {
 				do {
 					this.ligneCourrante++;
@@ -394,6 +379,7 @@ public class Algorithme {
 			}
 
 		} else { // condition invalide
+			// affichage de la condition fausse
 			for (int i = ligneDebut; i <= ligneFin; i++)
 				this.prog.ajouterLigneFausse(i);
 
@@ -401,8 +387,9 @@ public class Algorithme {
 
 			this.prog.resetLigneFausse();
 
+			// saut à l'alternative ou la fin de la condition
 			do {
-				this.ligneCourrante++; // saut à l'alternative ou la fin de la condition
+				this.ligneCourrante++;
 			} while ((this.ligneCourrante != ligneSinon + 1 && this.ligneCourrante != ligneFsi + 1));
 		}
 	}
@@ -452,7 +439,7 @@ public class Algorithme {
 					condVariables.add(vars[i]);
 			}
 
-			// parcours à vide de la condition pour détecter les modifications de variable
+			// parcours à vide de la boucle pour détecter les modifications de variable
 			boolean estInfinie = true;
 			for (int i = this.ligneCourrante; i < ligneFtq; i++) {
 				for (String var : condVariables) {
@@ -633,6 +620,7 @@ public class Algorithme {
 	 * @param valeur    valeur de la donnée
 	 * @param source    algorithme possédant la donnée
 	 */
+
 	public void setValeur(String nomDonnee, String valeur, Algorithme source) {
 		Interpreter interpreter = this.getInterpreteur();
 		if (nomDonnee.contains("[")) {

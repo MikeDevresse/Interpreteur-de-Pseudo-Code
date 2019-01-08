@@ -18,66 +18,46 @@ import pseudoCode.Donnee;
 import pseudoCode.Programme;
 import pseudoCode.Tableau;
 
-/*
- * Retour en arriere :
- * Tableau du projet en serialize qu'on reprend
+/**
+ * La classe controleur permet d'exécuter le programme et d'interagir avec l'IHM
  */
-
 public class Controleur {
-	
-	public static boolean GUI = true;
 
 	public static boolean DEBUG = false;
-	
-	private boolean peutContinuer;
-	
-	private String derniereCommande;
+	private static Controleur ctrl;
 
-	/** nom du fichier */
+	private String derniereCommande;
 	private String configFile;
 
-	/** objet programme */
 	private Programme prog;
-
-	/** lecteur de fichier */
 	private LectureFichier lecture;
-
 	private Scanner sc;
 
 	private int ligneAAttendre = -1;
-
 	private int ligneRestantes = -1;
+	private int revenir = -1;
+
+	private double tempDefaut;
 
 	private ArrayList<Integer> etapes;
-
 	private ArrayList<Integer> anciennesEtapes;
-
-	private static Controleur ctrl;
+	private ArrayList<Integer> breakpoints;
+	private ArrayList<String> varsALire;
+	private ArrayList<String> varsLu;
+	private HashMap<Integer, Double> temps;
+	private HashMap<Integer, String> comms;
 
 	private Affichage aff;
-	
 	private GUI gui;
 
-	private ArrayList<Integer> breakpoints;
-
-	private boolean attendBreakpoint = false;
-
-	private int revenir = -1;
-	
-	private ArrayList<String> varsALire;
-	
-	private ArrayList<String> varsLu;
-	
+	private boolean peutContinuer;
+	private boolean attendBreakpoint;
+	private boolean modeGui;
 	private boolean marcheAuto;
-	
-	private double tempDefaut;
-	
-	private HashMap<Integer,Double> temps;
-	private HashMap<Integer,String> comms;
 
 	public static Controleur getControleur() {
 		if (Controleur.ctrl == null)
-			return new Controleur("", "");
+			return new Controleur("", "", false);
 		else
 			return Controleur.ctrl;
 	}
@@ -85,30 +65,33 @@ public class Controleur {
 	/**
 	 * Constructeur du controleur.
 	 */
-	private Controleur(String fichier, String configFile) {
-		
+	private Controleur(String fichier, String configFile, boolean modeGui) {
+
 		this.varsALire = new ArrayList<String>();
 		this.varsLu = new ArrayList<String>();
 		this.breakpoints = new ArrayList<Integer>();
 		this.etapes = new ArrayList<Integer>();
 
-		this.temps = new HashMap<Integer,Double>();
-		this.comms = new HashMap<Integer,String>();
-		
+		this.temps = new HashMap<Integer, Double>();
+		this.comms = new HashMap<Integer, String>();
+
 		this.configFile = configFile;
-		
+		this.modeGui = modeGui;
+
 		Controleur.ctrl = this;
 		this.sc = new Scanner(System.in);
 		this.lecture = new LectureFichier(fichier);
-		
+
+		// si aucun fichier de configuration n'est renseigné
 		if (!this.configFile.equals("")) {
 			try {
 				lancerConfig();
 			} catch (Exception e) {
-				System.out.println("/!\\ ERREUR : le fichier de configuration est invalide. Exécution en mode normal...");
+				// fichier de configuration invalide
+				System.out
+						.println("/!\\ ERREUR : le fichier de configuration est invalide. Exécution en mode normal...");
 			}
 		}
-			
 
 		// création du programme
 		try {
@@ -121,9 +104,10 @@ public class Controleur {
 		getVariableATracer();
 
 		// création de l'IHM
-		this.aff = new Affichage(lecture.getTexteParLigne(), prog);
-		
-		this.gui = new GUI(lecture.getTexteParLigne(), prog);
+		if (this.modeGui)
+			this.gui = new GUI(lecture.getTexteParLigne(), prog);
+		else
+			this.aff = new Affichage(lecture.getTexteParLigne(), prog);
 
 		// exécution de l'interprétation
 		while (!prog.getMain().estTerminer()) {
@@ -135,49 +119,57 @@ public class Controleur {
 		}
 
 	}
-	
-	public void envoyerCommande ( String s )
-	{
+
+	/**
+	 * Permet à l'IHM GUI d'envoyer une commande au controleur
+	 * 
+	 * @param s commande
+	 */
+	public void envoyerCommande(String s) {
 		this.derniereCommande = s;
 		this.peutContinuer = true;
 	}
-	
-	public void lancerConfig () throws NumberFormatException, IOException
-	{
-    		String s = "";
-    		BufferedReader reader = new BufferedReader( new FileReader( this.configFile ) );
-    		
-    		while ( ( s = reader.readLine() ) != null )
-    		{
-    			if ( s.indexOf( ":" ) == -1 )
-    				continue;
-    			
-    			String nom    = s.split( ":" )[0].trim().toLowerCase();
-    			String valeur = s.split( ":" )[1].trim().toLowerCase();
-    			
-    			if ( nom.matches( "marche auto.*" ))
-    			{
-    				marcheAuto = valeur.equals( "oui" );
-    			}
-    			if ( nom.matches("temp.*"))
-    			{
-    				if ( nom.matches( "temp globale.*" ) )
-    				{
-    					this.tempDefaut = Double.parseDouble( valeur );
-    				}
-    				if ( nom.matches( "temp l[0-9]+.*" ))
-    				{
-    					int ligne = Integer.parseInt( nom.replaceAll( "temp l([0-9]+).*", "$1" ) );
-    					temps.put( ligne, Double.parseDouble( valeur ) );
-    				}
-    			}
-    			if ( nom.matches( "comm l[0-9]+.*" ))
-    			{
-					int ligne = Integer.parseInt( nom.replaceAll( "comm l([0-9]+).*", "$1" ) );
-					comms.put( ligne, valeur );
-    			}
-    		}
-		
+
+	/**
+	 * Lit et interprète le fichier de configuration
+	 * 
+	 * @throws NumberFormatException
+	 * @throws IOException
+	 */
+	public void lancerConfig() throws NumberFormatException, IOException {
+		String s = "";
+		BufferedReader reader = new BufferedReader(new FileReader(this.configFile));
+
+		while ((s = reader.readLine()) != null) {
+			if (s.indexOf(":") == -1)
+				continue;
+
+			String nom = s.split(":")[0].trim().toLowerCase();
+			String valeur = s.split(":")[1].trim().toLowerCase();
+
+			// marche automatique
+			if (nom.matches("marche auto.*")) {
+				marcheAuto = valeur.equals("oui");
+			}
+
+			// temporisation des lignes
+			if (nom.matches("temp.*")) {
+				if (nom.matches("temp globale.*")) {
+					this.tempDefaut = Double.parseDouble(valeur);
+				}
+				if (nom.matches("temp l[0-9]+.*")) {
+					int ligne = Integer.parseInt(nom.replaceAll("temp l([0-9]+).*", "$1"));
+					temps.put(ligne, Double.parseDouble(valeur));
+				}
+			}
+
+			// commentaires
+			if (nom.matches("comm l[0-9]+.*")) {
+				int ligne = Integer.parseInt(nom.replaceAll("comm l([0-9]+).*", "$1"));
+				comms.put(ligne, valeur);
+			}
+		}
+
 	}
 
 	/**
@@ -187,30 +179,28 @@ public class Controleur {
 	 */
 	public void lireVariable(String nomVar) {
 		String valeur = "";
-		if ( this.varsALire.isEmpty())
-		{
-			aff.afficher();
-			gui.repaint();
-    		System.out.print("Entrez la valeur de " + nomVar + " : ");
-    		if ( GUI )
-			{
+		if (this.varsALire.isEmpty()) {
+
+			if (this.modeGui)
+				gui.repaint();
+			else
+				aff.afficher();
+
+			System.out.print("Entrez la valeur de " + nomVar + " : ");
+			if (this.modeGui) {
 				do {
-					System.out.print( "" );
-				} while ( !peutContinuer );
+					System.out.print("");
+				} while (!peutContinuer);
 				valeur = this.derniereCommande;
 				peutContinuer = false;
-			}
-			else
-			{
+			} else {
 				valeur = this.sc.nextLine();
 				this.derniereCommande = valeur;
 			}
+		} else {
+			valeur = varsALire.remove(0);
 		}
-		else
-		{
-			valeur = varsALire.remove( 0 );
-		}
-		this.varsLu.add( valeur );
+		this.varsLu.add(valeur);
 		this.prog.traceExec += "l:" + valeur + "\n";
 		this.prog.getCurrent().setValeur(nomVar, valeur);
 	}
@@ -222,13 +212,14 @@ public class Controleur {
 		for (Algorithme algo : this.prog.getAlgos()) {
 			for (Donnee d : algo.getDonnees()) {
 				if (d.estTracable()) {
-					System.out.print("Tracer la variable \"" + d.getNom() + "\" de l'algo " + algo.getNom() + " (Y/n) : ");
+					System.out.print(
+							"Tracer la variable \"" + d.getNom() + "\" de l'algo " + algo.getNom() + " (Y/n) : ");
 					String reponse = sc.nextLine();
 					if (reponse.trim().equalsIgnoreCase("Y") || reponse.trim().equals("")) {
 						prog.ajouterDonneeATracer(d);
 					}
 				}
-				
+
 			}
 		}
 	}
@@ -240,8 +231,11 @@ public class Controleur {
 		if (Controleur.DEBUG)
 			return;
 
-		this.aff.afficher();
-		this.gui.repaint();
+		// affichage de l'IHM
+		if (this.modeGui)
+			this.gui.repaint();
+		else
+			this.aff.afficher();
 
 		if (!this.prog.getMain().estEnTrainDeReset())
 			etapes.add(this.prog.getCurrent().getLigneCourrante());
@@ -263,27 +257,24 @@ public class Controleur {
 
 		} else if (attendBreakpoint && !estSurBreakpoint) {
 
-		} else if ( !marcheAuto ){
+		} else if (!marcheAuto) {
 			revenir = -1;
 			ligneRestantes = -1;
 			ligneAAttendre = -1;
 			this.attendBreakpoint = false;
 			String commande;
-			if ( GUI )
-			{
+			if (this.modeGui) {
 				do {
-					System.out.print( "" );
-				} while ( !peutContinuer );
+					System.out.print("");
+				} while (!peutContinuer);
 				commande = this.derniereCommande;
 				peutContinuer = false;
-			}
-			else
-			{
+			} else {
 				commande = this.sc.nextLine();
 				this.derniereCommande = commande;
 			}
-			if (!commande.equals(""))
-				this.prog.traceExec += "a:" + commande + "\n";
+//			if (!commande.equals(""))
+//				this.prog.traceExec += "a:" + commande + "\n";
 			/*
 			 * Gestion des commandes
 			 */
@@ -342,31 +333,23 @@ public class Controleur {
 			} else if (commande.equals("quit")) {
 				System.exit(0);
 			}
-		}
-		else
-		{
-			int ligneCourrante = this.prog.getCurrent().getLigneCourrante() + this.prog.getCurrent().getLigneDebut() + 1;
-			if ( this.temps.containsKey( ligneCourrante ) )
-			{
+		} else {
+			int ligneCourrante = this.prog.getCurrent().getLigneCourrante() + this.prog.getCurrent().getLigneDebut()
+					+ 1;
+			if (this.temps.containsKey(ligneCourrante)) {
 				try {
-					Thread.sleep( (long)( this.temps.get( ligneCourrante )*1000) );
+					Thread.sleep((long) (this.temps.get(ligneCourrante) * 1000));
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				catch ( Exception e )
-				{
+			} else {
+				try {
+					Thread.sleep((long) (tempDefaut * 1000));
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			else
-			{
-				try {
-					Thread.sleep( (long)( tempDefaut*1000 ));
-				}
-				catch ( Exception e )
-				{
-					e.printStackTrace();
-				}
-			}
-			
+
 		}
 	}
 
@@ -394,9 +377,8 @@ public class Controleur {
 
 		this.breakpoints.add(ligne);
 	}
-	
-	public HashMap<Integer,String> getComms ()
-	{
+
+	public HashMap<Integer, String> getComms() {
 		return this.comms;
 	}
 
@@ -416,35 +398,40 @@ public class Controleur {
 		etapes = new ArrayList<Integer>();
 		this.prog.reset();
 	}
-	
 
 	public Programme getProgramme() {
 		return this.prog;
 	}
-	
+
 	public void allerA(int ligne) {
 		ligneAAttendre = ligne;
 		this.etapes = new ArrayList<Integer>();
 		this.prog.reset();
 	}
-	
+
 	public void refresh() {
 		this.aff.afficher();
 	}
-	
+
 	/**
 	 * Fonction main.
 	 */
 	public static void main(String[] a) {
-		if (a.length < 1 || a.length > 2) {
-			System.out.println("ERREUR : veuillez spécifier le chemin du fichier à interpréter et le chemin du fichier de configuration");
+		if (a.length < 1 || a.length > 3) {
+			System.out.println(
+					"ERREUR : veuillez spécifier le chemin du fichier à interpréter et le chemin du fichier de configuration");
 			System.exit(1);
 		} else {
+			boolean gui = false;
+			for (String arg : a)
+				if (arg.equals("-gui"))
+					gui = true;
+
 			if (a.length == 1)
-				new Controleur(a[0], "");
+				new Controleur(a[0], "", gui);
 			if (a.length == 2)
-				new Controleur(a[0], a[1]);
+				new Controleur(a[0], a[1], gui);
 		}
-			
+
 	}
 }
