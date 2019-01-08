@@ -422,13 +422,17 @@ public class Controleur {
 			System.exit(1);
 		} else {
 			boolean gui = false;
+			int nbArgOpt = 0;
 			for (String arg : a)
-				if (arg.equals("-gui"))
+				if (arg.equals("-gui")) {
 					gui = true;
+					nbArgOpt = 1;
+				}
+					
 
-			if (a.length == 1)
+			if (a.length - nbArgOpt == 1)
 				new Controleur(a[0], "", gui);
-			if (a.length == 2)
+			if (a.length - nbArgOpt == 2)
 				new Controleur(a[0], a[1], gui);
 		}
 
