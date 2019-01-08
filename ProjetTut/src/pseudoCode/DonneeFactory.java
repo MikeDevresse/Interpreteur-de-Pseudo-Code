@@ -1,7 +1,5 @@
 package pseudoCode;
 
-import java.util.ArrayList;
-
 import bsh.EvalError;
 
 /**

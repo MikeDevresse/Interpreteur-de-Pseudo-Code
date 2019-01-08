@@ -1,13 +1,11 @@
 package pseudoCode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Programme {
 
 	public String traceExec;
 	public String traceVariable = "LIG| NOM |  TYPE   |     VALEUR      |\n";
-
 
 	/** algo. */
 	private ArrayList<Algorithme> algos;
@@ -21,7 +19,6 @@ public class Programme {
 
 	private ArrayList<Donnee> ensDonneesATracer;
 
-
 	/**
 	 * Constructeur du programme.
 	 *
@@ -33,13 +30,55 @@ public class Programme {
 		this.lignesFausses = new ArrayList<Integer>();
 		this.traceExec = "";
 
-
 		this.algos = new ArrayList<Algorithme>();
+
+		ArrayList<String[]> sousAlgoParams = new ArrayList<String[]>();
 
 		String nom = "";
 		boolean main = false;
 		int debut = 0;
 		ArrayList<String> lignes = null;
+
+//		int i = 0;
+//		while (i < ensLignes.length) {
+//			ensLignes[i] = ensLignes[i].replaceAll("\t", ""); // suppression de l'identation
+//			String[] mots = ensLignes[i].split(" ");
+//
+//			if (mots[0].equals("ALGORITHME")) {
+//
+//				debut = i;
+//
+//				if (mots[1].matches("\\w*")) { // Algorithme principal
+//					main = true;
+//					nom = mots[1];
+//				} else { // Sous algorithme
+//					nom = ensLignes[i].replaceAll("ALGORITHME (\\w*)\\(.*\\)", "$1");
+//					main = false;
+//				}
+//
+//				ArrayList<String> lignes = new ArrayList<String>();
+//
+//				System.out.println(nom);
+//				while (i <= ensLignes.length-1 && !ensLignes[i].equals("FIN")) {
+//					lignes.add(ensLignes[i]);
+//					i++;
+//				}				
+//				
+//				Algorithme a = new Algorithme(nom, debut, lignes.toArray(new String[lignes.size()]), this);
+//				algos.add(a);
+//				
+//				if (main) {
+//					this.main = a;
+//					setCurrent(this.main);
+//				}
+//					
+//			}
+//		}
+//		
+//		System.out.println("nb algos : " + algos.size());
+//		for (Algorithme a : algos)
+//			System.out.println("Algo : " + a);
+
 		for (int i = 0; i < ensLignes.length; i++) {
 			ensLignes[i] = ensLignes[i].replaceAll("\t", ""); // suppression de l'identation
 			String[] mots = ensLignes[i].split(" ");
@@ -47,18 +86,48 @@ public class Programme {
 				if (lignes != null) {
 					Algorithme a = new Algorithme(nom, debut, lignes.toArray(new String[lignes.size()]), this);
 					algos.add(a);
-					if (main) {
+
+					if (main) { // Algorithme principal
 						this.main = a;
 						setCurrent(this.main);
+					} else { // Sous algorithme
+						for (String[] params : sousAlgoParams) {
+							Variable v = new Variable(params[1], params[2], false, a);
+							v.setTracable(false);
+							a.ajouterDonnee(v);
+							a.setParams(sousAlgoParams);
+						}
 					}
 				}
 				if (mots[0].equals("ALGORITHME")) {
-					if (!mots[1].matches("([\\w]*)\\([\\w]*\\)")) {
+
+					if (mots[1].matches("\\w*")) { // Algorithme principal
 						main = true;
 						nom = mots[1];
-					} else {
+					} else { // Sous algorithme
+						nom = ensLignes[i].replaceAll("ALGORITHME (\\w*)\\(.*\\)", "$1");
 						main = false;
-						nom = mots[1].replaceAll("(\\w*)\\([\\w]*\\)", "$1");
+
+						if (ensLignes[i].split("\\(|\\)").length == 2) {
+							String varDeclar = ensLignes[i].split("\\(|\\)")[1];
+
+							String[] ensVars = varDeclar.split(",");
+
+							for (String s : ensVars) {
+								s = s.trim();
+
+								String paramType = s.split(":")[0].split(" ")[0].trim();
+								String varName = s.split(":")[0].split(" ")[1].trim();
+								String varType = "";
+
+								if (!paramType.equals("s"))
+									varType = s.split(":")[1].trim();
+
+								sousAlgoParams.add(new String[] { paramType, varName, varType });
+
+							}
+						}
+
 					}
 					debut = i;
 
@@ -70,6 +139,7 @@ public class Programme {
 					lignes.add(ensLignes[i]);
 			}
 		}
+
 	}
 
 	public Algorithme getMain() {
@@ -79,11 +149,11 @@ public class Programme {
 	public Algorithme getLast() {
 		return this.last;
 	}
-	
+
 	public Algorithme getCurrent() {
 		return this.current;
 	}
-	
+
 	public void setCurrent(Algorithme a) {
 		this.last = this.current;
 		this.current = a;
