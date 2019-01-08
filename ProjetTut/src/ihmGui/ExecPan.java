@@ -1,15 +1,18 @@
 package ihmGui;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import main.Controleur;
 import pseudoCode.Programme;
 
-public class ExecPan extends JPanel{
+public class ExecPan extends JPanel implements ActionListener {
 	private JScrollPane jsp;
 	private JLabel txt;
 	
@@ -21,6 +24,7 @@ public class ExecPan extends JPanel{
 	public ExecPan(Programme prog) {
 		this.prog = prog;
 		console = new JTextField();
+		console.addActionListener( this );
 		
 		txt = new JLabel();
 		
@@ -56,5 +60,11 @@ public class ExecPan extends JPanel{
 			}
 		}
 		txt.setText(txt.getText() + "</body></html>");
+	}
+
+	public void actionPerformed ( ActionEvent e )
+	{
+		Controleur.getControleur().envoyerCommande( console.getText() );
+		console.setText( "" );
 	}
 }

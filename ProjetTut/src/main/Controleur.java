@@ -24,8 +24,14 @@ import pseudoCode.Tableau;
  */
 
 public class Controleur {
+	
+	public static boolean GUI = true;
 
 	public static boolean DEBUG = false;
+	
+	private boolean peutContinuer;
+	
+	private String derniereCommande;
 
 	/** nom du fichier */
 	private String configFile;
@@ -130,6 +136,12 @@ public class Controleur {
 
 	}
 	
+	public void envoyerCommande ( String s )
+	{
+		this.derniereCommande = s;
+		this.peutContinuer = true;
+	}
+	
 	public void lancerConfig () throws NumberFormatException, IOException
 	{
     		String s = "";
@@ -177,8 +189,22 @@ public class Controleur {
 		String valeur = "";
 		if ( this.varsALire.isEmpty())
 		{
+			aff.afficher();
+			gui.repaint();
     		System.out.print("Entrez la valeur de " + nomVar + " : ");
-    		valeur = this.sc.nextLine();
+    		if ( GUI )
+			{
+				do {
+					System.out.print( "" );
+				} while ( !peutContinuer );
+				valeur = this.derniereCommande;
+				peutContinuer = false;
+			}
+			else
+			{
+				valeur = this.sc.nextLine();
+				this.derniereCommande = valeur;
+			}
 		}
 		else
 		{
@@ -242,7 +268,20 @@ public class Controleur {
 			ligneRestantes = -1;
 			ligneAAttendre = -1;
 			this.attendBreakpoint = false;
-			String commande = this.sc.nextLine();
+			String commande;
+			if ( GUI )
+			{
+				do {
+					System.out.print( "" );
+				} while ( !peutContinuer );
+				commande = this.derniereCommande;
+				peutContinuer = false;
+			}
+			else
+			{
+				commande = this.sc.nextLine();
+				this.derniereCommande = commande;
+			}
 			if (!commande.equals(""))
 				this.prog.traceExec += "a:" + commande + "\n";
 			/*
