@@ -27,10 +27,9 @@ public class ExecPan extends JPanel implements ActionListener {
 		console.addActionListener( this );
 		
 		txt = new JLabel();
+		jsp = new JScrollPane(txt);
 		
 		paint();
-		
-		jsp = new JScrollPane(txt);
 		
 		this.setLayout(new BorderLayout());
 		this.add(jsp, BorderLayout.CENTER);
@@ -61,7 +60,7 @@ public class ExecPan extends JPanel implements ActionListener {
 			}
 		}
 		txt.setText(txt.getText() + "</body></html>");
-		
+		try {Thread.sleep(50);}catch(Exception e){}
 		jsp.getVerticalScrollBar().setValue(jsp.getVerticalScrollBar().getMaximum());
 	}
 

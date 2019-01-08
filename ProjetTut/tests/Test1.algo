@@ -11,34 +11,18 @@ variable:
 DEBUT
 	lire(b)
 	ecrire("Bonjour")
-	b <-- 6
-	c <-- 2+2
-	b <-- 6
-	c <-- 2+2
-	b <-- 6
-	c <-- 2+2
-	b <-- 6
-	c <-- 2+2
-	b <-- 6
-	c <-- 2+2
-	b <-- 6
-	c <-- 2+2
-	b <-- 6
-	c <-- 2+2
-	b <-- 6
-	c <-- 2+2
-	b <-- 6
-	c <-- 2+2
-	b <-- 6
-	c <-- 2+2
-	b <-- 6
-	c <-- 2+2
-	b <-- 6
-	c <-- 2+2
-	b <-- 6
-	c <-- 2+2
-	b <-- 6
-	c <-- 2+2
+	ecrire("Bonjour")
+	ecrire("Bonjour")
+	ecrire("Bonjour")
+	ecrire("Bonjour")
+	ecrire("Bonjour")
+	ecrire("Bonjour")
+	ecrire("Bonjour")
+	ecrire("Bonjour")
+	ecrire("Bonjour")
+	ecrire("Bonjour")
+	ecrire("Bonjour")
+	
 	arr[2] <-- c + b
 	arr[0] <-- c + b
 	
