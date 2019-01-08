@@ -340,6 +340,11 @@ public class Algorithme {
 		}
 
 		Controleur.getControleur().attend();
+		
+		if (mots[0].equals("FIN")) {
+			System.out.println("======== FIN");
+			this.fin = true;
+		}
 		return true;
 	}
 

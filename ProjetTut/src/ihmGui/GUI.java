@@ -21,6 +21,7 @@ public class GUI extends JFrame{
 		this.setTitle("Affichage du pseudo-code");
 		this.setSize(1920, 1080);
 		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		for(String str : codeLignes)
 			this.code+=str+"\n";
