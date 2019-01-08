@@ -437,11 +437,16 @@ public class Controleur {
 		} else {
 			boolean cui = false;
 			int nbArgOpt = 0;
-			for (String arg : a)
+			for (String arg : a) {
 				if (arg.toLowerCase().equals("-cui")) {
 					cui = true;
 					nbArgOpt = 1;
 				}
+				
+				if (arg.toLowerCase().equals("-gui"))
+					nbArgOpt = 1;
+			}
+				
 					
 
 			if (a.length - nbArgOpt == 1)
