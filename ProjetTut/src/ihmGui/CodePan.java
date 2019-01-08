@@ -133,7 +133,8 @@ public class CodePan extends JPanel {
 			if (i % 2 != 0)
 				ret += syntaxes.get("griffe") + "\"" + annotations[i] + "\"" + ANSI_BACK;
 			else
-				ret += change[i];
+				if(i < change.length)
+					ret += change[i];
 		}
 
 		return ret;

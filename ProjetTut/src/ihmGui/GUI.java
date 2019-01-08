@@ -14,8 +14,9 @@ import pseudoCode.Programme;
 public class GUI extends JFrame{
 	private String code="";
 	private JScrollPane panelCode;
+	private JScrollPane panelVars;
 	private CodePan codepan;
-	
+	private VarPan  varspan;
 	
 	public GUI(String[] codeLignes, Programme prog) {
 		this.setTitle("Affichage du pseudo-code");
@@ -28,8 +29,10 @@ public class GUI extends JFrame{
 		
 		codepan = new CodePan(this.code, prog);
 		JScrollPane panelCode = new JScrollPane(codepan);
+		varspan = new VarPan(prog);
+		JScrollPane panelVars = new JScrollPane(varspan);
 		
-		JSplitPane jspS = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelCode, new JPanel());
+		JSplitPane jspS = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelCode, panelVars);
 		JSplitPane jspP = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jspS, new JLabel());
 		
 		jspP.setDividerLocation(1000);
@@ -43,5 +46,6 @@ public class GUI extends JFrame{
 	
 	public void repaint() {
 		codepan.paint();
+		varspan.paint();
 	}
 }
