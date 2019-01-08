@@ -186,7 +186,7 @@ public class Controleur {
 			else
 				aff.afficher();
 
-			System.out.print("Entrez la valeur de " + nomVar + " : ");
+			
 			if (this.modeGui) {
 				do {
 					System.out.print("");
@@ -194,7 +194,11 @@ public class Controleur {
 				valeur = this.derniereCommande;
 				peutContinuer = false;
 			} else {
-				valeur = this.sc.nextLine();
+				do {
+					System.out.print("Entrez la valeur de " + nomVar + " : ");
+					valeur = this.sc.nextLine();
+				}while (valeur.equals(""));
+				
 				this.derniereCommande = valeur;
 			}
 		} else {

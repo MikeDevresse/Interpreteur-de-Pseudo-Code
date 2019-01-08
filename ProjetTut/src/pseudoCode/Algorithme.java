@@ -76,7 +76,7 @@ public class Algorithme {
 				if (current.matches("[[\\w*],*]*[ ]*\\w*:.*")) {
 					String type = current.split(":")[1].trim();
 					for (String var : current.split(":")[0].split(",")) {
-						ajouterDonnee(DonneeFactory.createVariable(var.trim(), type, this.def.equals("const"), this));
+						ajouterDonnee(DonneeFactory.creerDonnee(var.trim(), type, this.def.equals("const"), this));
 					}
 				}
 
@@ -97,7 +97,7 @@ public class Algorithme {
 						type = "booleen";
 
 					for (String var : current.split("<--")[0].split(",")) {
-						ajouterDonnee(DonneeFactory.createVariable(var.trim(), type, this.def.equals("const"), this));
+						ajouterDonnee(DonneeFactory.creerDonnee(var.trim(), type, this.def.equals("const"), this));
 						this.setValeur(var.trim(), valeur);
 					}
 				}
