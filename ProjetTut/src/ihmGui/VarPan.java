@@ -1,6 +1,7 @@
 package ihmGui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,6 +19,9 @@ public class VarPan extends JPanel {
 		this.prog = prog;
 		this.txt  = new JLabel();
 		
+		txt.setMinimumSize(new Dimension(200, 400));
+		txt.setMaximumSize(new Dimension(1920, 1080));
+		
 		paint();
 		
 		txt.setHorizontalAlignment(SwingConstants.LEFT);
@@ -27,7 +31,7 @@ public class VarPan extends JPanel {
 	
 	public void paint() {
 		this.vars = prog.traceVariable.split("\n");
-		txt.setText("<html><body style=\"width: 100%\" ><table style=\"width: 100%\" border=\"0\" cellspacing=\"0\">");
+		txt.setText("<html><body style=\"width: 100%; font-size: 20px\" ><table style=\"width: 100%\" border=\"0\" cellspacing=\"0\">");
 		for(String var : vars) {
 			String[] splitVar = var.split("\\|");
 			
