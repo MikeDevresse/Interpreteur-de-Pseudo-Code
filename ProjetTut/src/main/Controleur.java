@@ -80,13 +80,15 @@ public class Controleur {
 		
 		this.varsALire = new ArrayList<String>();
 		this.varsLu = new ArrayList<String>();
-		this.input = fichier;
 		this.breakpoints = new ArrayList<Integer>();
 		this.etapes = new ArrayList<Integer>();
+		
+		this.input = fichier;
+		this.configFile = configFile;
+		
 		Controleur.ctrl = this;
 		this.sc = new Scanner(System.in);
-		this.lecture = new LectureFichier(input);
-		this.configFile = configFile;
+		this.lecture = new LectureFichier(fichier);
 		lancerConfig();
 
 		// création du programme
