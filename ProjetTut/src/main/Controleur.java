@@ -273,8 +273,7 @@ public class Controleur {
 				commande = this.sc.nextLine();
 				this.derniereCommande = commande;
 			}
-//			if (!commande.equals(""))
-//				this.prog.traceExec += "a:" + commande + "\n";
+			
 			/*
 			 * Gestion des commandes
 			 */
