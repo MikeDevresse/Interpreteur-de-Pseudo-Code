@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import ihmCui.Affichage;
+import ihmGui.GUI;
 import pseudoCode.Algorithme;
 import pseudoCode.AlgorithmeException;
 import pseudoCode.Donnee;
@@ -47,6 +48,8 @@ public class Controleur {
 	private static Controleur ctrl;
 
 	private Affichage aff;
+	
+	private GUI gui;
 
 	private ArrayList<Integer> breakpoints;
 
@@ -98,6 +101,8 @@ public class Controleur {
 
 		// création de l'IHM
 		this.aff = new Affichage(lecture.getTexteParLigne(), prog);
+		
+		this.gui = new GUI(lecture.getTexteParLigne(), prog);
 
 		// exécution de l'interprétation
 		while (!prog.getMain().estTerminer()) {
@@ -198,6 +203,7 @@ public class Controleur {
 			return;
 
 		this.aff.afficher();
+		this.gui.repaint();
 
 		if (!this.prog.getMain().estEnTrainDeReset())
 			etapes.add(this.prog.getCurrent().getLigneCourrante());
