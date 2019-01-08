@@ -31,6 +31,7 @@ public class ExecPan extends JPanel implements ActionListener {
 		paint();
 		
 		jsp = new JScrollPane(txt);
+		
 		this.setLayout(new BorderLayout());
 		this.add(jsp, BorderLayout.CENTER);
 		this.add(console, BorderLayout.SOUTH);
@@ -60,6 +61,8 @@ public class ExecPan extends JPanel implements ActionListener {
 			}
 		}
 		txt.setText(txt.getText() + "</body></html>");
+		
+		jsp.getVerticalScrollBar().setValue(jsp.getVerticalScrollBar().getMaximum());
 	}
 
 	public void actionPerformed ( ActionEvent e )
