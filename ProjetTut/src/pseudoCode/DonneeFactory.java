@@ -17,21 +17,18 @@ public class DonneeFactory {
 	 * @return variable
 	 */
 	public static Donnee<?> createVariable(String nom, String type, boolean constante, Algorithme algo) {
-
 		// nettoyage de l'expression
-		type = type.trim();
-		type = type.replace("d'", "de ");
+		type = type.replaceAll( " ", "" ).replaceAll( "[éè]", "e" ).replaceAll( "î", "i" );
+		type = type.replace("d'", "de");
 		
 		type = type.toLowerCase();
-		
 		// tableau de variables
-		if (type.matches("tableau\\[.+\\] de .*$")) {
-			String tabType = type.replaceAll("tableau\\[.+\\] de (.*)$","$1");
+		if (type.matches("tableau\\[.+\\]de.*$")) {
+			String tabType = type.replaceAll("tableau\\[.+\\]de(.*)$","$1").trim();
 			int taille = 0;
 			String primType="";
 			String[] indices = type.split( "\\[|\\]" );
 			Tableau previousTab = null;
-			
 			try
 			{
 				for ( int i=indices.length-2 ; i>=0 ; i = i-2 )
@@ -44,23 +41,16 @@ public class DonneeFactory {
 				    		case "entier":
 				    			primType = "int";
 				    			break;
-				    		case "booléen":
 				    		case "booleen":
 				    			primType = "boolean";
 				    			break;
-				    		case "chaînedecaractère":
-				    		case "chainedecaractère":
-				    		case "chaînedecaractere":
 				    		case "chainedecaractere":
 				    		case "chaine":
-				    		case "chaîne":
 				    			primType = "String";
 				    			break;
-				    		case "réel":
 				    		case "reel":
 				    			primType = "double";
 				    			break;
-				    		case "caractère":
 				    		case "caractere":
 				    			primType = "char";
 				    			break;
@@ -105,20 +95,13 @@ public class DonneeFactory {
 
     		case "entier":
     			return new Variable<Integer>(nom, "entier", constante,algo);
-    		case "booléen":
     		case "booleen":
     			return new Variable<Boolean>(nom, "booleen", constante,algo);
-    		case "chaînedecaractère":
-    		case "chainedecaractère":
-    		case "chaînedecaractere":
     		case "chainedecaractere":
     		case "chaine":
-    		case "chaîne":
     			return new Variable<String>(nom, "chaine", constante,algo);
-    		case "réel":
     		case "reel":
     			return new Variable<Double>(nom, "reel", constante,algo);
-    		case "caractère":
     		case "caractere":
     			return new Variable<Character>(nom, "caractere", constante,algo);
     
