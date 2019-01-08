@@ -79,7 +79,7 @@ public class Tableau extends Donnee
 	{
 		String s = "";
 		for ( int i = 0; i<taille; i++ )
-			s += String.format( "%4s", ensDonnees.get( i ).valeurToString() ) + "|";
+			s += String.format( "%4s", ensDonnees.get( i ).valeurToString() ) + "│";
 		
 		return s;
 	}
@@ -89,14 +89,14 @@ public class Tableau extends Donnee
 		String s = "";
 		if ( this.ensDonnees.get( 0 ) instanceof Tableau )
 		{
-			s = "   |";
+			s = "   │";
 			for ( int i=0 ; i<((Tableau)(this.ensDonnees.get(0))).taille ; i++ )
-				s += String.format( "%4s", i ) + "|";
+				s += String.format( "%4s", i ) + "│";
 			s+= "\n";
 		}
 		
 		for ( int i=0 ; i<this.taille ; i++ )
-			s += String.format( "%3s", i ) + "|" + this.ensDonnees.get( i ).valeurToString() + "\n";
+			s += String.format( "%3s", i ) + "│" + this.ensDonnees.get( i ).valeurToString() + "\n";
 
 		return s;
 	}
@@ -106,7 +106,7 @@ public class Tableau extends Donnee
 		String s = "";
 		String vals = "";
 		for ( int i=0 ; i<this.ensDonnees.size()-1 ; i++ )
-			vals +=  this.ensDonnees.get( i ).valeurToString() + "|";
+			vals +=  this.ensDonnees.get( i ).valeurToString() + "│";
 		vals += this.ensDonnees.get( this.ensDonnees.size()-1 ).valeurToString();
 		s += String.format("%3s|%5.5s|%9.9s|%17.17s|", algo.getLigneCourrante()+1, this.nom, this.type, vals);
 

@@ -130,7 +130,6 @@ public class CodePan extends JPanel {
 
 		String[] annotations = recup.split("\"");
 		String[] change = dest.split("\"");
-
 		for (int i = 0; i < annotations.length; i++) {
 			if (i % 2 != 0)
 				ret += syntaxes.get("griffe") + "\"" + annotations[i] + "\"" + ANSI_BACK;

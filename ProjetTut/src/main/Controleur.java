@@ -5,6 +5,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -27,7 +28,6 @@ public class Controleur {
 	public static boolean DEBUG = false;
 
 	/** nom du fichier */
-	private String input;
 	private String configFile;
 
 	/** objet programme */
@@ -85,14 +85,24 @@ public class Controleur {
 		this.varsLu = new ArrayList<String>();
 		this.breakpoints = new ArrayList<Integer>();
 		this.etapes = new ArrayList<Integer>();
+
+		this.temps = new HashMap<Integer,Double>();
+		this.comms = new HashMap<Integer,String>();
 		
-		this.input = fichier;
 		this.configFile = configFile;
 		
 		Controleur.ctrl = this;
 		this.sc = new Scanner(System.in);
 		this.lecture = new LectureFichier(fichier);
-		lancerConfig();
+		
+		if (!this.configFile.equals("")) {
+			try {
+				lancerConfig();
+			} catch (Exception e) {
+				System.out.println("/!\\ ERREUR : le fichier de configuration est invalide. Exécution en mode normal...");
+			}
+		}
+			
 
 		// création du programme
 		try {
@@ -120,12 +130,8 @@ public class Controleur {
 
 	}
 	
-	public void lancerConfig ()
+	public void lancerConfig () throws NumberFormatException, IOException
 	{
-		temps = new HashMap<Integer,Double>();
-		comms = new HashMap<Integer,String>();
-		try
-		{
     		String s = "";
     		BufferedReader reader = new BufferedReader( new FileReader( this.configFile ) );
     		
@@ -159,11 +165,7 @@ public class Controleur {
 					comms.put( ligne, valeur );
     			}
     		}
-		}
-		catch ( Exception e )
-		{
-			e.printStackTrace();
-		}
+		
 	}
 
 	/**
@@ -395,10 +397,15 @@ public class Controleur {
 	 * Fonction main.
 	 */
 	public static void main(String[] a) {
-		if (a.length != 2) {
+		if (a.length < 1 || a.length > 2) {
 			System.out.println("ERREUR : veuillez spécifier le chemin du fichier à interpréter et le chemin du fichier de configuration");
 			System.exit(1);
-		} else
-			new Controleur(a[0], a[1]);
+		} else {
+			if (a.length == 1)
+				new Controleur(a[0], "");
+			if (a.length == 2)
+				new Controleur(a[0], a[1]);
+		}
+			
 	}
 }

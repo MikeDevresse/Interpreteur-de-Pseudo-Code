@@ -43,7 +43,7 @@ public class GUI extends JFrame{
 		jspS.setDividerLocation(650);
 		
 		this.add(jspP);
-		
+		this.pack();
 		this.setVisible(true);
 	}
 	
