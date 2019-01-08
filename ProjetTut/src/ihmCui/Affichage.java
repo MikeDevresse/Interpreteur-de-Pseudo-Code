@@ -9,6 +9,10 @@ import main.Controleur;
 import pseudoCode.Programme;
 import util.Syntaxe;
 
+/**
+ * Classe permettant d'afficher le programme en mode console
+ */
+
 public class Affichage {
 	private static final String ANSI_RESET  = "\u001B[0m";
 	private static final String ANSI_BLACK  = "\u001B[30m";
@@ -47,9 +51,11 @@ public class Affichage {
 	private ArrayList<Integer> ensPArret;
 	
 	private HashMap<Integer,String> comms;
+	
 	/**
 	 * Constructeur
 	 * @param code pseudo-code
+	 * @param prog programme
 	 */
 	public Affichage(String[] code, Programme prog) {
 		this.prog = prog;
@@ -64,6 +70,9 @@ public class Affichage {
 		OSWindows = !(System.getProperty("os.name").equals("Linux"));
 	}
 
+	/**
+	 * Met à jour l'affichage
+	 */
 	private void maj() {
 		this.ensPArret = Controleur.getControleur().getBreakpoints();
 		this.exec = prog.traceExec;
@@ -76,8 +85,6 @@ public class Affichage {
 
 	/**
 	 * Crée l'affichage
-	 * @param vars ensemble des variables de l'algorithme
-	 * @param exec trace d'exécution de l'algorithme
 	 */
 	public void afficher() {
 		maj();
@@ -177,6 +184,12 @@ public class Affichage {
 		}
 	}
 
+	/**
+	 * Affiche la partie "console" de l'interpréteur
+	 * @param exec trace d'exécution
+	 * @param lignesComm commentaires
+	 * @return console mise en forme
+	 */
 	private String console(String exec, String[] lignesComm) {
 		String ret = "";
 		String ligne = "";
@@ -205,6 +218,11 @@ public class Affichage {
 		return ret;
 	}
 
+	/**
+	 * Permet de colorer le texte dans la console de l'interpréteur
+	 * @param str chaîne de caractère à colorer
+	 * @return string formattée
+	 */
 	private String colorerConsole(String str) {
 		String ret = "";
 
@@ -227,6 +245,10 @@ public class Affichage {
 		return ret;
 	}
 
+	/**
+	 * Retourne l'entête de l'interpréteur
+	 * @return string formattée
+	 */
 	private String entete() {
 		String ret = "";
 
@@ -239,7 +261,11 @@ public class Affichage {
 		return ret;
 	}
 
-
+	/**
+	 * Permet de colorer une ligne
+	 * @param str chaîne de caractère à colorer
+	 * @return string formattée
+	 */
 	private String colorer(String str) {
 		String ret = "";
 		String commentaire = "";
@@ -256,7 +282,7 @@ public class Affichage {
 		copy = copy.replaceAll("(\".*\")", syntaxes.get("griffe") + "$1" + ANSI_BACK);
 
 		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction") + "$1" + ANSI_BACK + "(");
-		str = str.replaceAll("(.+:[ ]*)([[ ]*[\\w\\[\\]\\']+]+)", "$1" + syntaxes.get("type") + "$2" + ANSI_BACK );
+		str = str.replaceAll("(.+:[ ]*)([[ ]*[\\w\\[\\]\\']+]+)", "$1" + syntaxes.get("type") + "$2" + ANSI_BACK);
 
 		str = recupAnnotation(copy, str);
 

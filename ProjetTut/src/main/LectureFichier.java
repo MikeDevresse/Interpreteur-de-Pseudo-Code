@@ -2,6 +2,11 @@ package main;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+/**
+ * Classe permettant de lire le contenu d'un fichier
+ * @author al170307
+ *
+ */
 public class LectureFichier
 {
 	
@@ -28,9 +33,7 @@ public class LectureFichier
 		return this.toString().split( "\n" );
 	}
 	
-	/* 
-	 * @see java.lang.Object#toString()
-	 */
+
 	public String toString ()
 	{
 		String sRet = "";

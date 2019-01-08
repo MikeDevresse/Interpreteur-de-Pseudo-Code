@@ -127,7 +127,7 @@ public class Algorithme {
 			this.fin = true;
 
 			/*
-			 * Si l'algorithme est un sous algorithme et qu'une variable est passée par
+			 * Si l'algorithme est un sous programme et qu'une variable est passée par
 			 * référence
 			 */
 			if (params != null) {
@@ -164,22 +164,22 @@ public class Algorithme {
 		if (this.def.equals("algo")) {
 
 			/*
-			 * Gestion des appels des sous algorithmes
+			 * Gestion des appels des sous programmes
 			 */
 			if (current.matches(".*appel.*\\(.*\\)")) {
 				Controleur.getControleur().attend();
 				String nomSousProg = current.replaceAll(".*appel (.*)\\(.*\\)", "$1"); // récupération du nom du sous
-																						// algo
-				// récupération du sous algorithme appelé
+																						// programme
+				// récupération du sous programme appelé
 				Algorithme sousAlgo = null;
 				for (Algorithme a : this.prog.getAlgos())
 					if (a.getNom().equals(nomSousProg))
 						sousAlgo = a;
 
-				// si le sous-algorithme existe
+				// si le sous-programme existe
 				if (sousAlgo != null) {
 
-					// envoi des paramètres au sous algorithme
+					// envoi des paramètres au sous programme
 					String params[] = current.replaceAll(".*appel .*\\((.*)\\)", "$1").split(",");
 
 					if (sousAlgo.params != null) {
@@ -195,7 +195,7 @@ public class Algorithme {
 							}
 					}
 
-					// définition du sous algo comme algo courant
+					// définition du sous programme comme algo courant
 					this.prog.setCurrent(sousAlgo);
 
 					// interprétation et récupération de la valeur de retour
@@ -205,7 +205,7 @@ public class Algorithme {
 						sousAlgo.ligneSuivante();
 					} while (returnValue == null && !sousAlgo.fin);
 
-					// remplacement de l'appel au sous algo par sa valeur de retour
+					// remplacement de l'appel au sous programme par sa valeur de retour
 					if (returnValue != null)
 						current = current.replaceAll("appel.*\\(.*\\)", returnValue);
 
@@ -746,10 +746,20 @@ public class Algorithme {
 		return reset;
 	}
 
+	/**
+	 * Renvoi la valeur de retour de l'algorithme
+	 * 
+	 * @return valeur de retour
+	 */
 	public String getReturnValue() {
 		return this.returnValue;
 	}
 
+	/**
+	 * Défini les paramètres si l'algorithme est un sous-programme
+	 * 
+	 * @param params
+	 */
 	public void setParams(ArrayList<String[]> params) {
 		this.params = params;
 	}

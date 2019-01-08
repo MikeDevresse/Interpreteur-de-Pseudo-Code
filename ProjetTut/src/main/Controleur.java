@@ -186,7 +186,6 @@ public class Controleur {
 			else
 				aff.afficher();
 
-			
 			if (!this.modeCui) {
 				do {
 					System.out.print("");
@@ -197,8 +196,8 @@ public class Controleur {
 				do {
 					System.out.print("Entrez la valeur de " + nomVar + " : ");
 					valeur = this.sc.nextLine();
-				}while (valeur.equals(""));
-				
+				} while (valeur.equals(""));
+
 				this.derniereCommande = valeur;
 			}
 		} else {
@@ -234,7 +233,6 @@ public class Controleur {
 	public void attend() {
 		if (Controleur.DEBUG)
 			return;
-
 
 		if (!this.prog.getMain().estEnTrainDeReset())
 			etapes.add(this.prog.getCurrent().getLigneCourrante());
@@ -278,14 +276,14 @@ public class Controleur {
 				commande = this.sc.nextLine();
 				this.derniereCommande = commande;
 			}
-			
+
 			/*
 			 * Gestion des commandes
 			 */
 			if (commande.equalsIgnoreCase("b")) {
 				retour();
 				this.prog.traceExec += "a:" + commande + "\n";
-			} else if (commande.matches("[\\+\\-] var [\\w]+")) {
+			} else if (commande.matches("[\\+\\-] var [\\w]+")) { // trace ou ne trace plus une variable
 				String varATracer = commande.replaceAll("[\\+\\-] var ([\\w]+)", "$1");
 				boolean ajouter = commande.replaceAll("([\\+\\-]) var [\\w]+", "$1").equals("+");
 				for (Algorithme algo : this.prog.getAlgos()) {
@@ -301,10 +299,10 @@ public class Controleur {
 				}
 				reste();
 				this.prog.traceExec += "a:" + commande + "\n";
-			} else if (commande.matches("[Ll][0-9]+")) {
+			} else if (commande.matches("[Ll][0-9]+")) { // changer de ligne
 				int ligne = Integer.parseInt(commande.replaceAll("[Ll]([0-9]+)", "$1")) - 1;
 				allerA(ligne);
-			} else if (commande.matches("cp tab [\\w]+")) {
+			} else if (commande.matches("cp tab [\\w]+")) { // copier le contenu d'un tableau
 				String nomVar = commande.replaceAll("cp tab ([\\w]+)", "$1");
 				Tableau t = (Tableau) prog.getCurrent().getDonnee(nomVar);
 				if (t != null) {
@@ -323,18 +321,18 @@ public class Controleur {
 				clipboard.setContents(selection, selection);
 				this.reste();
 				this.prog.traceExec += "a:" + commande + "\n";
-			} else if (commande.matches("[\\+-][ ]*bk")) {
+			} else if (commande.matches("[\\+-][ ]*bk")) { // placer ou supprimer un point d'arrêt
 				this.setBreakPoint(this.prog.getCurrent().getLigneCourrante());
 				reste();
 				this.prog.traceExec += "a:" + commande + "\n";
-			} else if (commande.equals("go bk")) {
+			} else if (commande.equals("go bk")) { // se rendre au prochain point d'arrêt
 				if (this.breakpoints.size() != 0) {
 					this.attendBreakpoint = true;
 				} else {
 					reste();
 					this.prog.traceExec += "a:Pas de breakpoint défini\n";
 				}
-			} else if (commande.equals("quit")) {
+			} else if (commande.equals("quit")) { // quitte le programme
 				System.exit(0);
 			}
 		} else {
@@ -388,6 +386,11 @@ public class Controleur {
 		this.breakpoints.add(ligne);
 	}
 
+	/**
+	 * Retourne les commentaires rajoutés dans la config
+	 * 
+	 * @return Hashmap de lignes - commentaires
+	 */
 	public HashMap<Integer, String> getComms() {
 		return this.comms;
 	}
@@ -400,6 +403,11 @@ public class Controleur {
 		this.revenir(1);
 	}
 
+	/**
+	 * Retourne à la ligne i
+	 * 
+	 * @param i numéro de ligne
+	 */
 	private void revenir(int i) {
 		this.varsALire = (ArrayList<String>) varsLu.clone();
 		this.varsLu = new ArrayList<String>();
@@ -409,10 +417,20 @@ public class Controleur {
 		this.prog.reset();
 	}
 
+	/**
+	 * Retourne le programme
+	 * 
+	 * @return programme
+	 */
 	public Programme getProgramme() {
 		return this.prog;
 	}
 
+	/**
+	 * Saute à une ligne donnée
+	 * 
+	 * @param ligne numéro de ligne
+	 */
 	public void allerA(int ligne) {
 		ligneAAttendre = ligne;
 		this.varsALire = (ArrayList<String>) varsLu.clone();
@@ -422,13 +440,6 @@ public class Controleur {
 		this.prog.reset();
 	}
 
-	public void refresh() {
-		this.aff.afficher();
-	}
-
-	/**
-	 * Fonction main.
-	 */
 	public static void main(String[] a) {
 		if (a.length < 1 || a.length > 3) {
 			System.out.println(
@@ -442,12 +453,10 @@ public class Controleur {
 					cui = true;
 					nbArgOpt = 1;
 				}
-				
+
 				if (arg.toLowerCase().equals("-gui"))
 					nbArgOpt = 1;
 			}
-				
-					
 
 			if (a.length - nbArgOpt == 1)
 				new Controleur(a[0], "", cui);

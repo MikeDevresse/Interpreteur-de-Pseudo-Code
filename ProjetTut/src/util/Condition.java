@@ -3,9 +3,18 @@ package util;
 import bsh.EvalError;
 import bsh.Interpreter;
 
-public class Condition
-{
-	public static boolean condition(String condition, Interpreter interpreter ) {
+/**
+ * Classe permettant d'interpréter une condition
+ */
+public class Condition {
+	/**
+	 * Interprète une condition
+	 * 
+	 * @param condition   condition
+	 * @param interpreter interpréteur de l'algorithme
+	 * @return vrai si condition valide
+	 */
+	public static boolean condition(String condition, Interpreter interpreter) {
 		condition = condition.replaceAll("/=", "!=");
 		condition = condition.replaceAll("([a-zA-Z0-9]+[ ]*)=([ ]*[a-zA-Z0-9]+)", "$1==$2");
 		condition = condition.replaceAll("et", "&&");
@@ -20,6 +29,5 @@ public class Condition
 		}
 
 		return false;
-
 	}
 }

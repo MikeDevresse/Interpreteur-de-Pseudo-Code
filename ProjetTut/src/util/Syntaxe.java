@@ -2,6 +2,10 @@ package util;
 
 import java.util.HashMap;
 
+/**
+ * Classe permettant de centraliser les éléments de syntaxe;
+ */
+
 public class Syntaxe {
 	private static HashMap<String, String> syntaxes;
 	

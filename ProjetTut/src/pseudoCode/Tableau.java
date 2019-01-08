@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import bsh.EvalError;
 import bsh.Interpreter;
 
+/**
+ * Représente un tableau dans l'algorithme
+ *
+ */
 public class Tableau extends Donnee
 {
 	private ArrayList<Donnee> ensDonnees;

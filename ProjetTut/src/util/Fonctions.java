@@ -7,8 +7,6 @@ import pseudoCode.Algorithme;
 
 /**
  * Ensemble des fonctions primitives du pseudo-code.
- * 
- * @version 1.0, 17/12/2018
  */
 
 public class Fonctions {
@@ -20,15 +18,6 @@ public class Fonctions {
 	 * @param contenu     paramètre envoyés
 	 */
 	public static String evaluer(String nomFonction, String contenu, Algorithme a) {
-//		try
-//		{
-//			System.out.println( "test " + a.getInterpreteur().eval( "arr[0][0]" ) );
-//		}
-//		catch ( EvalError e )
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		nomFonction = nomFonction.trim();
 		switch (nomFonction.toLowerCase()) {
 		case "ecrire":
@@ -36,21 +25,6 @@ public class Fonctions {
 			return Fonctions.ecrire(contenu, a);
 		case "lire":
 			return Fonctions.lire(contenu, a);
-//		case "enreel" : return Fonctions.enReel( Integer.parseInt( contenu.replaceAll( "\"", "" )  ) );
-//		case "enentier" : return Fonctions.enEntier( Double.parseDouble( contenu.replaceAll( "\"", "" )  ) );
-//		case "car" : return Fonctions.car( Integer.parseInt( contenu.replaceAll("\"","") ) );
-//		case "ord" : return Fonctions.ord( contenu.replaceAll("\"","").charAt( 0 ) );
-//		case "plancher" : return Fonctions.plancher( Double.parseDouble( contenu.replaceAll( "\"", "" ) ) );
-//		case "plafond" : return Fonctions.plafond( Double.parseDouble( contenu.replaceAll( "\"", "" ) ) );
-//		case "arrondi" : return Fonctions.arrondi( Double.parseDouble( contenu.replaceAll( "\"", "" ) ) );
-//		case "aujourd'hui" :
-//		case "aujourdhui" : return Fonctions.aujourdhui();
-//		case "jour" : return Fonctions.jour( contenu.replaceAll( "\"", "" ) );
-//		case "mois" : return Fonctions.mois( contenu.replaceAll( "\"", "" ) );
-//		case "annee" : return Fonctions.annee( contenu.replaceAll( "\"", "" ) );
-//		case "estreel" : return Fonctions.estReel( contenu.replaceAll( "\"", "" ) );
-//		case "estentier" : return Fonctions.estEntier( contenu.replaceAll( "\"", "" ) );
-//		case "hasard" : return Fonctions.hasard(Integer.parseInt( contenu.replaceAll( "\"", "" ) ));
 		default:
 			for (Algorithme algo : Controleur.getControleur().getProgramme().getAlgos()) {
 				if (algo.getNom().equals(nomFonction)) {
@@ -64,6 +38,7 @@ public class Fonctions {
 
 	/**
 	 * Initiliase l'ensemble des fonctions primitives
+	 * 
 	 * @param i interpreteur
 	 */
 	public static void initFonctions(Interpreter i) {
@@ -73,13 +48,11 @@ public class Fonctions {
 			 */
 			i.eval("private static int enEntier(String s) {\n" + "		s = s.replace(\"\\\"\", \"\"); \n"
 					+ "		return Integer.parseInt(s);\n" + "	}");
-			
-			
+
 			/*
 			 * Transforme un objet en chaîne de caractère
 			 */
-			i.eval("private static String enChaine(Object o) {\n"
-					+ "		return o.toString();\n" + "	}");
+			i.eval("private static String enChaine(Object o) {\n" + "		return o.toString();\n" + "	}");
 
 			/*
 			 * Transforme un réel en entier
@@ -119,8 +92,7 @@ public class Fonctions {
 			/*
 			 * Retourne la date actuelle sous forme dd/mm/yyyy.
 			 */
-			i.eval("import java.time.LocalDateTime;\n" + 
-					"import java.time.format.DateTimeFormatter;"
+			i.eval("import java.time.LocalDateTime;\n" + "import java.time.format.DateTimeFormatter;"
 					+ "private static String aujourdhui() {\n"
 					+ "		DateTimeFormatter dtf = DateTimeFormatter.ofPattern(\"dd/MM/yyyy\");\n"
 					+ "		LocalDateTime now = LocalDateTime.now();\n" + "\n" + "		return dtf.format(now);\n"
@@ -185,14 +157,17 @@ public class Fonctions {
 	}
 
 	/**
-	 * écrit et concatène une expression
+	 * Écrit et concatène une expression
 	 * 
 	 * @param args parties de l'expression
 	 */
 	private static String ecrire(String contenu, Algorithme a) {
 		Interpreter interpreter = a.getInterpreteur();
 		try {
-			System.out.println(interpreter.eval(contenu.trim()));
+			if (Controleur.DEBUG)
+				System.out.println(interpreter.eval(contenu.trim()));
+
+			// ajout à la trace d'exécution
 			a.getProgramme().traceExec += "e:" + interpreter.eval(contenu.trim()) + "\n";
 			return "" + interpreter.eval(contenu);
 		} catch (EvalError e) {

@@ -1,15 +1,13 @@
 package pseudoCode;
 
-public abstract class Donnee<T>
-{
+public abstract class Donnee<T> {
 	protected String nom;
 	protected String type;
 	protected boolean constante;
 	protected Algorithme algo;
 	protected boolean tracable;
-	
-	protected Donnee ( String nom, String type, boolean constante, Algorithme algo )
-	{
+
+	protected Donnee(String nom, String type, boolean constante, Algorithme algo) {
 		this.nom = nom;
 		this.type = type;
 		this.constante = constante;
@@ -25,20 +23,25 @@ public abstract class Donnee<T>
 	public String getNom() {
 		return nom;
 	}
-	
+
 	/**
 	 * Retourne l'algorithme possédant la variable
+	 * 
 	 * @return algorithme
 	 */
 	public Algorithme getAlgo() {
 		return this.algo;
 	}
-	
+
+	/**
+	 * Défini l'algorithme possédant la variable
+	 * 
+	 * @param a algorithme
+	 */
 	public void setAlgo(Algorithme a) {
 		this.algo = a;
 	}
 
-	
 	/**
 	 * Retourne le type de la variable
 	 * 
@@ -56,8 +59,6 @@ public abstract class Donnee<T>
 	public boolean isConstante() {
 		return this.constante;
 	}
-	
-
 
 	/**
 	 * Défini le nom de la variable
@@ -67,18 +68,28 @@ public abstract class Donnee<T>
 	public void setNom(String nom) {
 		this.nom = nom;
 	}
-	
+
+	/**
+	 * Défini si la variable est traçable
+	 * 
+	 * @param t vrai si traçable
+	 */
 	public void setTracable(boolean t) {
 		this.tracable = t;
 	}
-	
+
+	/**
+	 * Retourne si la variable est traçable ou non
+	 * 
+	 * @return vrai si traçable
+	 */
 	public boolean estTracable() {
 		return this.tracable;
 	}
-	
 
 	/**
 	 * Traduit une expression pseudo-code en Java
+	 * 
 	 * @param expression chaîne de caractère pseudo code
 	 * @return chaîne de caractère java
 	 */
@@ -86,15 +97,15 @@ public abstract class Donnee<T>
 		String[] parts = expression.split("\"");
 		for (int i = 0; i < parts.length; i++) {
 			if (i % 2 == 0) {
-				parts[i] = parts[i].replaceAll("×", "*"); //multiplication
-				parts[i] = parts[i].replaceAll("mod", "%"); //modulo
-				parts[i] = parts[i].replaceAll("([0-9]+[ ]*)/([ ]*[0-9]+)", "$1/(double)$2"); //division
-				parts[i] = parts[i].replaceAll("div", "/(int)"); //division entière
-				parts[i] = parts[i].replaceAll("([0-9]+)\\^([0-9]+)", "Math.pow($1,$2)"); //puissance
-				parts[i] = parts[i].replaceAll("\\\\/¯([0-9]+)", "Math.sqrt($1)"); //racine carrée
-				parts[i] = parts[i].replaceAll("©", "+"); //concaténation
-				parts[i] = parts[i].replaceAll("([\\w]+)\\+\\+", "$1 += 1"); //opérateur unaire
-				parts[i] = parts[i].replaceAll("([\\w]+)--", "$1 -= 1"); //opérateur unaire
+				parts[i] = parts[i].replaceAll("×", "*"); // multiplication
+				parts[i] = parts[i].replaceAll("mod", "%"); // modulo
+				parts[i] = parts[i].replaceAll("([0-9]+[ ]*)/([ ]*[0-9]+)", "$1/(double)$2"); // division
+				parts[i] = parts[i].replaceAll("div", "/(int)"); // division entière
+				parts[i] = parts[i].replaceAll("([0-9]+)\\^([0-9]+)", "Math.pow($1,$2)"); // puissance
+				parts[i] = parts[i].replaceAll("\\\\/¯([0-9]+)", "Math.sqrt($1)"); // racine carrée
+				parts[i] = parts[i].replaceAll("©", "+"); // concaténation
+				parts[i] = parts[i].replaceAll("([\\w]+)\\+\\+", "$1 += 1"); // opérateur unaire
+				parts[i] = parts[i].replaceAll("([\\w]+)--", "$1 -= 1"); // opérateur unaire
 			} else {
 				parts[i] = "\"" + parts[i] + "\"";
 			}
@@ -106,20 +117,17 @@ public abstract class Donnee<T>
 
 		return sRet;
 	}
-	
-	
 
 	@Override
 	public String toString() {
 		String s = "";
- 
+
 		s += String.format("%3s|%10s|%11s|%10s|", algo.getLigneCourrante(), this.nom, this.type);
-		
+
 		return s;
 	}
 
-	public String valeurToString ()
-	{
+	public String valeurToString() {
 		return "";
 	}
 

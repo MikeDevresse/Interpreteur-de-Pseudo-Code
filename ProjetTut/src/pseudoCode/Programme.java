@@ -7,17 +7,13 @@ public class Programme {
 	public String traceExec;
 	public String traceVariable = "LIG| NOM |  TYPE   |     VALEUR      |\n";
 
-	/** algo. */
 	private ArrayList<Algorithme> algos;
+	private ArrayList<Integer> lignesFausses;
+	private ArrayList<Donnee> ensDonneesATracer;
 
 	private Algorithme main;
-
 	private Algorithme last;
 	private Algorithme current;
-
-	private ArrayList<Integer> lignesFausses;
-
-	private ArrayList<Donnee> ensDonneesATracer;
 
 	/**
 	 * Constructeur du programme.
@@ -39,46 +35,7 @@ public class Programme {
 		int debut = 0;
 		ArrayList<String> lignes = null;
 
-//		int i = 0;
-//		while (i < ensLignes.length) {
-//			ensLignes[i] = ensLignes[i].replaceAll("\t", ""); // suppression de l'identation
-//			String[] mots = ensLignes[i].split(" ");
-//
-//			if (mots[0].equals("ALGORITHME")) {
-//
-//				debut = i;
-//
-//				if (mots[1].matches("\\w*")) { // Algorithme principal
-//					main = true;
-//					nom = mots[1];
-//				} else { // Sous algorithme
-//					nom = ensLignes[i].replaceAll("ALGORITHME (\\w*)\\(.*\\)", "$1");
-//					main = false;
-//				}
-//
-//				ArrayList<String> lignes = new ArrayList<String>();
-//
-//				System.out.println(nom);
-//				while (i <= ensLignes.length-1 && !ensLignes[i].equals("FIN")) {
-//					lignes.add(ensLignes[i]);
-//					i++;
-//				}				
-//				
-//				Algorithme a = new Algorithme(nom, debut, lignes.toArray(new String[lignes.size()]), this);
-//				algos.add(a);
-//				
-//				if (main) {
-//					this.main = a;
-//					setCurrent(this.main);
-//				}
-//					
-//			}
-//		}
-//		
-//		System.out.println("nb algos : " + algos.size());
-//		for (Algorithme a : algos)
-//			System.out.println("Algo : " + a);
-
+		// lecture des lignes
 		for (int i = 0; i < ensLignes.length; i++) {
 			ensLignes[i] = ensLignes[i].replaceAll("\t", ""); // suppression de l'identation
 			String[] mots = ensLignes[i].split(" ");
@@ -142,73 +99,133 @@ public class Programme {
 
 	}
 
+	/**
+	 * Retourne l'algorithme principal
+	 * 
+	 * @return algorithme principal
+	 */
 	public Algorithme getMain() {
 		return this.main;
 	}
 
+	/**
+	 * Retourne le dernier algorithme parcouru
+	 * 
+	 * @return dernier algorithme parcouru
+	 */
 	public Algorithme getLast() {
 		return this.last;
 	}
 
+	/**
+	 * Retourne l'algorithme actuellement interprété
+	 * 
+	 * @return algorithme actuellement interprété
+	 */
 	public Algorithme getCurrent() {
 		return this.current;
 	}
 
+	/**
+	 * Défini l'algorithme actuellement interprété
+	 * 
+	 * @param a algorithme interprété
+	 */
 	public void setCurrent(Algorithme a) {
 		this.last = this.current;
 		this.current = a;
 	}
 
+	/**
+	 * Retourne l'ensemble des algorithmes
+	 * 
+	 * @return ensemble des algorithmes
+	 */
 	public ArrayList<Algorithme> getAlgos() {
 		return this.algos;
 	}
 
+	/**
+	 * Retourne la trace d'exécution
+	 * 
+	 * @return trace d'exécution
+	 */
 	public String getTraceExec() {
 		return this.traceExec;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	public String toString() {
 		return "";
-		// return algo.toString();
 	}
 
+	/**
+	 * Retourne l'ensemble des numéros de ligne des lignes fausses
+	 * 
+	 * @return ensemble de numéros de ligne
+	 */
 	public ArrayList<Integer> getLignesFausses() {
 		return this.lignesFausses;
 	}
 
+	/**
+	 * Ajoute le numéro d'une ligne à la liste des lignes fausses
+	 * 
+	 * @param ligne numéro de la ligne
+	 */
 	public void ajouterLigneFausse(int ligne) {
 		this.lignesFausses.add(ligne);
 	}
 
+	/**
+	 * Réinitialise la liste des lignes fausses
+	 */
 	public void resetLigneFausse() {
 		this.lignesFausses = new ArrayList<Integer>();
 
 	}
 
+	/**
+	 * Réinitialise la trace d'exécution, la trace des variables et l'algorithme
+	 */
 	public void reset() {
 		this.traceExec = "";
 		this.traceVariable = "LIG|   NOM    |    TYPE   |  VALEUR  |\n";
 		this.main.reset();
-
 	}
 
+	/**
+	 * Retourne l'ensemble des données à tracer
+	 * 
+	 * @return ensemble de données
+	 */
 	public ArrayList<Donnee> getDonneesATracer() {
 		return this.ensDonneesATracer;
 	}
 
+	/**
+	 * Ajoute une donnée à la liste des données à tracer
+	 * 
+	 * @param d donnée
+	 */
 	public void ajouterDonneeATracer(Donnee d) {
 		this.ensDonneesATracer.add(d);
 	}
 
+	/**
+	 * Enlève une donnée à la liste des données à tracer
+	 * 
+	 * @param d donnée
+	 */
 	public void enleverDonneeATracer(Donnee d) {
 		this.ensDonneesATracer.remove(d);
 	}
 
+	/**
+	 * Retourne la trace des variables
+	 * 
+	 * @param donnees ensemble des données
+	 * @return trace des variables
+	 */
 	public String getTraceDonnee(ArrayList<String> donnees) {
 		String sRet = this.traceVariable.split("\n")[0] + "\n";
 		for (String s : this.traceVariable.split("\n")) {
