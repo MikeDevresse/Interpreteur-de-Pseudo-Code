@@ -31,6 +31,8 @@ public class ExecPan extends JPanel implements ActionListener {
 		paint();
 		
 		jsp = new JScrollPane(txt);
+		jsp.getVerticalScrollBar().setValue(jsp.getVerticalScrollBar().getMaximum());
+		
 		this.setLayout(new BorderLayout());
 		this.add(jsp, BorderLayout.CENTER);
 		this.add(console, BorderLayout.SOUTH);

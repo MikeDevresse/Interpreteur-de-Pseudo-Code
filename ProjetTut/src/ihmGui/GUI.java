@@ -57,14 +57,11 @@ public class GUI extends JFrame{
 		
 		codepan.paint();
 		try {Thread.sleep(50);}catch(Exception e){}
-		
 		panelCode.getVerticalScrollBar().setValue(15*prog.getCurrent().getLigneCourrante());
+		
 		varspan.paint();
+		panelVars.getVerticalScrollBar().setValue(panelVars.getVerticalScrollBar().getMaximum());
+		
 		execpan.paint();
-		
-		
-		System.out.println(panelCode.getVerticalScrollBar().getValue());
-		System.out.println(panelCode.getVerticalScrollBar().getMaximum());
-		
 	}
 }
