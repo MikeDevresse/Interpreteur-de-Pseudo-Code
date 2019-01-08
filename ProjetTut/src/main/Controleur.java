@@ -231,11 +231,6 @@ public class Controleur {
 		if (Controleur.DEBUG)
 			return;
 
-		// affichage de l'IHM
-		if (this.modeGui)
-			this.gui.repaint();
-		else
-			this.aff.afficher();
 
 		if (!this.prog.getMain().estEnTrainDeReset())
 			etapes.add(this.prog.getCurrent().getLigneCourrante());
@@ -258,6 +253,12 @@ public class Controleur {
 		} else if (attendBreakpoint && !estSurBreakpoint) {
 
 		} else if (!marcheAuto) {
+
+			// affichage de l'IHM
+			if (this.modeGui)
+				this.gui.repaint();
+			else
+				this.aff.afficher();
 			revenir = -1;
 			ligneRestantes = -1;
 			ligneAAttendre = -1;
@@ -333,6 +334,12 @@ public class Controleur {
 				System.exit(0);
 			}
 		} else {
+
+			// affichage de l'IHM
+			if (this.modeGui)
+				this.gui.repaint();
+			else
+				this.aff.afficher();
 			int ligneCourrante = this.prog.getCurrent().getLigneCourrante() + this.prog.getCurrent().getLigneDebut()
 					+ 1;
 			if (this.temps.containsKey(ligneCourrante)) {

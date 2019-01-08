@@ -18,8 +18,11 @@ public class GUI extends JFrame{
 	private CodePan codepan;
 	private VarPan  varspan;
 	private ExecPan execpan;
+	private Programme prog;
 	
 	public GUI(String[] codeLignes, Programme prog) {
+		this.prog = prog;
+		
 		this.setTitle("Affichage du pseudo-code");
 		this.setSize(1300, 800);
 		this.setLocationRelativeTo(null);
@@ -29,10 +32,11 @@ public class GUI extends JFrame{
 			this.code+=str+"\n";
 		
 		codepan = new CodePan(this.code, prog);
-		JScrollPane panelCode = new JScrollPane(codepan);
-		codepan.setScrollBar(panelCode.getHorizontalScrollBar());
+		panelCode = new JScrollPane(codepan);
+		codepan.paint();
+		
 		varspan = new VarPan(prog);
-		JScrollPane panelVars = new JScrollPane(varspan);
+		panelVars = new JScrollPane(varspan);
 		
 		execpan = new ExecPan(prog);
 		
@@ -49,8 +53,18 @@ public class GUI extends JFrame{
 	}
 	
 	public void repaint() {
+		
+		
 		codepan.paint();
+		try {Thread.sleep(50);}catch(Exception e){}
+		
+		panelCode.getVerticalScrollBar().setValue(15*prog.getCurrent().getLigneCourrante());
 		varspan.paint();
 		execpan.paint();
+		
+		
+		System.out.println(panelCode.getVerticalScrollBar().getValue());
+		System.out.println(panelCode.getVerticalScrollBar().getMaximum());
+		
 	}
 }

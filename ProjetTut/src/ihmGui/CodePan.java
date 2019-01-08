@@ -42,21 +42,13 @@ public class CodePan extends JPanel {
 		
 		this.ensPArret = Controleur.getControleur().getBreakpoints();
 		
-		paint();
-		
 		txt.setHorizontalAlignment(SwingConstants.LEFT);
 		txt.setVerticalAlignment(SwingConstants.TOP);
 		
 		this.add(txt);
 	}
 	
-	public void setScrollBar(JScrollBar scrollBar) {
-		this.scrollBar = scrollBar;
-	}
-	
 	public void paint() {
-		//scrollBar.setValue(this.code.split("\n").length / prog.getCurrent().getLigneCourrante()+1);
-		
 		int cpt=1;
 		txt.setText("<html><body style=\"font-size: 15px\">");
 		for(String str : this.code.split("\n")) {
