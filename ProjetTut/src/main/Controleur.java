@@ -52,7 +52,7 @@ public class Controleur {
 
 	private boolean peutContinuer;
 	private boolean attendBreakpoint;
-	private boolean modeGui;
+	private boolean modeCui;
 	private boolean marcheAuto;
 
 	public static Controleur getControleur() {
@@ -65,7 +65,7 @@ public class Controleur {
 	/**
 	 * Constructeur du controleur.
 	 */
-	private Controleur(String fichier, String configFile, boolean modeGui) {
+	private Controleur(String fichier, String configFile, boolean modeCui) {
 
 		this.varsALire = new ArrayList<String>();
 		this.varsLu = new ArrayList<String>();
@@ -76,7 +76,7 @@ public class Controleur {
 		this.comms = new HashMap<Integer, String>();
 
 		this.configFile = configFile;
-		this.modeGui = modeGui;
+		this.modeCui = modeCui;
 
 		Controleur.ctrl = this;
 		this.sc = new Scanner(System.in);
@@ -104,7 +104,7 @@ public class Controleur {
 		getVariableATracer();
 
 		// création de l'IHM
-		if (this.modeGui)
+		if (!this.modeCui)
 			this.gui = new GUI(lecture.getTexteParLigne(), prog);
 		else
 			this.aff = new Affichage(lecture.getTexteParLigne(), prog);
@@ -181,13 +181,13 @@ public class Controleur {
 		String valeur = "";
 		if (this.varsALire.isEmpty()) {
 
-			if (this.modeGui)
+			if (!this.modeCui)
 				gui.repaint();
 			else
 				aff.afficher();
 
 			
-			if (this.modeGui) {
+			if (!this.modeCui) {
 				do {
 					System.out.print("");
 				} while (!peutContinuer);
@@ -259,7 +259,7 @@ public class Controleur {
 		} else if (!marcheAuto) {
 
 			// affichage de l'IHM
-			if (this.modeGui)
+			if (!this.modeCui)
 				this.gui.repaint();
 			else
 				this.aff.afficher();
@@ -268,7 +268,7 @@ public class Controleur {
 			ligneAAttendre = -1;
 			this.attendBreakpoint = false;
 			String commande;
-			if (this.modeGui) {
+			if (!this.modeCui) {
 				do {
 					System.out.print("");
 				} while (!peutContinuer);
@@ -340,7 +340,7 @@ public class Controleur {
 		} else {
 
 			// affichage de l'IHM
-			if (this.modeGui)
+			if (!this.modeCui)
 				this.gui.repaint();
 			else
 				this.aff.afficher();
@@ -432,19 +432,19 @@ public class Controleur {
 					"ERREUR : veuillez spécifier le chemin du fichier à interpréter et le chemin du fichier de configuration");
 			System.exit(1);
 		} else {
-			boolean gui = false;
+			boolean cui = false;
 			int nbArgOpt = 0;
 			for (String arg : a)
-				if (arg.toLowerCase().equals("-gui")) {
-					gui = true;
+				if (arg.toLowerCase().equals("-cui")) {
+					cui = true;
 					nbArgOpt = 1;
 				}
 					
 
 			if (a.length - nbArgOpt == 1)
-				new Controleur(a[0], "", gui);
+				new Controleur(a[0], "", cui);
 			if (a.length - nbArgOpt == 2)
-				new Controleur(a[0], a[1], gui);
+				new Controleur(a[0], a[1], cui);
 		}
 	}
 }
