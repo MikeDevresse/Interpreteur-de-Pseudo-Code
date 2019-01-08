@@ -24,12 +24,14 @@ public class CodePan extends JPanel {
 	
 	private String code;
 	private Programme prog;
+	private JScrollBar scrollBar;
 
 	private HashMap<String, String> syntaxes;
 
 	private ArrayList<Integer> ensPArret;
 	
-	public CodePan(String code, Programme prog) {
+	public CodePan(String code, Programme prog, JScrollBar scrollBar) {
+		this.scrollBar = scrollBar;
 		syntaxes = Syntaxe.getSyntaxesHTML();
 		this.setLayout(new BorderLayout());
 		this.code = code;
@@ -42,6 +44,7 @@ public class CodePan extends JPanel {
 		this.ensPArret = Controleur.getControleur().getBreakpoints();
 		
 		paint();
+		
 		txt.setHorizontalAlignment(SwingConstants.LEFT);
 		txt.setVerticalAlignment(SwingConstants.TOP);
 		
@@ -49,6 +52,8 @@ public class CodePan extends JPanel {
 	}
 	
 	public void paint() {
+		scrollBar.setValue(this.code.split("\n").length / prog.getCurrent().getLigneCourrante()+1);
+		
 		int cpt=1;
 		txt.setText("<html><body style=\"font-size: 15px\">");
 		for(String str : this.code.split("\n")) {

@@ -28,7 +28,7 @@ public class GUI extends JFrame{
 		for(String str : codeLignes)
 			this.code+=str+"\n";
 		
-		codepan = new CodePan(this.code, prog);
+		codepan = new CodePan(this.code, prog, panelCode.getHorizontalScrollBar());
 		JScrollPane panelCode = new JScrollPane(codepan);
 		varspan = new VarPan(prog);
 		JScrollPane panelVars = new JScrollPane(varspan);
