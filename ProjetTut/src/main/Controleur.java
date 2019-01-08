@@ -415,7 +415,10 @@ public class Controleur {
 
 	public void allerA(int ligne) {
 		ligneAAttendre = ligne;
-		this.etapes = new ArrayList<Integer>();
+		this.varsALire = (ArrayList<String>) varsLu.clone();
+		this.varsLu = new ArrayList<String>();
+		anciennesEtapes = etapes;
+		etapes = new ArrayList<Integer>();
 		this.prog.reset();
 	}
 
