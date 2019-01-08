@@ -30,8 +30,7 @@ public class CodePan extends JPanel {
 
 	private ArrayList<Integer> ensPArret;
 	
-	public CodePan(String code, Programme prog, JScrollBar scrollBar) {
-		this.scrollBar = scrollBar;
+	public CodePan(String code, Programme prog) {
 		syntaxes = Syntaxe.getSyntaxesHTML();
 		this.setLayout(new BorderLayout());
 		this.code = code;
@@ -49,6 +48,10 @@ public class CodePan extends JPanel {
 		txt.setVerticalAlignment(SwingConstants.TOP);
 		
 		this.add(txt);
+	}
+	
+	public void setScrollBar(JScrollBar scrollBar) {
+		this.scrollBar = scrollBar;
 	}
 	
 	public void paint() {
