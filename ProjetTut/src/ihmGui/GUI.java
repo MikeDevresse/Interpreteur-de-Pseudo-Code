@@ -17,10 +17,11 @@ public class GUI extends JFrame{
 	private JScrollPane panelVars;
 	private CodePan codepan;
 	private VarPan  varspan;
+	private ExecPan execpan;
 	
 	public GUI(String[] codeLignes, Programme prog) {
 		this.setTitle("Affichage du pseudo-code");
-		this.setSize(1920, 1080);
+		this.setSize(1300, 800);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
@@ -32,12 +33,14 @@ public class GUI extends JFrame{
 		varspan = new VarPan(prog);
 		JScrollPane panelVars = new JScrollPane(varspan);
 		
+		execpan = new ExecPan(prog);
+		
 		JSplitPane jspS = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelCode, panelVars);
-		JSplitPane jspP = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jspS, new JLabel());
+		JSplitPane jspP = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jspS, execpan);
 		
-		jspP.setDividerLocation(1000);
+		jspP.setDividerLocation(600);
 		
-		jspS.setDividerLocation(1000);
+		jspS.setDividerLocation(650);
 		
 		this.add(jspP);
 		
@@ -47,5 +50,6 @@ public class GUI extends JFrame{
 	public void repaint() {
 		codepan.paint();
 		varspan.paint();
+		execpan.paint();
 	}
 }
