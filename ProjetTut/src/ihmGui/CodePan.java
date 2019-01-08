@@ -43,6 +43,7 @@ public class CodePan extends JPanel {
 		
 		paint();
 		txt.setHorizontalAlignment(SwingConstants.LEFT);
+		txt.setVerticalAlignment(SwingConstants.TOP);
 		
 		this.add(txt);
 	}
@@ -77,9 +78,9 @@ public class CodePan extends JPanel {
 		boolean comm = false;
 		boolean grif = false;
 
-		if (str.matches("(.*)(//.*)\\|")) {
-			commentaire = str.replaceAll("(.*)(//.*)\\|", syntaxes.get("commentaire") + "$2" + ANSI_BACK + "| ");
-			str = str.replaceAll("(.*)(//.*)\\|", "$1");
+		if (str.matches("(.*)(//.*)")) {
+			commentaire = str.replaceAll("(.*)(//.*)", syntaxes.get("commentaire") + "$2" + ANSI_BACK);
+			str = str.replaceAll("(.*)(//.*)", "$1");
 		}
 
 		String copy = str.toString();
@@ -87,6 +88,7 @@ public class CodePan extends JPanel {
 		copy = copy.replaceAll("(\".*\")", syntaxes.get("griffe") + "$1" + ANSI_BACK);
 
 		str = str.replaceAll("([é\\w]+[\\s]*)\\(", syntaxes.get("fonction") + "$1" + ANSI_BACK + "(");
+		str = str.replaceAll("(.+:[ ]*)([[ ]*[\\w\\[\\]\\']+]+)", "$1" + syntaxes.get("type") + "$2" + ANSI_BACK );
 
 		str = recupAnnotation(copy, str);
 
@@ -114,10 +116,10 @@ public class CodePan extends JPanel {
 		str = str.replace("spanB", "span style=\"color:Black\"");
 		str = str.replace("spanR", "span style=\"color:red\"");
 		str = str.replace("spanG", "span style=\"color:green\"");
-		str = str.replace("spanY", "span style=\"color:yellow\"");
+		str = str.replace("spanY", "span style=\"color:#FFD700\"");
 		str = str.replace("spanb", "span style=\"color:blue\"");
 		str = str.replace("spanP", "span style=\"color:purple\"");
-		str = str.replace("spanC", "span style=\"color:cyan\"");
+		str = str.replace("spanC", "span style=\"color:#00FFFF\"");
 		str = str.replace("spanW", "span style=\"color:white\"");
 		
 		return str;
@@ -132,7 +134,7 @@ public class CodePan extends JPanel {
 			if (i % 2 != 0)
 				ret += syntaxes.get("griffe") + "\"" + annotations[i] + "\"" + ANSI_BACK;
 			else
-				if ( i < change.length )
+				if(i < change.length)
 					ret += change[i];
 		}
 

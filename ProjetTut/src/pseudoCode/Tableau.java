@@ -106,7 +106,7 @@ public class Tableau extends Donnee
 		String s = "";
 		String vals = "";
 		for ( int i=0 ; i<this.ensDonnees.size()-1 ; i++ )
-			vals +=  this.ensDonnees.get( i ).valeurToString() + "|";
+			vals +=  this.ensDonnees.get( i ).valeurToString() + "│";
 		vals += this.ensDonnees.get( this.ensDonnees.size()-1 ).valeurToString();
 		s += String.format("%3s|%5.5s|%9.9s|%17.17s|", algo.getLigneCourrante()+1, this.nom, this.type, vals);
 
