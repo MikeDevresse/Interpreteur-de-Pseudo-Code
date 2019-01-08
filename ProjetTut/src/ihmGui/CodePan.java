@@ -55,7 +55,7 @@ public class CodePan extends JPanel {
 	}
 	
 	public void paint() {
-		scrollBar.setValue(this.code.split("\n").length / prog.getCurrent().getLigneCourrante()+1);
+		//scrollBar.setValue(this.code.split("\n").length / prog.getCurrent().getLigneCourrante()+1);
 		
 		int cpt=1;
 		txt.setText("<html><body style=\"font-size: 15px\">");
