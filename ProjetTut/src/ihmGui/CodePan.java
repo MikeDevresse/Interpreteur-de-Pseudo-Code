@@ -2,6 +2,7 @@ package ihmGui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JLabel;
@@ -10,6 +11,7 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
+import main.Controleur;
 import pseudoCode.Programme;
 import util.Syntaxe;
 
@@ -21,8 +23,11 @@ public class CodePan extends JPanel {
 	private JLabel txt;
 	
 	private String code;
+	private Programme prog;
 
 	private HashMap<String, String> syntaxes;
+
+	private ArrayList<Integer> ensPArret;
 	
 	public CodePan(String code, Programme prog) {
 		syntaxes = Syntaxe.getSyntaxesHTML();
@@ -32,15 +37,38 @@ public class CodePan extends JPanel {
 		this.code = this.code.replaceAll("<", "&lt;");
 		txt = new JLabel();
 		
+		this.prog = prog;
 		
-		txt.setText("<html>");
-		for(String str : this.code.split("\n")) {
-			txt.setText(txt.getText() + "<p>" + colorier(str) + "</p>");
-		}
-		txt.setText(txt.getText() + "</html>");
+		this.ensPArret = Controleur.getControleur().getBreakpoints();
+		
+		paint();
 		txt.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		this.add(txt);
+	}
+	
+	public void paint() {
+		int cpt=1;
+		txt.setText("<html><body style=\"font-size: 15px\">");
+		for(String str : this.code.split("\n")) {
+			try {
+				if( cpt == prog.getCurrent().getLigneCourrante()+1 ) {
+					if (prog.getLignesFausses().contains((Integer) cpt-1))
+						txt.setText(txt.getText() + "<p style=\"background-color:red\">" + String.format("%02d - ", cpt) + str + "</p>");
+					else
+						txt.setText(txt.getText() + "<p style=\"background-color:green\">" + String.format("%02d - ", cpt) + str + "</p>");
+				}
+				else if (ensPArret.contains((Integer) cpt - 1)) {
+					txt.setText(txt.getText() + "<p>" + String.format("<span style=\"color:red\">%02d</span> - ", cpt) + colorier(str) + "</p>");
+				} 
+				else
+					txt.setText(txt.getText() + "<p>" + String.format("%02d - ", cpt) + colorier(str) + "</p>");
+			}catch(Exception e) {
+				txt.setText(txt.getText() + "<p>" + String.format("%02d - ", cpt) + colorier(str) + "</p>");
+			}
+			cpt++;
+		}
+		txt.setText(txt.getText() + "</body></html>");
 	}
 	
 	private String colorier(String str) {
@@ -78,8 +106,6 @@ public class CodePan extends JPanel {
 			ret += mots[i] + " ";
 		}
 		ret = ret.trim();
-		
-		System.out.println(ret);
 
 		return replaceCoul(ret);
 	}

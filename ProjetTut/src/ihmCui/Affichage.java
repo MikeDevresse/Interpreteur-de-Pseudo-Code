@@ -112,10 +112,7 @@ public class Affichage {
 						affichage += String.format("|"+ANSI_RED_BACKGROUND+ANSI_BLACK+"%2d %-76.76s"+ANSI_BACK+"|", cpt, str);
 					else
 						affichage += String.format("|"+ANSI_GREEN_BACKGROUND+ANSI_BLACK+"%2d %-76.76s"+ANSI_BACK+"|", cpt, str);
-				} 
-				else if (ensLigneRouge.contains((Integer) cpt)) {
-					affichage += String.format("|"+ANSI_BLACK+ANSI_RED_BACKGROUND+"%2d %-76.76s"+ANSI_BACK+"|", cpt, str);
-				} 
+				}
 				else if (ensPArret.contains((Integer) cpt - 1)) {
 					str = String.format("|"+ ANSI_RED + "%2s"+ ANSI_BACK+" %-76.76s|", cpt, str);
 					affichage += colorer(str);
@@ -178,10 +175,6 @@ public class Affichage {
 			System.out.flush();
 			System.out.println(affichage);
 		}
-	}
-
-	public void ajouterLigneRouge(int ligne) {
-		ensLigneRouge.add((Integer) ligne);
 	}
 
 	private String console(String exec, String[] lignesComm) {
