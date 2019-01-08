@@ -16,7 +16,7 @@ public class DonneeFactory {
 	 * @param expression pseudo-code
 	 * @return variable
 	 */
-	public static Donnee<?> createVariable(String nom, String type, boolean constante, Algorithme algo) {
+	public static Donnee<?> creerDonnee(String nom, String type, boolean constante, Algorithme algo) {
 		// nettoyage de l'expression
 		type = type.replaceAll( " ", "" ).replaceAll( "[éè]", "e" ).replaceAll( "î", "i" );
 		type = type.replace("d'", "de");
