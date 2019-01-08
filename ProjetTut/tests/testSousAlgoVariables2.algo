@@ -1,0 +1,23 @@
+ALGORITHME testSousAlgoVariables
+constante:
+
+variable:
+	a : entier
+	z : entier
+	
+DEBUT
+	a <-- 1	
+	appel sousProg2(2, z)
+	
+	ecrire(a © " -> " © z)
+FIN
+
+ALGORITHME sousProg2(e var1 : entier, s var3)
+constante:
+
+variable:
+	a : entier
+	
+DEBUT
+	var3 <-- 17
+FIN
