@@ -214,7 +214,7 @@ public class Controleur {
 	public void getVariableATracer() {
 		for (Algorithme algo : this.prog.getAlgos()) {
 			for (Donnee d : algo.getDonnees()) {
-				if (d.estTracable()) {
+				if ( d != null && d.estTracable()) {
 					System.out.print(
 							"Tracer la variable \"" + d.getNom() + "\" de l'algo " + algo.getNom() + " (Y/n) : ");
 					String reponse = sc.nextLine();
@@ -324,16 +324,16 @@ public class Controleur {
 			} else if (commande.matches("[\\+-][ ]*bk")) { // placer ou supprimer un point d'arrêt
 				if ( commande.replaceAll( "([\\+-])[ ]*bk", "$1" ).equals( "+" ))
 				{
-					if ( !this.breakpoints.contains( this.prog.getCurrent().getLigneCourrante() ) )
+					if ( !this.breakpoints.contains( this.prog.getCourant().getLigneCourante() ) )
 					{
-						this.setBreakPoint(this.prog.getCurrent().getLigneCourrante());
+						this.setBreakPoint(this.prog.getCourant().getLigneCourante());
 					}
 				}
 				else
 				{
-					if ( this.breakpoints.contains( this.prog.getCurrent().getLigneCourrante() ) )
+					if ( this.breakpoints.contains( this.prog.getCourant().getLigneCourante() ) )
 					{
-						this.setBreakPoint(this.prog.getCurrent().getLigneCourrante());
+						this.setBreakPoint(this.prog.getCourant().getLigneCourante());
 					}
 				}
 					
