@@ -50,6 +50,7 @@ public class Algorithme {
 		this.nom = nom;
 		this.ensDonnees = new ArrayList<Donnee>();
 		this.fichier = fichier;
+		
 		initialiser();
 	}
 
@@ -57,7 +58,7 @@ public class Algorithme {
 	 * Initialise les données de l'algorithme
 	 */
 	public void initialiser() {
-
+		System.out.println(this.fichier[this.fichier.length-1]);
 		Fonctions.initFonctions(this.interpreteur);
 
 		String current = fichier[ligneCourante];
@@ -123,7 +124,7 @@ public class Algorithme {
 		/*
 		 * Traitement de la fin de l'algorithme
 		 */
-		if (this.ligneCourante == this.fichier.length) {
+		if (this.ligneCourante == this.fichier.length-1 || this.fichier[this.ligneCourante].equals("FIN")) {
 			this.fin = true;
 
 			/*
@@ -187,7 +188,7 @@ public class Algorithme {
 							if (sousAlgo.getDonnee(sousAlgo.params.get(i)[1]) instanceof Variable) {
 								if (sousAlgo.params.get(i)[0].equals("e")) // passage par valeur
 									sousAlgo.setValeur(sousAlgo.params.get(i)[1], params[i]);
-								if (sousAlgo.params.get(i)[0].equals("s")) { // passage pas référence
+								if (sousAlgo.params.get(i)[0].equals("s")) { // passage par référence
 									sousAlgo.getDonnee(sousAlgo.params.get(i)[1]).setAlgo(this);
 									sousAlgo.params.get(i)[2] = params[i].trim();
 								}
@@ -452,7 +453,6 @@ public class Algorithme {
 			if (estInfinie) {
 				this.prog.traceExec += "r:/!\\ boucle infinie";
 				Controleur.getControleur().attend();
-				System.exit(1);
 			}
 		}
 
