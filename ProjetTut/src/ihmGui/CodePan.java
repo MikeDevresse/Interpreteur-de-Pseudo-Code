@@ -72,11 +72,19 @@ public class CodePan extends JPanel {
 	 * refresh du panel
 	 */
 	public void paint() {
+		int ligneC;
+		
+		if (this.prog.getLast() != null)
+			ligneC = prog.getCurrent().getLigneCourrante() + prog.getCurrent().getLigneDebut();
+		else
+			ligneC = prog.getCurrent().getLigneCourrante();
+		
+		
 		int cpt=1;
 		txt.setText("<html><body style=\"font-size: 15px\">");
 		for(String str : this.code.split("\n")) {
 			try {
-				if( cpt == prog.getCurrent().getLigneCourrante()+1 ) {
+				if( cpt == ligneC+1 ) {
 					if (prog.getLignesFausses().contains((Integer) cpt-1))
 						txt.setText(txt.getText() + "<p style=\"background-color:red\">" + String.format("%02d - ", cpt) + str + "</p>");
 					else
