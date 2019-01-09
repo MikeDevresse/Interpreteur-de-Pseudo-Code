@@ -25,7 +25,7 @@ public class Algorithme {
 	private String returnValue;
 	private boolean fin;
 	private boolean reset;
-	private int ligneCourrante = 0;
+	private int ligneCourante = 0;
 	private int ligneDebutAlgorithme;
 	private int ligneDebut;
 	private Programme prog;
@@ -60,7 +60,7 @@ public class Algorithme {
 
 		Fonctions.initFonctions(this.interpreteur);
 
-		String current = fichier[ligneCourrante];
+		String current = fichier[ligneCourante];
 		String[] mots = current.split(" ");
 
 		/*
@@ -102,10 +102,10 @@ public class Algorithme {
 					}
 				}
 			}
-			current = fichier[ligneCourrante++];
+			current = fichier[ligneCourante++];
 			mots = current.split(" ");
 		} while (!mots[0].equals("DEBUT"));
-		this.ligneDebutAlgorithme = this.ligneCourrante;
+		this.ligneDebutAlgorithme = this.ligneCourante;
 		this.def = "algo";
 	}
 
@@ -116,14 +116,14 @@ public class Algorithme {
 	 */
 	public boolean ligneSuivante() throws AlgorithmeException {
 		if (this.reset) {
-			this.ligneCourrante = this.ligneDebutAlgorithme;
+			this.ligneCourante = this.ligneDebutAlgorithme;
 			this.reset = false;
 		}
 
 		/*
 		 * Traitement de la fin de l'algorithme
 		 */
-		if (this.ligneCourrante == this.fichier.length) {
+		if (this.ligneCourante == this.fichier.length) {
 			this.fin = true;
 
 			/*
@@ -142,7 +142,7 @@ public class Algorithme {
 			return false;
 		}
 
-		String current = this.fichier[ligneCourrante++]; // ligne lue
+		String current = this.fichier[ligneCourante++]; // ligne lue
 
 		// gestion des commentaires
 		if (current.matches(".*//.*"))
@@ -196,7 +196,7 @@ public class Algorithme {
 					}
 
 					// définition du sous programme comme algo courant
-					this.prog.setCurrent(sousAlgo);
+					this.prog.setCourant(sousAlgo);
 
 					// interprétation et récupération de la valeur de retour
 					String returnValue;
@@ -209,7 +209,7 @@ public class Algorithme {
 					if (returnValue != null)
 						current = current.replaceAll("appel.*\\(.*\\)", returnValue);
 
-					this.prog.setCurrent(this); // retour à l'algo appelant
+					this.prog.setCourant(this); // retour à l'algo appelant
 				}
 			}
 
@@ -256,16 +256,16 @@ public class Algorithme {
 			 */
 			if (current.matches("si .* alors.*")) {
 				String condition = current.split("si | alors")[1];
-				interpreterCondition(condition, this.ligneCourrante, this.ligneCourrante);
+				interpreterCondition(condition, this.ligneCourante, this.ligneCourante);
 			} else if (current.matches(".*si .*") && !current.contains("alors")) {
 				/*
 				 * Gestion des conditions sur plusieurs lignes
 				 */
 				String condition = current.split("si")[1];
 				boolean conditionFinie = false;
-				int ligneDebutCondition = this.ligneCourrante;
+				int ligneDebutCondition = this.ligneCourante;
 				int ligneFinCondition;
-				for (ligneFinCondition = this.ligneCourrante; ligneFinCondition < this.fichier.length
+				for (ligneFinCondition = this.ligneCourante; ligneFinCondition < this.fichier.length
 						&& !conditionFinie; ligneFinCondition++) {
 
 					if (!this.fichier[ligneFinCondition].trim().matches(".* alors$")) {
@@ -278,7 +278,7 @@ public class Algorithme {
 					}
 				}
 
-				this.ligneCourrante = ligneFinCondition; // saut à la fin de la condition
+				this.ligneCourante = ligneFinCondition; // saut à la fin de la condition
 				interpreterCondition(condition, ligneDebutCondition, ligneFinCondition); // interprétation de la
 																							// condition
 			}
@@ -288,7 +288,7 @@ public class Algorithme {
 			 */
 			if (current.matches(".*tq.*alors.*")) {
 				String condition = current.split("tq | alors")[1];
-				interpreterBoucle(this.ligneCourrante, condition, this.ligneCourrante, this.ligneCourrante);
+				interpreterBoucle(this.ligneCourante, condition, this.ligneCourante, this.ligneCourante);
 
 			} else if (current.matches(".*tq .*")) {
 				/*
@@ -296,9 +296,9 @@ public class Algorithme {
 				 */
 				String condition = current.split("tq")[1];
 				boolean conditionFinie = false;
-				int ligneDebutBoucle = this.ligneCourrante;
+				int ligneDebutBoucle = this.ligneCourante;
 				int ligneFinBoucle;
-				for (ligneFinBoucle = this.ligneCourrante; ligneFinBoucle < this.fichier.length
+				for (ligneFinBoucle = this.ligneCourante; ligneFinBoucle < this.fichier.length
 						&& !conditionFinie; ligneFinBoucle++) {
 
 					if (!this.fichier[ligneFinBoucle].trim().matches(".* alors$")) {
@@ -311,8 +311,8 @@ public class Algorithme {
 					}
 				}
 
-				this.ligneCourrante = ligneFinBoucle; // saut à la fin de la condition
-				interpreterBoucle(this.ligneCourrante, condition, ligneDebutBoucle, ligneFinBoucle); // interprétation
+				this.ligneCourante = ligneFinBoucle; // saut à la fin de la condition
+				interpreterBoucle(this.ligneCourante, condition, ligneDebutBoucle, ligneFinBoucle); // interprétation
 																										// de la boucle
 			}
 
@@ -345,7 +345,7 @@ public class Algorithme {
 		/*
 		 * Identification des conditions imbriquées
 		 */
-		int cptLigne = this.ligneCourrante;
+		int cptLigne = this.ligneCourante;
 		int nbSi = 0;
 		int ligneSinon = 0;
 		int ligneFsi = 0;
@@ -369,13 +369,13 @@ public class Algorithme {
 			Controleur.getControleur().attend();
 			do {
 				ligneSuivante();
-			} while (this.ligneCourrante != ligneSinon && this.ligneCourrante != ligneFsi);
+			} while (this.ligneCourante != ligneSinon && this.ligneCourante != ligneFsi);
 
 			// si on rencontre un "sinon", saut jusqu'à la fin de la condition
-			if (this.fichier[this.ligneCourrante].trim().equals("sinon")) {
+			if (this.fichier[this.ligneCourante].trim().equals("sinon")) {
 				do {
-					this.ligneCourrante++;
-				} while (this.ligneCourrante != ligneFsi + 1);
+					this.ligneCourante++;
+				} while (this.ligneCourante != ligneFsi + 1);
 			}
 
 		} else { // condition invalide
@@ -389,8 +389,8 @@ public class Algorithme {
 
 			// saut à l'alternative ou la fin de la condition
 			do {
-				this.ligneCourrante++;
-			} while ((this.ligneCourrante != ligneSinon + 1 && this.ligneCourrante != ligneFsi + 1));
+				this.ligneCourante++;
+			} while ((this.ligneCourante != ligneSinon + 1 && this.ligneCourante != ligneFsi + 1));
 		}
 	}
 
@@ -407,7 +407,7 @@ public class Algorithme {
 		/*
 		 * Identification des boucles imbriquées
 		 */
-		int cptLigne = this.ligneCourrante;
+		int cptLigne = this.ligneCourante;
 		int nbTq = 0;
 		int ligneFtq = 0;
 		for (int i = cptLigne; i < this.fichier.length; i++) {
@@ -441,7 +441,7 @@ public class Algorithme {
 
 			// parcours à vide de la boucle pour détecter les modifications de variable
 			boolean estInfinie = true;
-			for (int i = this.ligneCourrante; i < ligneFtq; i++) {
+			for (int i = this.ligneCourante; i < ligneFtq; i++) {
 				for (String var : condVariables) {
 					// si une variable de la condition est modifiée
 					if (this.fichier[i].matches(var + "[ ]*<--.*"))
@@ -460,23 +460,23 @@ public class Algorithme {
 		 * Interprétation de la boucle
 		 */
 		while (Condition.condition(condition, this.interpreteur)) {
-			this.ligneCourrante = ligneBoucle; // retour en haut de la boucle
+			this.ligneCourante = ligneBoucle; // retour en haut de la boucle
 			Controleur.getControleur().attend();
 			do {
 				ligneSuivante();
-			} while (this.ligneCourrante != ligneFtq);
+			} while (this.ligneCourante != ligneFtq);
 		}
 
 		// indication que la condition est fausse
 		for (int i = ligneDebut; i <= ligneFin; i++)
 			this.prog.ajouterLigneFausse(i);
 
-		this.ligneCourrante = ligneDebut;
+		this.ligneCourante = ligneDebut;
 		Controleur.getControleur().attend();
 		this.prog.resetLigneFausse();
 
 		// retour au point d'origine
-		this.ligneCourrante = ligneFtq + 1;
+		this.ligneCourante = ligneFtq + 1;
 
 	}
 
@@ -490,7 +490,7 @@ public class Algorithme {
 		/*
 		 * Identification des switchs imbriqués
 		 */
-		int cptLigne = this.ligneCourrante;
+		int cptLigne = this.ligneCourante;
 		int nbSelon = 0;
 		int ligneAutrecas = 0;
 		int ligneFselon = 0;
@@ -500,7 +500,7 @@ public class Algorithme {
 
 			if (this.fichier[i].matches("fselon")) {
 				if (nbSelon == 0) {
-					ligneFselon = i;
+					ligneFselon = i+1;
 					break;
 				} else
 					nbSelon--;
@@ -514,35 +514,35 @@ public class Algorithme {
 		/*
 		 * Interprétation du switch
 		 */
-		this.ligneCourrante--;
+		this.ligneCourante--;
 		do {
-			this.ligneCourrante++;
+			this.ligneCourante++;
 
 			// cas identifié
-			if (this.fichier[this.ligneCourrante].matches("cas .*[ ]*:")) {
-				String cas = this.fichier[this.ligneCourrante].split("cas |[ ]*:")[1].replaceAll("\"", "");
+			if (this.fichier[this.ligneCourante].matches("cas .*[ ]*:")) {
+				String cas = this.fichier[this.ligneCourante].split("cas |[ ]*:")[1].replaceAll("\"", "");
 
 				// cas valide
 				if (String.valueOf(v.getValeur()).equals(cas)) {
-					ligneCourrante++;
+					ligneCourante++;
 					do {
 						ligneSuivante();
 
-					} while (!this.fichier[this.ligneCourrante].matches("cas.*")
-							&& !this.fichier[this.ligneCourrante].matches("autrecas .*"));
-					ligneCourrante = ligneFselon;
+					} while (!this.fichier[this.ligneCourante].matches("cas.*")
+							&& !this.fichier[this.ligneCourante].matches("autrecas .*"));
+					ligneCourante = ligneFselon;
 				}
-			} else if (this.fichier[this.ligneCourrante].matches("autrecas.*")) {
+			} else if (this.fichier[this.ligneCourante].matches("autrecas.*")) {
 				// gestion des autres cas
-				ligneCourrante++;
+				ligneCourante++;
 
 				do {
 					ligneSuivante();
-				} while (!this.fichier[this.ligneCourrante].matches("fselon"));
-				ligneCourrante = ligneFselon;
+				} while (!this.fichier[this.ligneCourante].matches("fselon"));
+				ligneCourante = ligneFselon;
 			}
 
-		} while (this.ligneCourrante != ligneFselon);
+		} while (this.ligneCourante != ligneFselon);
 
 	}
 
@@ -558,7 +558,7 @@ public class Algorithme {
 	/**
 	 * Ajoute une variable à la liste des variables
 	 *
-	 * @param v variable
+	 * @param d donnée
 	 */
 	public void ajouterDonnee(Donnee d) {
 		this.ensDonnees.add(d);
@@ -567,8 +567,8 @@ public class Algorithme {
 	/**
 	 * Retourne une variable donnée
 	 *
-	 * @param nomVar nom de la variable
-	 * @return variable
+	 * @param nomDonnee nom de la donnée
+	 * @return donnée
 	 */
 	public Donnee getDonnee(String nomDonnee) {
 		for (Donnee d : this.ensDonnees) {
@@ -704,7 +704,7 @@ public class Algorithme {
 	/**
 	 * Retourne la ligne de début d'algorithme
 	 * 
-	 * @return
+	 * @return ligne début
 	 */
 	public int getLigneDebut() {
 		return this.ligneDebut;
@@ -713,16 +713,16 @@ public class Algorithme {
 	/**
 	 * Retourne la ligne courrante
 	 * 
-	 * @return
+	 * @return ligne courante
 	 */
-	public int getLigneCourrante() {
-		return this.ligneCourrante;
+	public int getLigneCourante() {
+		return this.ligneCourante;
 	}
 
 	/**
 	 * Retourne le nom de l'algorithme
 	 * 
-	 * @return
+	 * @return nom de l'algorithme
 	 */
 	public String getNom() {
 		return this.nom;
@@ -733,7 +733,7 @@ public class Algorithme {
 	 */
 	public void reset() {
 		this.reset = true;
-		this.ligneCourrante = this.ligneDebutAlgorithme;
+		this.ligneCourante = this.ligneDebutAlgorithme;
 
 	}
 

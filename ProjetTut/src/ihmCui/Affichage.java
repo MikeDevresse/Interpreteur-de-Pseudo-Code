@@ -77,9 +77,9 @@ public class Affichage {
 		this.ensPArret = Controleur.getControleur().getBreakpoints();
 		this.exec = prog.traceExec;
 		if (this.prog.getLast() != null)
-			this.ligneC = prog.getCurrent().getLigneCourrante() + prog.getCurrent().getLigneDebut();
+			this.ligneC = prog.getCourant().getLigneCourante() + prog.getCourant().getLigneDebut();
 		else
-			this.ligneC = prog.getCurrent().getLigneCourrante();
+			this.ligneC = prog.getCourant().getLigneCourante();
 		this.vars = prog.traceVariable.split("\n");
 	}
 
@@ -306,6 +306,12 @@ public class Affichage {
 		return ret;
 	}
 
+	/**
+	 * Permet de colorer la partie entre guillemets
+	 * @param recup chaîne de caractère neutre
+	 * @param dest chaîne de destination
+	 * @return string formattée
+	 */
 	private String recupAnnotation(String recup, String dest) {
 		String ret = "";
 

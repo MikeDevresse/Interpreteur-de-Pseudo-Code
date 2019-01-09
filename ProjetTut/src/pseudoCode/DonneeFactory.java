@@ -12,8 +12,11 @@ public class DonneeFactory {
 	/**
 	 * Parse une expression et crée la variable associée.
 	 *
-	 * @param expression pseudo-code
-	 * @return variable
+	 * @param nom nom de la donnée
+	 * @param type type de la donnée
+	 * @param constante vrai si la donnée est constante
+	 * @param algo algorithme possédant la donnée
+	 * @return donnée
 	 */
 	public static Donnee<?> creerDonnee(String nom, String type, boolean constante, Algorithme algo) {
 		// nettoyage de l'expression

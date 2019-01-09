@@ -9,12 +9,25 @@ import javax.swing.SwingConstants;
 
 import pseudoCode.Programme;
 
+/**
+ * Class du panel affichant la trace des variables
+ */
 public class VarPan extends JPanel {
 	
+	/** vars. */
 	private String[] vars;
+	
+	/** txt. */
 	private JLabel txt;
+	
+	/** prog. */
 	private Programme prog;
 	
+	/**
+	 * Instanciation de var pan.
+	 *
+	 * @param prog le programme lié au pseudo-code
+	 */
 	public VarPan(Programme prog) {
 		this.prog = prog;
 		this.txt  = new JLabel();
@@ -29,6 +42,9 @@ public class VarPan extends JPanel {
 		
 	}
 	
+	/**
+	 * Refresh du panel
+	 */
 	public void paint() {
 		this.vars = prog.traceVariable.split("\n");
 		txt.setText("<html><body style=\"width: 100%; font-size: 20px\" ><table style=\"width: 100%\" border=\"0\" cellspacing=\"0\">");

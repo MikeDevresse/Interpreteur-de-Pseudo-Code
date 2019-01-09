@@ -112,7 +112,7 @@ public class Controleur {
 		// exécution de l'interprétation
 		while (!prog.getMain().estTerminer()) {
 			try {
-				prog.getCurrent().ligneSuivante();
+				prog.getCourant().ligneSuivante();
 			} catch (AlgorithmeException e) {
 				e.printStackTrace();
 			}
@@ -205,7 +205,7 @@ public class Controleur {
 		}
 		this.varsLu.add(valeur);
 		this.prog.traceExec += "l:" + valeur + "\n";
-		this.prog.getCurrent().setValeur(nomVar, valeur);
+		this.prog.getCourant().setValeur(nomVar, valeur);
 	}
 
 	/**
@@ -235,11 +235,11 @@ public class Controleur {
 			return;
 
 		if (!this.prog.getMain().estEnTrainDeReset())
-			etapes.add(this.prog.getCurrent().getLigneCourrante());
+			etapes.add(this.prog.getCourant().getLigneCourante());
 
 		boolean estSurBreakpoint = false;
 		for (int i = 0; i < breakpoints.size(); i++) {
-			if (this.breakpoints.get(i) == this.prog.getCurrent().getLigneCourrante()) {
+			if (this.breakpoints.get(i) == this.prog.getCourant().getLigneCourante()) {
 				estSurBreakpoint = true;
 				break;
 			}
@@ -248,9 +248,9 @@ public class Controleur {
 		if (this.ligneRestantes > 0) {
 			ligneRestantes--;
 		} else if (revenir != -1 && this.anciennesEtapes.size() > revenir) {
-			if (this.anciennesEtapes.get(0) == this.prog.getCurrent().getLigneCourrante())
+			if (this.anciennesEtapes.get(0) == this.prog.getCourant().getLigneCourante())
 				this.anciennesEtapes.remove(0);
-		} else if (ligneAAttendre != -1 && ligneAAttendre > prog.getCurrent().getLigneCourrante()) {
+		} else if (ligneAAttendre != -1 && ligneAAttendre > prog.getCourant().getLigneCourante()) {
 
 		} else if (attendBreakpoint && !estSurBreakpoint) {
 
@@ -304,7 +304,7 @@ public class Controleur {
 				allerA(ligne);
 			} else if (commande.matches("cp tab [\\w]+")) { // copier le contenu d'un tableau
 				String nomVar = commande.replaceAll("cp tab ([\\w]+)", "$1");
-				Tableau t = (Tableau) prog.getCurrent().getDonnee(nomVar);
+				Tableau t = (Tableau) prog.getCourant().getDonnee(nomVar);
 				if (t != null) {
 					StringSelection selection = new StringSelection(t.toStringVertical());
 					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -356,7 +356,7 @@ public class Controleur {
 				this.gui.repaint();
 			else
 				this.aff.afficher();
-			int ligneCourrante = this.prog.getCurrent().getLigneCourrante() + this.prog.getCurrent().getLigneDebut()
+			int ligneCourrante = this.prog.getCourant().getLigneCourante() + this.prog.getCourant().getLigneDebut()
 					+ 1;
 			if (this.temps.containsKey(ligneCourrante)) {
 				try {
