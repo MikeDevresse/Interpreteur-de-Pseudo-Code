@@ -322,7 +322,21 @@ public class Controleur {
 				this.reste();
 				this.prog.traceExec += "a:" + commande + "\n";
 			} else if (commande.matches("[\\+-][ ]*bk")) { // placer ou supprimer un point d'arrêt
-				this.setBreakPoint(this.prog.getCurrent().getLigneCourrante());
+				if ( commande.replaceAll( "([\\+-])[ ]*bk", "$1" ).equals( "+" ))
+				{
+					if ( !this.breakpoints.contains( this.prog.getCurrent().getLigneCourrante() ) )
+					{
+						this.setBreakPoint(this.prog.getCurrent().getLigneCourrante());
+					}
+				}
+				else
+				{
+					if ( this.breakpoints.contains( this.prog.getCurrent().getLigneCourrante() ) )
+					{
+						this.setBreakPoint(this.prog.getCurrent().getLigneCourrante());
+					}
+				}
+					
 				reste();
 				this.prog.traceExec += "a:" + commande + "\n";
 			} else if (commande.equals("go bk")) { // se rendre au prochain point d'arrêt

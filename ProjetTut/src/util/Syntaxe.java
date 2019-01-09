@@ -38,12 +38,16 @@ public class Syntaxe {
 		syntaxes.put("alors",      ANSI_BLUE);
 		syntaxes.put("tq",         ANSI_BLUE);
 		syntaxes.put("ftq",        ANSI_BLUE);
+		syntaxes.put("selon",      ANSI_BLUE);
+		syntaxes.put("cas",        ANSI_BLUE);
+		syntaxes.put("autrecas",   ANSI_BLUE);
+		syntaxes.put("fselon",     ANSI_BLUE);
 		
-		syntaxes.put("fonction",   ANSI_CYAN);
+		syntaxes.put("fonction",   ANSI_RED);
 		
 		syntaxes.put("commentaire",ANSI_YELLOW);
 		
-		syntaxes.put("griffe",     ANSI_BLUE);
+		syntaxes.put("griffe",     ANSI_CYAN);
 		
 		syntaxes.put("type",       ANSI_GREEN);
 		
@@ -67,12 +71,16 @@ public class Syntaxe {
 		syntaxes.put("alors",      ANSI_BLUE_HTML);
 		syntaxes.put("tq",         ANSI_BLUE_HTML);
 		syntaxes.put("ftq",        ANSI_BLUE_HTML);
+		syntaxes.put("selon",      ANSI_BLUE_HTML);
+		syntaxes.put("cas",        ANSI_BLUE_HTML);
+		syntaxes.put("autrecas",   ANSI_BLUE_HTML);
+		syntaxes.put("fselon",     ANSI_BLUE_HTML);
 		
-		syntaxes.put("fonction",   ANSI_CYAN_HTML);
+		syntaxes.put("fonction",   ANSI_RED_HTML);
 		
 		syntaxes.put("commentaire",ANSI_YELLOW_HTML);
 		
-		syntaxes.put("griffe",     ANSI_BLUE_HTML);
+		syntaxes.put("griffe",     ANSI_CYAN_HTML);
 		
 		syntaxes.put("type",       ANSI_GREEN_HTML);
 		
