@@ -108,7 +108,7 @@ public class ExecPan extends JPanel implements ActionListener {
 		try {Thread.sleep(50);}catch(Exception e){}
 		jsp.getVerticalScrollBar().setValue(jsp.getVerticalScrollBar().getMaximum());
 		
-		int ligneC = prog.getCurrent().getLigneCourrante();
+		int ligneC = prog.getCourant().getLigneCourante();
 		String concat = "";
 		if(comms.containsKey(ligneC+1)) {
 			String strComm = comms.get(ligneC+1);

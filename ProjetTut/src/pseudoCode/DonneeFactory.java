@@ -12,8 +12,11 @@ public class DonneeFactory {
 	/**
 	 * Parse une expression et crée la variable associée.
 	 *
-	 * @param expression pseudo-code
-	 * @return variable
+	 * @param nom nom de la donnée
+	 * @param type type de la donnée
+	 * @param constante vrai si la donnée est constante
+	 * @param algo algorithme possédant la donnée
+	 * @return donnée
 	 */
 	public static Donnee<?> creerDonnee(String nom, String type, boolean constante, Algorithme algo) {
 		// nettoyage de l'expression
@@ -43,7 +46,7 @@ public class DonneeFactory {
 				    		case "booleen":
 				    			primType = "boolean";
 				    			break;
-				    		case "chainedecaractere":
+				    		case "chainedecaracteres":
 				    		case "chaine":
 				    			primType = "String";
 				    			break;
@@ -96,7 +99,7 @@ public class DonneeFactory {
     			return new Variable<Integer>(nom, "entier", constante,algo);
     		case "booleen":
     			return new Variable<Boolean>(nom, "booleen", constante,algo);
-    		case "chainedecaractere":
+    		case "chainedecaracteres":
     		case "chaine":
     			return new Variable<String>(nom, "chaine", constante,algo);
     		case "reel":

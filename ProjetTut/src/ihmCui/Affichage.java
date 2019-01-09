@@ -77,9 +77,9 @@ public class Affichage {
 		this.ensPArret = Controleur.getControleur().getBreakpoints();
 		this.exec = prog.traceExec;
 		if (this.prog.getLast() != null)
-			this.ligneC = prog.getCurrent().getLigneCourrante() + prog.getCurrent().getLigneDebut();
+			this.ligneC = prog.getCourant().getLigneCourante() + prog.getCourant().getLigneDebut();
 		else
-			this.ligneC = prog.getCurrent().getLigneCourrante();
+			this.ligneC = prog.getCourant().getLigneCourante();
 		this.vars = prog.traceVariable.split("\n");
 	}
 
@@ -150,7 +150,7 @@ public class Affichage {
 				System.out.println(e);
 			}
 		}
-
+		
 		String[] lignesComm = new String[3];
 		lignesComm[0]="";
 		lignesComm[1]="";

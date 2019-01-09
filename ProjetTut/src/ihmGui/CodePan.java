@@ -84,7 +84,11 @@ public class CodePan extends JPanel {
 		txt.setText("<html><body style=\"font-size: 15px\">");
 		for(String str : this.code.split("\n")) {
 			try {
+<<<<<<< HEAD
 				if( cpt == ligneC+1 ) {
+=======
+				if( cpt == prog.getCourant().getLigneCourante()+1 ) {
+>>>>>>> branch 'master' of https://github.com/MikeDevresse/ProjetTutS3
 					if (prog.getLignesFausses().contains((Integer) cpt-1))
 						txt.setText(txt.getText() + "<p style=\"background-color:red\">" + String.format("%02d - ", cpt) + str + "</p>");
 					else

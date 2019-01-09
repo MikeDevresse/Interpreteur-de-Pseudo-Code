@@ -51,7 +51,7 @@ public class Variable<T> extends Donnee<T> {
 	public String toString() {
 		String s = "";
 
-		s += String.format("%3s|%5.5s|%9.9s|%17.17s|", algo.getLigneCourrante()+1, this.nom, this.type, valeurToString());
+		s += String.format("%3s|%5.5s|%9.9s|%17.17s|", algo.getLigneCourante()+1, this.nom, this.type, valeurToString());
 
 		return s;
 	}

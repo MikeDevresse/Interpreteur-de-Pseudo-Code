@@ -56,7 +56,7 @@ public abstract class Donnee<T> {
 	 * 
 	 * @return vrai si constante
 	 */
-	public boolean isConstante() {
+	public boolean estConstante() {
 		return this.constante;
 	}
 
@@ -122,7 +122,7 @@ public abstract class Donnee<T> {
 	public String toString() {
 		String s = "";
 
-		s += String.format("%3s|%10s|%11s|%10s|", algo.getLigneCourrante(), this.nom, this.type);
+		s += String.format("%3s|%10s|%11s|%10s|", algo.getLigneCourante(), this.nom, this.type);
 
 		return s;
 	}
