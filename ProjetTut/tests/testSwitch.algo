@@ -2,7 +2,7 @@ ALGORITHME TestSwitch
 constante:
 
 variable:
-	var 	: chainedecaractere
+	var 	: chainedecaracteres
 	
 DEBUT
 	var <-- "jamil le bo"

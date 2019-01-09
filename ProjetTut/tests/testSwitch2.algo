@@ -2,7 +2,7 @@ ALGORITHME TestSwitch
 constante:
 
 variable:
-	var 	: chainedecaractere
+	var 	: chainedecaracteres
 	var2 : entier
 	
 DEBUT
@@ -14,7 +14,7 @@ DEBUT
 			selon var2
 				cas 1 :
 					ecrire("pas ok 2")
-				case 2 :
+				cas 2 :
 					ecrire("ok 2")
 				autrecas :
 					ecrire("pas ok 2")

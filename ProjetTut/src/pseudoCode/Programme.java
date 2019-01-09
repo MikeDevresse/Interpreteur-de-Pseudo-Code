@@ -41,6 +41,8 @@ public class Programme {
 			String[] mots = ensLignes[i].split(" ");
 			if (mots[0].equals("ALGORITHME") || i == ensLignes.length - 1) {
 				if (lignes != null) {
+					if (!lignes.get(lignes.size()-1).equals("FIN"))
+						lignes.add("FIN");
 					Algorithme a = new Algorithme(nom, debut, lignes.toArray(new String[lignes.size()]), this);
 					algos.add(a);
 
