@@ -87,7 +87,6 @@ public class Affichage {
 	 * Crée l'affichage
 	 */
 	public void afficher() {
-		System.out.println(ligneC);
 		maj();
 
 		String affichage = "";
