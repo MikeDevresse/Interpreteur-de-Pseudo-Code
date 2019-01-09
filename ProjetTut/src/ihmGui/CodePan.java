@@ -15,21 +15,41 @@ import main.Controleur;
 import pseudoCode.Programme;
 import util.Syntaxe;
 
+/**
+ * Class du panel affichant le pseudo code
+ */
 public class CodePan extends JPanel {
+	
+	/** Constante ANSI_RESET. */
 	private static final String ANSI_RESET  = "</span>";
 
+	/** Constante ANSI_BACK. */
 	private static final String ANSI_BACK = ANSI_RESET;
 	
+	/** txt. */
 	private JLabel txt;
 	
+	/** code. */
 	private String code;
+	
+	/** prog. */
 	private Programme prog;
+	
+	/** scroll bar. */
 	private JScrollBar scrollBar;
 
+	/** syntaxes. */
 	private HashMap<String, String> syntaxes;
 
+	/** ens P arret. */
 	private ArrayList<Integer> ensPArret;
 	
+	/**
+	 * Instanciation de code pan.
+	 *
+	 * @param code le code affiché
+	 * @param prog le programme lié au pseudo-code
+	 */
 	public CodePan(String code, Programme prog) {
 		syntaxes = Syntaxe.getSyntaxesHTML();
 		this.setLayout(new BorderLayout());
@@ -48,6 +68,9 @@ public class CodePan extends JPanel {
 		this.add(txt);
 	}
 	
+	/**
+	 * refresh du panel
+	 */
 	public void paint() {
 		int cpt=1;
 		txt.setText("<html><body style=\"font-size: 15px\">");
@@ -72,6 +95,12 @@ public class CodePan extends JPanel {
 		txt.setText(txt.getText() + "</body></html>");
 	}
 	
+	/**
+	 * Colorier
+	 *
+	 * @param str ligne de code a colorier
+	 * @return string
+	 */
 	private String colorier(String str) {
 		String ret = "";
 		String commentaire = "";
@@ -112,6 +141,12 @@ public class CodePan extends JPanel {
 		return replaceCoul(ret);
 	}
 	
+	/**
+	 * Remplace les couleurs pour eviter les problemes avec les guillemets
+	 *
+	 * @param str ligne apres coloration
+	 * @return string
+	 */
 	private String replaceCoul(String str) {
 		str = str.replace("spanB", "span style=\"color:Black\"");
 		str = str.replace("spanR", "span style=\"color:red\"");
@@ -125,6 +160,13 @@ public class CodePan extends JPanel {
 		return str;
 	}
 	
+	/**
+	 * Permet de colorer la partie entre guillemets
+	 * 
+	 * @param recup chaîne de caractère neutre
+	 * @param dest chaîne de destination
+	 * @return string formattée
+	 */
 	private String recupAnnotation(String recup, String dest) {
 		String ret = "";
 

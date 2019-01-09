@@ -306,6 +306,12 @@ public class Affichage {
 		return ret;
 	}
 
+	/**
+	 * Permet de colorer la partie entre guillemets
+	 * @param recup chaîne de caractère neutre
+	 * @param dest chaîne de destination
+	 * @return string formattée
+	 */
 	private String recupAnnotation(String recup, String dest) {
 		String ret = "";
 

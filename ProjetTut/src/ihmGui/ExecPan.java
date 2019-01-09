@@ -14,22 +14,43 @@ import javax.swing.JTextField;
 import main.Controleur;
 import pseudoCode.Programme;
 
+/**
+ * Class du panel affichant la trace d'execution
+ */
 public class ExecPan extends JPanel implements ActionListener {
+	
+	/** pan. */
 	private JPanel pan;
 	
+	/** jsp. */
 	private JScrollPane jsp;
+	
+	/** txt. */
 	private JLabel txt;
 	
+	/** jsp comm. */
 	private JScrollPane jspComm;
+	
+	/** txt comm. */
 	private JLabel txtComm;
 	
+	/** console. */
 	private JTextField console;
 	
+	/** exec. */
 	private String exec;
+	
+	/** prog. */
 	private Programme prog;
 	
+	/** comms. */
 	private HashMap<Integer,String> comms;
 	
+	/**
+	 * Instanciation de exec pan.
+	 *
+	 * @param prog le programme lié au pseudo-code
+	 */
 	public ExecPan(Programme prog) {
 		this.prog = prog;
 		console = new JTextField();
@@ -57,6 +78,9 @@ public class ExecPan extends JPanel implements ActionListener {
 		this.add(console, BorderLayout.SOUTH);
 	}
 	
+	/**
+	 * Refresh du panel
+	 */
 	public void paint() {
 		exec = prog.traceExec;
 		txt.setText("<html><body style=\"font-size: 15px\">");
@@ -109,6 +133,9 @@ public class ExecPan extends JPanel implements ActionListener {
 		jspComm.getVerticalScrollBar().setValue(jspComm.getVerticalScrollBar().getMaximum());
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed ( ActionEvent e )
 	{
 		Controleur.getControleur().envoyerCommande( console.getText() );

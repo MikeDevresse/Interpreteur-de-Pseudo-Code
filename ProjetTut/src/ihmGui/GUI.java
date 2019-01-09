@@ -11,15 +11,38 @@ import javax.swing.JSplitPane;
 
 import pseudoCode.Programme;
 
+/**
+ * Frame principale du gui
+ */
 public class GUI extends JFrame{
+	
+	/** code. */
 	private String code="";
+	
+	/** panel code. */
 	private JScrollPane panelCode;
+	
+	/** panel vars. */
 	private JScrollPane panelVars;
+	
+	/** codepan. */
 	private CodePan codepan;
+	
+	/** varspan. */
 	private VarPan  varspan;
+	
+	/** execpan. */
 	private ExecPan execpan;
+	
+	/** prog. */
 	private Programme prog;
 	
+	/**
+	 * Instanciation de gui.
+	 *
+	 * @param codeLignes le pseudo-code ligne par ligne
+	 * @param prog le programme lié au pseudo-code
+	 */
 	public GUI(String[] codeLignes, Programme prog) {
 		this.prog = prog;
 		
@@ -52,9 +75,10 @@ public class GUI extends JFrame{
 		this.setVisible(true);
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.Component#repaint()
+	 */
 	public void repaint() {
-		
-		
 		codepan.paint();
 		try {Thread.sleep(50);}catch(Exception e){}
 		panelCode.getVerticalScrollBar().setValue(15*prog.getCurrent().getLigneCourrante());
