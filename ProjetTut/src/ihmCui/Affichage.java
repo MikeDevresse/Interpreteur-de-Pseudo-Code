@@ -151,7 +151,7 @@ public class Affichage {
 				System.out.println(e);
 			}
 		}
-
+		
 		String[] lignesComm = new String[3];
 		lignesComm[0]="";
 		lignesComm[1]="";

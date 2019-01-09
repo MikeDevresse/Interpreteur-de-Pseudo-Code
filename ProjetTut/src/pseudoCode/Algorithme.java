@@ -655,7 +655,7 @@ public class Algorithme {
 			} else if (this.getDonnee(nomDonnee) instanceof Variable) {
 				try {
 					interpreter.eval(nomDonnee + " = " + valeur);
-					((Variable) (this.getDonnee(nomDonnee))).setValeur(interpreter.eval(valeur));
+					((Variable) (this.getDonnee(nomDonnee))).setValeur(interpreter.eval(nomDonnee));
 					if (prog.getDonneesATracer().contains(this.getVariable(nomDonnee)))
 						prog.traceVariable += this.getVariable(nomDonnee).toString() + "\n";
 				} catch (EvalError e) {

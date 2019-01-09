@@ -214,7 +214,7 @@ public class Controleur {
 	public void getVariableATracer() {
 		for (Algorithme algo : this.prog.getAlgos()) {
 			for (Donnee d : algo.getDonnees()) {
-				if (d.estTracable()) {
+				if ( d != null && d.estTracable()) {
 					System.out.print(
 							"Tracer la variable \"" + d.getNom() + "\" de l'algo " + algo.getNom() + " (Y/n) : ");
 					String reponse = sc.nextLine();

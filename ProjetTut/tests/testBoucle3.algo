@@ -9,6 +9,6 @@ DEBUT
 	a <-- 2
 	tq i < 6 alors
 		écrire(i)
-		a <-- a +1
+		i <-- i +1
 	ftq
 FIN
