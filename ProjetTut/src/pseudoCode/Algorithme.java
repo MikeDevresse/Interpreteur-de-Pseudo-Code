@@ -500,7 +500,7 @@ public class Algorithme {
 
 			if (this.fichier[i].matches("fselon")) {
 				if (nbSelon == 0) {
-					ligneFselon = i;
+					ligneFselon = i+1;
 					break;
 				} else
 					nbSelon--;
