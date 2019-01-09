@@ -1,0 +1,1 @@
+La trace de variable répertorie dans un tableau sur le coté gauche du logiciel chaque changement de valeur d'une variable que l'utilisateur veut inspecter. Le tableau comporte 4 colonnes : la ligne du changement d'état, le nom de la variable qui à été modifier, le type de la variable, ainsi que sa valeur. La trace de variable peut aussi tracer des tableau.

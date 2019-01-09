@@ -1,0 +1,1 @@
+La trace d’exécution répertorie les entrées claviers, les écriture au clavier de l'utilisateur, ainsi que le résultat de la fonction écrire
