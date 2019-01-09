@@ -56,7 +56,7 @@ public abstract class Donnee<T> {
 	 * 
 	 * @return vrai si constante
 	 */
-	public boolean isConstante() {
+	public boolean estConstante() {
 		return this.constante;
 	}
 
