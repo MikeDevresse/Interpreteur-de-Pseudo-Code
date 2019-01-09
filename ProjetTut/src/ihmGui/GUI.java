@@ -81,7 +81,7 @@ public class GUI extends JFrame{
 	public void repaint() {
 		codepan.paint();
 		try {Thread.sleep(50);}catch(Exception e){}
-		panelCode.getVerticalScrollBar().setValue(15*prog.getCurrent().getLigneCourrante());
+		panelCode.getVerticalScrollBar().setValue(15*prog.getCourant().getLigneCourante());
 		
 		varspan.paint();
 		try {Thread.sleep(50);}catch(Exception e){}

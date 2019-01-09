@@ -12,8 +12,8 @@ public class Programme {
 	private ArrayList<Donnee> ensDonneesATracer;
 
 	private Algorithme main;
-	private Algorithme last;
-	private Algorithme current;
+	private Algorithme dernierAlgo;
+	private Algorithme algoCourant;
 
 	/**
 	 * Constructeur du programme.
@@ -46,7 +46,7 @@ public class Programme {
 
 					if (main) { // Algorithme principal
 						this.main = a;
-						setCurrent(this.main);
+						setCourant(this.main);
 					} else { // Sous algorithme
 						for (String[] params : sousAlgoParams) {
 							Variable v = new Variable(params[1], params[2], false, a);
@@ -114,7 +114,7 @@ public class Programme {
 	 * @return dernier algorithme parcouru
 	 */
 	public Algorithme getLast() {
-		return this.last;
+		return this.dernierAlgo;
 	}
 
 	/**
@@ -122,8 +122,8 @@ public class Programme {
 	 * 
 	 * @return algorithme actuellement interprété
 	 */
-	public Algorithme getCurrent() {
-		return this.current;
+	public Algorithme getCourant() {
+		return this.algoCourant;
 	}
 
 	/**
@@ -131,9 +131,9 @@ public class Programme {
 	 * 
 	 * @param a algorithme interprété
 	 */
-	public void setCurrent(Algorithme a) {
-		this.last = this.current;
-		this.current = a;
+	public void setCourant(Algorithme a) {
+		this.dernierAlgo = this.algoCourant;
+		this.algoCourant = a;
 	}
 
 	/**
