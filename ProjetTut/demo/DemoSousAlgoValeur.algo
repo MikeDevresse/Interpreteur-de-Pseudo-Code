@@ -1,0 +1,21 @@
+ALGORITHME DemoSousAlgoValeur
+constante:
+
+variable:
+	a : entier
+	
+DEBUT	
+	appel sousProg2(2, 3)
+FIN
+
+
+ALGORITHME sousProg2(e var1 : entier, e var2 : entier)
+constante:
+
+variable:
+	a : entier
+	
+DEBUT
+	a <-- var1 + var2
+	ecrire("somme =  " © a)
+FIN

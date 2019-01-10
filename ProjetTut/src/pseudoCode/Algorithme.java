@@ -58,7 +58,6 @@ public class Algorithme {
 	 * Initialise les données de l'algorithme
 	 */
 	public void initialiser() {
-		System.out.println(this.fichier[this.fichier.length-1]);
 		Fonctions.initFonctions(this.interpreteur);
 
 		String current = fichier[ligneCourante];

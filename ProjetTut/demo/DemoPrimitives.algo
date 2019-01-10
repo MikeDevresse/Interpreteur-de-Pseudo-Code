@@ -1,0 +1,26 @@
+ALGORITHME DemoPrimitives
+constante:
+
+variable :
+	
+DEBUT
+	écrire(plancher(5.5))
+	écrire(plafond(5.5))
+	écrire(arrondi(5.7))
+	
+	écrire(aujourd'hui())
+	écrire(jour("13/07/1999"))
+	écrire(mois("13/07/1999"))
+	écrire(annee("13/07/1999"))
+	
+	écrire(estRéel("13.0"))
+	écrire(estEntier("17"))
+	écrire(hasard(10))
+	
+	écrire(enChaine(5 + 6))
+	écrire(enEntier("16.6"))
+	écrire(enRéel("16"))
+	
+	écrire(car(36))
+	écrire(ord('F'))
+FIN

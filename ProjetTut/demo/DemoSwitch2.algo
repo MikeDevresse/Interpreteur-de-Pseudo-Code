@@ -1,0 +1,29 @@
+ALGORITHME DemoSwitchImbrique
+constante:
+
+variable:
+	var 	: chainedecaracteres
+	var2 : entier
+	
+DEBUT
+	var <-- "lol"
+	var2 <-- 2
+	
+	selon var
+		cas "lol" :
+			selon var2
+				cas 1 :
+					ecrire("pas ok 2")
+				cas 2 :
+					ecrire("ok 2")
+				autrecas :
+					ecrire("pas ok 2")
+			fselon
+			
+			écrire("ok 1")
+		cas 4 :
+			écrire("pas ok 1")
+		autrecas :
+			écrire("pas ok 1")
+	fselon
+FIN

@@ -1,0 +1,18 @@
+ALGORITHME TestSwitch
+constante:
+
+variable:
+	var 	: chainedecaracteres
+	
+DEBUT
+	var <-- "ce code fonctionne"
+	
+	selon var
+		cas "ce code fonctionne" :
+			écrire("bien joué")
+		cas "ce cas est pas valide" :
+			écrire("ca ne doit pas s'afficher")
+		autrecas :
+			écrire("Y a un probleme")
+	fselon
+FIN

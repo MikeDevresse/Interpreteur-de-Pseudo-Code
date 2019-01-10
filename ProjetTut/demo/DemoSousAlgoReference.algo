@@ -1,0 +1,20 @@
+ALGORITHME DemoSousAlgoReference
+constante:
+
+variable:
+	z : entier
+	
+DEBUT
+	appel sousProg2(2, z)
+	
+    ecrire(z)
+FIN
+
+ALGORITHME sousProg2(e var1 : entier, s var3)
+constante:
+
+variable:
+	
+DEBUT
+	var3 <-- 17
+FIN

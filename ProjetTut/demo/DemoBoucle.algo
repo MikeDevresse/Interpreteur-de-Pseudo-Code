@@ -1,0 +1,13 @@
+ALGORITHME DemoBoucle
+constante:
+variable:
+	i 	: entier
+	a : entier
+	
+DEBUT
+	i <-- 0
+	tq i < 6 alors
+		écrire(i)
+		i <-- i +1
+	ftq
+FIN
